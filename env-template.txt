@@ -1,0 +1,16 @@
+# Environment 'development', 'test', or 'production'
+ENV=development
+
+# DRS Message Queue connection
+DRS_MQ_HOST=XXX
+DRS_MQ_PORT=XXX
+DRS_MQ_USER=XXX
+DRS_MQ_PASSWORD=XXX
+DRS_QUEUE_NAME=XXX
+
+# Process Message Queue connection
+PROCESS_MQ_HOST=XXX
+PROCESS_MQ_PORT=XXX
+PROCESS_MQ_USER=XXX
+PROCESS_MQ_PASSWORD=XXX
+PROCESS_QUEUE_NAME=XXX

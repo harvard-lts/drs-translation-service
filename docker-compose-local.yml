@@ -1,0 +1,23 @@
+version: '3.5'
+
+services:
+
+  mqutils:
+    container_name: 'mqutils'
+    build:
+      context: '.'
+      dockerfile: 'DockerfileLocal'
+    tty: true
+    volumes:
+      # App
+      - './:/home/appuser'
+      # Logs
+      - './logs:/home/appuser/logs'
+    env_file:
+      - '.env'
+    # Join this service to a custom docker network
+    networks:
+      - ims-net
+networks:
+  ims-net:
+    name: "ims-net"
