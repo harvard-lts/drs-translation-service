@@ -33,6 +33,7 @@ def connect_and_subscribe(connection_params):
 class MqListener(stomp.ConnectionListener):
     def __init__(self, connection_params):
         self.connection_params = connection_params
+        self.message_data = None
         print('MqListener init')
 
     def on_error(self, frame):
@@ -45,15 +46,22 @@ class MqListener(stomp.ConnectionListener):
         print('message body "%s"' % body)
 
         message_id = headers.get('message-id')
-        message_data = json.loads(body)
+        self.message_data = json.loads(body)
+        
 
         #TODO- Handle
-        print(' message_data {}'.format(message_data))
+        print(' message_data {}'.format(self.message_data))
         print(' message_id {}'.format(message_id))
 
     def on_disconnected(self):
         print('disconnected! reconnecting...')
         connect_and_subscribe(self.connection_params)
+        
+    def get_connection(self):
+        return self.connection_params.conn
+    
+    def get_message_data(self):
+        return self.message_data
 
 class ConnectionParams:
     def __init__(self, conn, queue, host, port, user, password):
@@ -66,7 +74,18 @@ class ConnectionParams:
          
 
 def initialize_drslistener():
-    
+    mqlistener = get_mqlistener()
+    conn = mqlistener.get_connection()
+    conn.set_listener('', mqlistener)
+    connect_and_subscribe(mqlistener.connection_params)
+    # http_clients://github.com/jasonrbriggs/stomp.py/issues/206
+    while True:
+        time.sleep(2)
+        if not conn.is_connected():
+            print('Disconnected in loop, reconnecting')
+            connect_and_subscribe(mqlistener.connection_params)
+
+def get_mqlistener():
     host = os.getenv('DRS_MQ_HOST')
     port = os.getenv('DRS_MQ_PORT')
     user = os.getenv('DRS_MQ_USER')
@@ -74,11 +93,5 @@ def initialize_drslistener():
     drs_queue = os.getenv('DRS_QUEUE_NAME')
     conn = stomp.Connection([(host, port)], heartbeats=(40000, 40000), keepalive=True)
     connection_params = ConnectionParams(conn, drs_queue, host, port, user, password)
-    conn.set_listener('', MqListener(connection_params))
-    connect_and_subscribe(connection_params)
-    # http_clients://github.com/jasonrbriggs/stomp.py/issues/206
-    while True:
-        time.sleep(2)
-        if not conn.is_connected():
-            print('Disconnected in loop, reconnecting')
-            connect_and_subscribe(connection_params)
+    mqlistener = MqListener(connection_params)
+    return mqlistener
