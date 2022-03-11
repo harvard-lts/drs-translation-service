@@ -21,6 +21,7 @@ def get_mq_connection():
 def notify_process_message():
     '''Creates a queue json message to notify the queue that the drs ingest has finished an ingest attempt'''
     print("************************ MQUTILS - CREATE_PROCESS_MESSAGE *******************************")
+    message = "No message"
     try:
         timestamp = datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc, microsecond=0).isoformat()
        
@@ -28,7 +29,7 @@ def notify_process_message():
         msg_json = {
             "drs_id": 12345,
             "timestamp": timestamp,
-            "status": "success",
+            "status": "success"
         }
         
         

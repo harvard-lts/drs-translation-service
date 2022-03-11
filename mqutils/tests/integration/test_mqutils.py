@@ -5,16 +5,16 @@ import mqlistener as mqlistener
 
 logging.basicConfig(format='%(message)s')
 
-# def test_get_mq_connection():
-#     mq_conn = None
-#     mq_conn = mqutils.get_mq_connection()
-#     assert mq_conn is not None
+def test_get_mq_connection():
+    mq_conn = None
+    mq_conn = mqutils.get_mq_connection()
+    assert mq_conn is not None
 
 def test_drs_listener():
     mqlistener.initialize_drslistener()
 
 
 if __name__ == "__main__":
-    #test_get_mq_connection()
+    test_get_mq_connection()
     test_drs_listener()
     print("Everything passed")
