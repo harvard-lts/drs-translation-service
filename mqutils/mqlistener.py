@@ -34,6 +34,7 @@ class MqListener(stomp.ConnectionListener):
     def __init__(self, connection_params):
         self.connection_params = connection_params
         self.message_data = None
+        self.message_id = None
         print('MqListener init')
 
     def on_error(self, frame):
@@ -45,13 +46,13 @@ class MqListener(stomp.ConnectionListener):
         print('received a message headers "%s"' % headers)
         print('message body "%s"' % body)
 
-        message_id = headers.get('message-id')
+        self.message_id = headers.get('message-id')
         self.message_data = json.loads(body)
         
 
         #TODO- Handle
         print(' message_data {}'.format(self.message_data))
-        print(' message_id {}'.format(message_id))
+        print(' message_id {}'.format(self.message_id))
 
     def on_disconnected(self):
         print('disconnected! reconnecting...')
@@ -62,6 +63,9 @@ class MqListener(stomp.ConnectionListener):
     
     def get_message_data(self):
         return self.message_data
+    
+    def get_message_id(self):
+        return self.message_id
 
 class ConnectionParams:
     def __init__(self, conn, queue, host, port, user, password):
@@ -74,7 +78,7 @@ class ConnectionParams:
          
 
 def initialize_drslistener():
-    mqlistener = get_mqlistener()
+    mqlistener = get_drsmqlistener()
     conn = mqlistener.get_connection()
     conn.set_listener('', mqlistener)
     connect_and_subscribe(mqlistener.connection_params)
@@ -85,7 +89,7 @@ def initialize_drslistener():
             print('Disconnected in loop, reconnecting')
             connect_and_subscribe(mqlistener.connection_params)
 
-def get_mqlistener():
+def get_drsmqlistener():
     host = os.getenv('DRS_MQ_HOST')
     port = os.getenv('DRS_MQ_PORT')
     user = os.getenv('DRS_MQ_USER')

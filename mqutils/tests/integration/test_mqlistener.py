@@ -6,7 +6,7 @@ logging.basicConfig(format='%(message)s')
 
 def test_drs_listener():
     '''Tests to see if the listener picks up a topic from the queue'''
-    mqlistenerobject = mqlistener.get_mqlistener()
+    mqlistenerobject = mqlistener.get_drsmqlistener()
     
     conn = mqlistenerobject.get_connection()
     conn.set_listener('', mqlistenerobject)

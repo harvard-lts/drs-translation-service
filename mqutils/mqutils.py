@@ -25,13 +25,15 @@ def notify_process_message():
     try:
         timestamp = datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc, microsecond=0).isoformat()
        
-       #Add more details that will be needed from the load report.
+        #Add more details that will be needed from the load report.
         msg_json = {
-            "drs_id": 12345,
-            "timestamp": timestamp,
-            "status": "success"
+            "package_id": "12345",
+            "application_name": "DVN",
+            "status": "success",
+            "notes": "Some Notes",
+            "timestamp": timestamp, 
         }
-        
+
         
         print("msg json:")
         print(msg_json)
