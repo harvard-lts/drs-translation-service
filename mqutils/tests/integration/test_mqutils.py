@@ -13,7 +13,7 @@ def test_get_mq_connection():
 def test_notification():
     '''Sends a status message to the process queue and verifies that it made it'''
     #Send the message
-    message = mqutils.notify_process_message()
+    message = mqutils.notify_process_message("drs-ingest-status-testing")
     assert type(message) is str
     messagedict = json.loads(message)
     
@@ -40,12 +40,12 @@ def test_notification():
     
 
 def get_mqlistener():
-    '''Sets up a listener to make sure that the process message made it onto the queue'''
+    '''Sets up a listener to make sure that the drs-ingest-status message made it onto the queue'''
     host = os.getenv('PROCESS_MQ_HOST')
     port = os.getenv('PROCESS_MQ_PORT')
     user = os.getenv('PROCESS_MQ_USER')
     password = os.getenv('PROCESS_MQ_PASSWORD')
-    test_queue = os.getenv('PROCESS_QUEUE_NAME')
+    test_queue = "drs-ingest-status-testing"
     conn = stomp.Connection([(host, port)], heartbeats=(40000, 40000), keepalive=True)
     connection_params = mqlistener.ConnectionParams(conn, test_queue, host, port, user, password)
     mqlistenerobject = mqlistener.MqListener(connection_params)
