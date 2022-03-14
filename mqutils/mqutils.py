@@ -18,7 +18,7 @@ def get_mq_connection():
         raise(e)
     return conn
 
-def notify_process_message():
+def notify_process_message(queue=_queue):
     '''Creates a queue json message to notify the queue that the drs ingest has finished an ingest attempt'''
     print("************************ MQUTILS - CREATE_PROCESS_MESSAGE *******************************")
     message = "No message"
@@ -39,7 +39,7 @@ def notify_process_message():
         print(msg_json)
         message = json.dumps(msg_json)
         conn = get_mq_connection()
-        conn.send(_queue, message, headers = {"persistent": "true"})
+        conn.send(queue, message, headers = {"persistent": "true"})
         print("MESSAGE TO QUEUE create_initial_queue_message")
         print(message)
     except Exception as e:

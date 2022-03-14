@@ -89,6 +89,18 @@ def initialize_drslistener():
             print('Disconnected in loop, reconnecting')
             connect_and_subscribe(mqlistener.connection_params)
 
+def initialize_processlistener():
+    mqlistener = get_processmqlistener()
+    conn = mqlistener.get_connection()
+    conn.set_listener('', mqlistener)
+    connect_and_subscribe(mqlistener.connection_params)
+    # http_clients://github.com/jasonrbriggs/stomp.py/issues/206
+    while True:
+        time.sleep(2)
+        if not conn.is_connected():
+            print('Disconnected in loop, reconnecting')
+            connect_and_subscribe(mqlistener.connection_params)
+
 def get_drsmqlistener():
     host = os.getenv('DRS_MQ_HOST')
     port = os.getenv('DRS_MQ_PORT')
@@ -97,5 +109,16 @@ def get_drsmqlistener():
     drs_queue = os.getenv('DRS_QUEUE_NAME')
     conn = stomp.Connection([(host, port)], heartbeats=(40000, 40000), keepalive=True)
     connection_params = ConnectionParams(conn, drs_queue, host, port, user, password)
+    mqlistener = MqListener(connection_params)
+    return mqlistener
+
+def get_processmqlistener():
+    host = os.getenv('PROCESS_MQ_HOST')
+    port = os.getenv('PROCESS_MQ_PORT')
+    user = os.getenv('PROCESS_MQ_USER')
+    password = os.getenv('PROCESS_MQ_PASSWORD')
+    process_queue = os.getenv('PROCESS_QUEUE_NAME')
+    conn = stomp.Connection([(host, port)], heartbeats=(40000, 40000), keepalive=True)
+    connection_params = ConnectionParams(conn, process_queue, host, port, user, password)
     mqlistener = MqListener(connection_params)
     return mqlistener
