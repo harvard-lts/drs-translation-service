@@ -1,4 +1,4 @@
-import datetime, json, os, time, traceback, stomp
+import datetime, json, os, time, traceback, stomp, sys
 
 # Subscription id is unique to the subscription in this case there is only one subscription per connection
 _sub_id = 1
@@ -122,3 +122,18 @@ def get_processmqlistener():
     connection_params = ConnectionParams(conn, process_queue, host, port, user, password)
     mqlistener = MqListener(connection_params)
     return mqlistener
+
+if __name__ == "__main__":
+    permitted_values = {"drs", "process"}
+    args = sys.argv[1:]
+    listener = "drs"
+    if len(args) >= 1:
+        listener = args[0]
+    
+    if (listener not in permitted_values):
+        raise RuntimeException("Argument syntax requires either drs or process for parameters")
+    
+    if (listener == "drs"):    
+        initialize_drslistener()   
+    else:
+        initialize_processlistener()

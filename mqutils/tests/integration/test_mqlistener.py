@@ -81,3 +81,6 @@ def notify_data_ready_process_message():
         print(e)
         raise(e)
     return message
+
+if __name__ == "__main__":
+    notify_data_ready_process_message()

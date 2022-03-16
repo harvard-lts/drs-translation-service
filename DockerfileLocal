@@ -2,9 +2,20 @@ FROM python:3.8-slim-buster
 
 COPY requirements.txt /tmp/
 
-RUN pip install --upgrade pip && \
+RUN apt-get update && apt-get install -y supervisor && \
+  mkdir -p /etc/nginx/ssl/ && \
+  pip install --upgrade pip && \
   pip install --upgrade --force-reinstall -r /tmp/requirements.txt -i https://pypi.org/simple/ --extra-index-url https://test.pypi.org/simple/
 
 RUN useradd --create-home appuser
 WORKDIR /home/appuser
+
+# Supervisor to run and manage multiple apps in the same container
+ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
+# Copy code into the image
+COPY --chown=appuser . /home/appuser
+
 USER appuser
+
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]

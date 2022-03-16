@@ -17,7 +17,7 @@ services:
       - '.env'
     # Join this service to a custom docker network
     networks:
-      - ims-net
+      - dims-net
 networks:
-  ims-net:
-    name: "ims-net"
+  dims-net:
+    name: "dims-net"
