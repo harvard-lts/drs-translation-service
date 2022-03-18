@@ -5,9 +5,9 @@ import mqlistener as mqlistener
 
 logging.basicConfig(format='%(message)s')
 
-def test_get_mq_connection():
+def test_get_process_mq_connection():
     mq_conn = None
-    mq_conn = mqutils.get_mq_connection()
+    mq_conn = mqutils.get_process_mq_connection()
     assert mq_conn is not None
 
 def test_notification():

@@ -47,8 +47,12 @@ class MqListener(stomp.ConnectionListener):
         print('message body "%s"' % body)
 
         self.message_id = headers.get('message-id')
-        self.message_data = json.loads(body)
+        try: 
+            self.message_data = json.loads(body)
+        except json.decoder.JSONDecodeError: 
+            self.message_data = body
         
+        self.connection_params.conn.ack(self.message_id, 1)
 
         #TODO- Handle
         print(' message_data {}'.format(self.message_data))
@@ -95,44 +99,54 @@ def initialize_processlistener():
     conn.set_listener('', mqlistener)
     connect_and_subscribe(mqlistener.connection_params)
     # http_clients://github.com/jasonrbriggs/stomp.py/issues/206
+    counter = 0
     while True:
-        time.sleep(2)
-        if not conn.is_connected():
-            print('Disconnected in loop, reconnecting')
-            connect_and_subscribe(mqlistener.connection_params)
+         time.sleep(2)
+         counter = counter+2
+         if not conn.is_connected():
+             print('Disconnected in loop, reconnecting')
+             connect_and_subscribe(mqlistener.connection_params)
 
-def get_drsmqlistener():
+def get_drsmqlistener(queue=None):
     host = os.getenv('DRS_MQ_HOST')
     port = os.getenv('DRS_MQ_PORT')
     user = os.getenv('DRS_MQ_USER')
     password = os.getenv('DRS_MQ_PASSWORD')
-    drs_queue = os.getenv('DRS_QUEUE_NAME')
+    if (queue is None):
+        drs_queue = os.getenv('DRS_QUEUE_NAME')
+    else:
+        drs_queue = queue
+    
     conn = stomp.Connection([(host, port)], heartbeats=(40000, 40000), keepalive=True)
     connection_params = ConnectionParams(conn, drs_queue, host, port, user, password)
     mqlistener = MqListener(connection_params)
     return mqlistener
 
-def get_processmqlistener():
+def get_processmqlistener(queue=None):
     host = os.getenv('PROCESS_MQ_HOST')
     port = os.getenv('PROCESS_MQ_PORT')
     user = os.getenv('PROCESS_MQ_USER')
     password = os.getenv('PROCESS_MQ_PASSWORD')
-    process_queue = os.getenv('PROCESS_QUEUE_NAME')
+    if (queue is None):
+        process_queue = os.getenv('PROCESS_QUEUE_NAME')
+    else:
+        process_queue = queue
     conn = stomp.Connection([(host, port)], heartbeats=(40000, 40000), keepalive=True)
     connection_params = ConnectionParams(conn, process_queue, host, port, user, password)
     mqlistener = MqListener(connection_params)
     return mqlistener
 
+    
 if __name__ == "__main__":
     permitted_values = {"drs", "process"}
     args = sys.argv[1:]
     listener = "drs"
     if len(args) >= 1:
         listener = args[0]
-    
+     
     if (listener not in permitted_values):
         raise RuntimeException("Argument syntax requires either drs or process for parameters")
-    
+     
     if (listener == "drs"):    
         initialize_drslistener()   
     else:

@@ -1,18 +1,18 @@
 import os, json, time, datetime, stomp
 
-
-_host = os.getenv('PROCESS_MQ_HOST')
-_port = os.getenv('PROCESS_MQ_PORT')
-_user = os.getenv('PROCESS_MQ_USER')
-_password = os.getenv('PROCESS_MQ_PASSWORD')
 _queue = os.getenv('PROCESS_QUEUE_NAME')
 
-def get_mq_connection():
-    print("************************ MQUTILS - GET_MQ_CONNECTION *******************************")
+def get_process_mq_connection():
+    print("************************ MQUTILS - GET_PROCESS_MQ_CONNECTION *******************************")
     try:
-        conn = stomp.Connection([(_host, _port)], heartbeats=(40000, 40000), keepalive=True)
-        conn.set_ssl([(_host, _port)])
-        conn.connect(_user, _password, wait=True)
+        host = os.getenv('PROCESS_MQ_HOST')
+        port = os.getenv('PROCESS_MQ_PORT')
+        user = os.getenv('PROCESS_MQ_USER')
+        password = os.getenv('PROCESS_MQ_PASSWORD')
+
+        conn = stomp.Connection([(host, port)], heartbeats=(40000, 40000), keepalive=True)
+        conn.set_ssl([(host, port)])
+        conn.connect(user, password, wait=True)
     except Exception as e:
         print(e)
         raise(e)
@@ -38,7 +38,7 @@ def notify_process_message(queue=_queue):
         print("msg json:")
         print(msg_json)
         message = json.dumps(msg_json)
-        conn = get_mq_connection()
+        conn = get_process_mq_connection()
         conn.send(queue, message, headers = {"persistent": "true"})
         print("MESSAGE TO QUEUE create_initial_queue_message")
         print(message)
@@ -47,4 +47,19 @@ def notify_process_message(queue=_queue):
         raise(e)
     return message
 
+def get_drs_mq_connection():
+    print("************************ MQUTILS - GET_DRS_MQ_CONNECTION *******************************")
+    try:
+        host = os.getenv('DRS_MQ_HOST')
+        port = os.getenv('DRS_MQ_PORT')
+        user = os.getenv('DRS_MQ_USER')
+        password = os.getenv('DRS_MQ_PASSWORD')
+
+        conn = stomp.Connection([(host, port)], heartbeats=(40000, 40000), keepalive=True)
+        conn.set_ssl([(host, port)])
+        conn.connect(user, password, wait=True)
+    except Exception as e:
+        print(e)
+        raise(e)
+    return conn
 
