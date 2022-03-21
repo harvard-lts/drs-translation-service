@@ -1,24 +1,35 @@
 import os, json, time, datetime, stomp
 
-_queue = os.getenv('PROCESS_QUEUE_NAME')
-
-def get_process_mq_connection():
+class ConnectionParams:
+    def __init__(self, conn, queue, host, port, user, password):
+        self.conn = conn
+        self.queue = queue
+        self.host = host
+        self.port = port
+        self.user = user
+        self.password = password
+        
+def get_process_mq_connection(queue=None):
     print("************************ MQUTILS - GET_PROCESS_MQ_CONNECTION *******************************")
     try:
         host = os.getenv('PROCESS_MQ_HOST')
         port = os.getenv('PROCESS_MQ_PORT')
         user = os.getenv('PROCESS_MQ_USER')
         password = os.getenv('PROCESS_MQ_PASSWORD')
-
+        if (queue is None):
+            process_queue = os.getenv('PROCESS_QUEUE_NAME')
+        else:
+            process_queue = queue
         conn = stomp.Connection([(host, port)], heartbeats=(40000, 40000), keepalive=True)
         conn.set_ssl([(host, port)])
+        connection_params = ConnectionParams(conn, process_queue, host, port, user, password)
         conn.connect(user, password, wait=True)
     except Exception as e:
         print(e)
         raise(e)
-    return conn
+    return connection_params
 
-def notify_process_message(queue=_queue):
+def notify_process_message(queue=None):
     '''Creates a queue json message to notify the queue that the drs ingest has finished an ingest attempt'''
     print("************************ MQUTILS - CREATE_PROCESS_MESSAGE *******************************")
     message = "No message"
@@ -33,13 +44,16 @@ def notify_process_message(queue=_queue):
             "notes": "Some Notes",
             "timestamp": timestamp, 
         }
-
-        
+        if (queue is None):
+            process_queue = os.getenv('PROCESS_QUEUE_NAME')
+        else:
+            process_queue = queue
+                
         print("msg json:")
         print(msg_json)
         message = json.dumps(msg_json)
-        conn = get_process_mq_connection()
-        conn.send(queue, message, headers = {"persistent": "true"})
+        connection_params = get_process_mq_connection(process_queue)
+        connection_params.conn.send(queue, message, headers = {"persistent": "true"})
         print("MESSAGE TO QUEUE create_initial_queue_message")
         print(message)
     except Exception as e:
@@ -47,19 +61,26 @@ def notify_process_message(queue=_queue):
         raise(e)
     return message
 
-def get_drs_mq_connection():
+        
+def get_drs_mq_connection(queue=None):
     print("************************ MQUTILS - GET_DRS_MQ_CONNECTION *******************************")
     try:
         host = os.getenv('DRS_MQ_HOST')
         port = os.getenv('DRS_MQ_PORT')
         user = os.getenv('DRS_MQ_USER')
         password = os.getenv('DRS_MQ_PASSWORD')
-
+        if (queue is None):
+            drs_queue = os.getenv('DRS_QUEUE_NAME')
+        else:
+            drs_queue = queue
+        print("************************ QUEUE: {} *******************************".format(drs_queue))
+    
         conn = stomp.Connection([(host, port)], heartbeats=(40000, 40000), keepalive=True)
         conn.set_ssl([(host, port)])
+        connection_params = ConnectionParams(conn, drs_queue, host, port, user, password)
         conn.connect(user, password, wait=True)
     except Exception as e:
         print(e)
         raise(e)
-    return conn
+    return connection_params
 

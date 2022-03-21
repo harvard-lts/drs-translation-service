@@ -14,18 +14,18 @@ def create_app():
     
     # add a check for the process mq connection
     def checkprocessmqconnection():
-        mq_conn = mqutils.get_process_mq_connection()
-        if mq_conn is None:
+        connection_params = mqutils.get_process_mq_connection()
+        if connection_params.conn is None:
             return False, "process mq connection failed"
-        mq_conn.disconnect()
+        connection_params.conn.disconnect()
         return True, "process mq connection ok"
         
     # add a check for the drs mq connection
     def checkdrsmqconnection():
-        mq_conn = mqutils.get_drs_mq_connection()
-        if mq_conn is None:
+        connection_params = mqutils.get_drs_mq_connection()
+        if connection_params.conn is None:
             return False, "drs mq connection failed"
-        mq_conn.disconnect()
+        connection_params.conn.disconnect()
         return True, "drs mq connection ok"
     
     health.add_check(checkprocessmqconnection)
