@@ -19,9 +19,9 @@ services:
       - '.env'
     # Join this service to a custom docker network
     networks:
-      - dims-net
+      - drsts-net
     ports:
       - "10581:8443"
 networks:
-  dims-net:
-    name: "dims-net"
+  drsts-net:
+    name: "drsts-net"
