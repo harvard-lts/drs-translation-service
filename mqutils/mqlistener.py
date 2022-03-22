@@ -94,7 +94,6 @@ def initialize_processlistener():
     # http_clients://github.com/jasonrbriggs/stomp.py/issues/206
     while True:
          time.sleep(2)
-         counter = counter+2
          if not conn.is_connected():
              print('Disconnected in loop, reconnecting')
              subscribe_to_listener(mqlistener.connection_params)
