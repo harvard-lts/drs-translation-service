@@ -17,7 +17,7 @@ def get_process_mq_connection(queue=None):
         user = os.getenv('PROCESS_MQ_USER')
         password = os.getenv('PROCESS_MQ_PASSWORD')
         if (queue is None):
-            process_queue = os.getenv('PROCESS_QUEUE_NAME')
+            process_queue = os.getenv('PROCESS_QUEUE_CONSUME_NAME')
         else:
             process_queue = queue
         conn = stomp.Connection([(host, port)], heartbeats=(40000, 40000), keepalive=True)
@@ -45,7 +45,7 @@ def notify_process_message(queue=None):
             "timestamp": timestamp, 
         }
         if (queue is None):
-            process_queue = os.getenv('PROCESS_QUEUE_NAME')
+            process_queue = os.getenv('PROCESS_QUEUE_CONSUME_NAME')
         else:
             process_queue = queue
                 

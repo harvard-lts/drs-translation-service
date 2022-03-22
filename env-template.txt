@@ -12,4 +12,5 @@ PROCESS_MQ_HOST=b-cfb7f4c2-9140-4b5b-a551-1ccaf8c61d4e-1.mq.us-east-1.amazonaws.
 PROCESS_MQ_PORT=61614
 PROCESS_MQ_USER=XXX
 PROCESS_MQ_PASSWORD=XXX
-PROCESS_QUEUE_NAME=/queue/dvn-data-ready
+PROCESS_QUEUE_CONSUME_NAME=/queue/dims-data-ready
+PROCESS_QUEUE_PUBLISH_NAME=/queue/drs-ingest-status

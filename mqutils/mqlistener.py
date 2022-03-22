@@ -1,6 +1,7 @@
-import datetime, json, time, traceback, stomp, sys
+import datetime, json, os, time, traceback, stomp, sys
 import mqutils
 import mqexception
+import endtoend
 
 # Subscription id is unique to the subscription in this case there is only one subscription per connection
 _sub_id = 1
@@ -53,6 +54,14 @@ class MqListener(stomp.ConnectionListener):
         except json.decoder.JSONDecodeError: 
             raise mqexception.MQException("Incorrect formatting of message detected.  Required JSON but received {} ".format(body))
         
+        #This is here to demo end to end testing
+        if self.connection_params.queue == os.getenv('PROCESS_QUEUE_CONSUME_NAME'):
+            #Send dummy DRS
+            endtoend.notify_drs_message()
+        #This is here to demo end to end testing
+        elif self.connection_params.queue == os.getenv('DRS_QUEUE_NAME'):
+            #Send dummy ingest status message to process queue 
+            endtoend.notify_ingest_status_process_message()
         self.connection_params.conn.ack(self.message_id, 1)
 
         #TODO- Handle
@@ -94,7 +103,6 @@ def initialize_processlistener():
     # http_clients://github.com/jasonrbriggs/stomp.py/issues/206
     while True:
          time.sleep(2)
-         counter = counter+2
          if not conn.is_connected():
              print('Disconnected in loop, reconnecting')
              subscribe_to_listener(mqlistener.connection_params)
