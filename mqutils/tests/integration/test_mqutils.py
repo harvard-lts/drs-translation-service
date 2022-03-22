@@ -5,23 +5,22 @@ import mqlistener as mqlistener
 
 logging.basicConfig(format='%(message)s')
 
-def test_get_mq_connection():
-    mq_conn = None
-    mq_conn = mqutils.get_mq_connection()
-    assert mq_conn is not None
+def test_get_process_mq_connection():
+    connection_params = mqutils.get_process_mq_connection()
+    assert connection_params.conn is not None
 
 def test_notification():
     '''Sends a status message to the process queue and verifies that it made it'''
     #Send the message
-    message = mqutils.notify_process_message("drs-ingest-status-testing")
+    message = mqutils.notify_process_message("/queue/drs-ingest-status-testing")
     assert type(message) is str
     messagedict = json.loads(message)
     
-    mqlistenerobject = get_mqlistener()
+    mqlistenerobject = mqlistener.get_processmqlistener("/queue/drs-ingest-status-testing")
     
     conn = mqlistenerobject.get_connection()
     conn.set_listener('', mqlistenerobject)
-    mqlistener.connect_and_subscribe(mqlistenerobject.connection_params)
+    mqlistener.subscribe_to_listener(mqlistenerobject.connection_params)
     
     counter = 0
     #Try for 30 seconds then fail
@@ -29,24 +28,11 @@ def test_notification():
         time.sleep(2)
         counter = counter+2
         if not conn.is_connected():
-            mqlistener.connect_and_subscribe(mqlistenerobject.connection_params)
+            mqlistener.subscribe_to_listener(mqlistenerobject.connection_params)
         if counter >= 30:
-            assert False, "Could not find anything on the queue after 30 seconds"
+            assert False, "test_notification: could not find anything on the queue after 30 seconds"
     #dequeue the message
     conn.ack(mqlistenerobject.get_message_id(), 1)    
     assert mqlistenerobject.get_message_data() is not None
     assert type(mqlistenerobject.get_message_data()) is dict
     assert mqlistenerobject.get_message_data() == messagedict
-    
-
-def get_mqlistener():
-    '''Sets up a listener to make sure that the drs-ingest-status message made it onto the queue'''
-    host = os.getenv('PROCESS_MQ_HOST')
-    port = os.getenv('PROCESS_MQ_PORT')
-    user = os.getenv('PROCESS_MQ_USER')
-    password = os.getenv('PROCESS_MQ_PASSWORD')
-    test_queue = "drs-ingest-status-testing"
-    conn = stomp.Connection([(host, port)], heartbeats=(40000, 40000), keepalive=True)
-    connection_params = mqlistener.ConnectionParams(conn, test_queue, host, port, user, password)
-    mqlistenerobject = mqlistener.MqListener(connection_params)
-    return mqlistenerobject

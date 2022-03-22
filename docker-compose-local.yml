@@ -1,3 +1,5 @@
+# `docker-compose -f docker-compose-local.yml up -d --build --force-recreate`
+
 version: '3.8'
 
 services:
@@ -17,7 +19,9 @@ services:
       - '.env'
     # Join this service to a custom docker network
     networks:
-      - ims-net
+      - drsts-net
+    ports:
+      - "10581:8443"
 networks:
-  ims-net:
-    name: "ims-net"
+  drsts-net:
+    name: "drsts-net"

@@ -8,4 +8,7 @@ __pycache__/
 
 .bash*
 
+logs/*
+!logs/.keep
+
 
