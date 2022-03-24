@@ -26,6 +26,8 @@ jobs:
           pip install -U pytest
           pip install -U pyflakes
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          
+      # Run Unit Tests
 
       # Run Pyflakes
       - name: Run pyflakes
