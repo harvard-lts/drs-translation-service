@@ -1,11 +1,8 @@
-name: Import Management Service
+name: DRS Translation Service
 
 on:
   push:
   pull_request:
-    branches:
-      - main
-      - trial
 
 jobs:
   build:
