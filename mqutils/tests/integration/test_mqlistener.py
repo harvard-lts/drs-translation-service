@@ -6,7 +6,7 @@ from mqexception import MQException
 
 logging.basicConfig(format='%(message)s')
 
-_process_queue = "/queue/dvn-data-ready-testing"
+_process_queue = "/queue/dims-data-ready"
 _drs_queue = "/topic/dvn-dev-DRS_OBJECT_UPDATED"
 
 def test_drs_listener():
@@ -66,15 +66,13 @@ def notify_data_ready_process_message():
     the DRS Import Management Service'''
     message = "No message"
     try:
-        timestamp = datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc, microsecond=0).isoformat()
-       
+        
         #Add more details that will be needed from the load report.
         msg_json = {
             "package_id": "12345",
-            "application_name": "DVN",
+            "application_name": "Dataverse",
             "dropbox_path": "/path/to/object",
-            "notes": "Some Notes",
-            "timestamp": timestamp, 
+            "message": "Message"
         }
 
         print("msg json:")

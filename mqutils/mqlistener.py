@@ -1,4 +1,4 @@
-import datetime, json, time, traceback, stomp, sys
+import datetime, json, time, traceback, stomp, sys, os
 import mqutils
 import mqexception
 
@@ -53,6 +53,15 @@ class MqListener(stomp.ConnectionListener):
         except json.decoder.JSONDecodeError: 
             raise mqexception.MQException("Incorrect formatting of message detected.  Required JSON but received {} ".format(body))
         
+        if self.connection_params.queue == os.getenv('PROCESS_QUEUE_CONSUME_NAME'):
+            #Trigger the mock services to 'run the drs ingest'
+            mqutils.notify_mock_drs_trigger_message()
+            #TODO This will call a method to handle prepping the batch for
+            #distribution to the DRS
+        #This is here to demo end to end testing
+        elif self.connection_params.queue == os.getenv('DRS_TOPIC_NAME'):
+            #Send dummy ingest status message to process queue 
+            mqutils.notify_ingest_status_process_message()
         self.connection_params.conn.ack(self.message_id, 1)
 
         #TODO- Handle
