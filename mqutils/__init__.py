@@ -34,7 +34,7 @@ def create_app():
     # add your own data to the environment dump
     def application_data():
         return {"maintainer": "Harvard Library Technology Services",
-                "git_repo": "https://github.com/harvard-lts/drs-import-management-service"}
+                "git_repo": "https://github.com/harvard-lts/drs-translation-service"}
     
     envdump.add_section("application", application_data)
 
