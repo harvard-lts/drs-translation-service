@@ -1,8 +1,7 @@
-import sys, os, pytest, logging, stomp, time, datetime, json
+import sys, os, logging, time, json
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
 import mqutils as mqutils
 import mqlistener as mqlistener
-from mqexception import MQException
 
 logging.basicConfig(format='%(message)s')
 
@@ -92,8 +91,6 @@ def notify_drs_message():
     the DRS Ingest'''
     message = "No message"
     try:
-        timestamp = datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc, microsecond=0).isoformat()
-       
         #Sample DRS Ingest message.
         msg_json = {"data":
                     {"objectId":123,

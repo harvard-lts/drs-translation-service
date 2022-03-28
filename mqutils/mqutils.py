@@ -1,4 +1,8 @@
-import os, json, time, datetime, stomp
+import os, json, datetime, stomp, logging
+
+logfile=os.getenv('LOGFILE_PATH', 'drs_translation_service')
+loglevel=os.getenv('LOGLEVEL', 'WARNING')
+logging.basicConfig(filename=logfile, level=loglevel)
 
 class ConnectionParams:
     def __init__(self, conn, queue, host, port, user, password):
@@ -10,7 +14,7 @@ class ConnectionParams:
         self.password = password
         
 def get_process_mq_connection(queue=None):
-    print("************************ MQUTILS - GET_PROCESS_MQ_CONNECTION *******************************")
+    logging.debug("************************ MQUTILS - GET_PROCESS_MQ_CONNECTION *******************************")
     try:
         host = os.getenv('PROCESS_MQ_HOST')
         port = os.getenv('PROCESS_MQ_PORT')
@@ -25,13 +29,13 @@ def get_process_mq_connection(queue=None):
         connection_params = ConnectionParams(conn, process_queue, host, port, user, password)
         conn.connect(user, password, wait=True)
     except Exception as e:
-        print(e)
+        logging.error(e)
         raise(e)
     return connection_params
 
 def notify_ingest_status_process_message(queue=None):
     '''Creates a json message to notify the DIMS that the drs ingest has finished an ingest attempt'''
-    print("************************ MQUTILS - CREATE_PROCESS_MESSAGE *******************************")
+    logging.debug("************************ MQUTILS - CREATE_PROCESS_MESSAGE *******************************")
     message = "No message"
     try:
         #Add more details that will be needed from the load report.
@@ -46,21 +50,21 @@ def notify_ingest_status_process_message(queue=None):
         else:
             process_queue = queue
                 
-        print("msg json:")
-        print(msg_json)
+        logging.debug("msg json:")
+        logging.debug(msg_json)
         message = json.dumps(msg_json)
         connection_params = get_process_mq_connection(process_queue)
         connection_params.conn.send(process_queue, message, headers = {"persistent": "true"})
-        print("MESSAGE TO QUEUE create_initial_queue_message")
-        print(message)
+        logging.debug("MESSAGE TO QUEUE create_initial_queue_message")
+        logging.debug(message)
     except Exception as e:
-        print(e)
+        logging.error(e)
         raise(e)
     return message
 
         
 def get_drs_mq_connection(queue=None):
-    print("************************ MQUTILS - GET_DRS_MQ_CONNECTION *******************************")
+    logging.debug("************************ MQUTILS - GET_DRS_MQ_CONNECTION *******************************")
     try:
         host = os.getenv('DRS_MQ_HOST')
         port = os.getenv('DRS_MQ_PORT')
@@ -70,20 +74,20 @@ def get_drs_mq_connection(queue=None):
             drs_queue = os.getenv('DRS_TOPIC_NAME')
         else:
             drs_queue = queue
-        print("************************ QUEUE: {} *******************************".format(drs_queue))
+        logging.debug("************************ QUEUE: {} *******************************".format(drs_queue))
     
         conn = stomp.Connection([(host, port)], heartbeats=(40000, 40000), keepalive=True)
         conn.set_ssl([(host, port)])
         connection_params = ConnectionParams(conn, drs_queue, host, port, user, password)
         conn.connect(user, password, wait=True)
     except Exception as e:
-        print(e)
+        logging.error(e)
         raise(e)
     return connection_params
 
 def notify_mock_drs_trigger_message(queue=None):
     '''Creates a mock message that indicates that the drs'''
-    print("************************ MQUTILS - CREATE_PROCESS_MESSAGE *******************************")
+    logging.debug("************************ MQUTILS - CREATE_PROCESS_MESSAGE *******************************")
     message = "No message"
     try:
         #Add more details that will be needed from the load report.
@@ -98,15 +102,15 @@ def notify_mock_drs_trigger_message(queue=None):
         else:
             drs_queue = queue
                 
-        print("msg json:")
-        print(msg_json)
+        logging.debug("msg json:")
+        logging.debug(msg_json)
         message = json.dumps(msg_json)
         connection_params = get_drs_mq_connection(drs_queue)
         connection_params.conn.send(drs_queue, message, headers = {"persistent": "true"})
-        print("MESSAGE TO QUEUE create_initial_queue_message")
-        print(message)
+        logging.debug("MESSAGE TO QUEUE create_initial_queue_message")
+        logging.debug(message)
     except Exception as e:
-        print(e)
+        logging.error(e)
         raise(e)
     return message
 
