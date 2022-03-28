@@ -1,4 +1,4 @@
-import json, time, traceback, stomp, sys
+import json, time, traceback, stomp, sys, os, logging
 import mqutils
 import mqexception
 
@@ -7,8 +7,12 @@ _sub_id = 1
 _reconnect_attempts = 0
 _max_attempts = 1000
 
+logfile=os.getenv('LOGFILE_PATH', 'drs_translation_service')
+loglevel=os.getenv('LOGLEVEL', 'WARNING')
+logging.basicConfig(filename=logfile, level=loglevel)
+
 def subscribe_to_listener(connection_params):
-    print("************************ MQUTILS MQLISTENER - CONNECT_AND_SUBSCRIBE *******************************")
+    logging.debug("************************ MQUTILS MQLISTENER - CONNECT_AND_SUBSCRIBE *******************************")
     global _reconnect_attempts
     _reconnect_attempts = _reconnect_attempts + 1
     if _reconnect_attempts <= _max_attempts:
@@ -17,18 +21,18 @@ def subscribe_to_listener(connection_params):
         try:
             if not connection_params.conn.is_connected():
                 connection_params.conn.connect(connection_params.user, connection_params.password, wait=True)
-                print(f'subscribe_to_listener connecting {connection_params.queue} to with connection id 1 reconnect attempts: {_reconnect_attempts}', flush=True)
+                logging.debug(f'subscribe_to_listener connecting {connection_params.queue} to with connection id 1 reconnect attempts: {_reconnect_attempts}')
             else:
-                print(f'connect_and_subscibe already connected {connection_params.queue} to with connection id 1 reconnect attempts {_reconnect_attempts}', flush=True)
+                logging.debug(f'connect_and_subscibe already connected {connection_params.queue} to with connection id 1 reconnect attempts {_reconnect_attempts}')
         except Exception:
-            print('Exception on disconnect. reconnecting...')
-            print(traceback.format_exc())
+            logging.debug('Exception on disconnect. reconnecting...')
+            logging.debug(traceback.format_exc())
             subscribe_to_listener(connection_params)
         else:
             connection_params.conn.subscribe(destination=connection_params.queue, id=1, ack='client-individual')
             _reconnect_attempts = 0
     else:
-        print('Maximum reconnect attempts reached for this connection. reconnect attempts: {}'.format(_reconnect_attempts), flush=True)
+        logging.error('Maximum reconnect attempts reached for this connection. reconnect attempts: {}'.format(_reconnect_attempts))
 
 
 class MqListener(stomp.ConnectionListener):
@@ -36,16 +40,15 @@ class MqListener(stomp.ConnectionListener):
         self.connection_params = connection_params
         self.message_data = None
         self.message_id = None
-        print('MqListener init')
 
     def on_error(self, frame):
-        print('received an error "%s"' % frame.body)
+        logging.debug('received an error "%s"' % frame.body)
 
     def on_message(self, frame):
-        print("************************ MQUTILS MQLISTENER - ON_MESSAGE *******************************")
+        logging.debug("************************ MQUTILS MQLISTENER - ON_MESSAGE *******************************")
         headers, body = frame.headers, frame.body
-        print('received a message headers "%s"' % headers)
-        print('message body "%s"' % body)
+        logging.debug('received a message headers "%s"' % headers)
+        logging.debug('message body "%s"' % body)
 
         self.message_id = headers.get('message-id')
         try: 
@@ -53,14 +56,23 @@ class MqListener(stomp.ConnectionListener):
         except json.decoder.JSONDecodeError: 
             raise mqexception.MQException("Incorrect formatting of message detected.  Required JSON but received {} ".format(body))
         
+        if self.connection_params.queue == os.getenv('PROCESS_QUEUE_CONSUME_NAME'):
+            #Trigger the mock services to 'run the drs ingest'
+            mqutils.notify_mock_drs_trigger_message()
+            #TODO This will call a method to handle prepping the batch for
+            #distribution to the DRS
+        #This is here to demo end to end testing
+        elif self.connection_params.queue == os.getenv('DRS_TOPIC_NAME'):
+            #Send dummy ingest status message to process queue 
+            mqutils.notify_ingest_status_process_message()
         self.connection_params.conn.ack(self.message_id, 1)
 
         #TODO- Handle
-        print(' message_data {}'.format(self.message_data))
-        print(' message_id {}'.format(self.message_id))
+        logging.debug(' message_data {}'.format(self.message_data))
+        logging.debug(' message_id {}'.format(self.message_id))
 
     def on_disconnected(self):
-        print('disconnected! reconnecting...')
+        logging.debug('disconnected! reconnecting...')
         subscribe_to_listener(self.connection_params)
         
     def get_connection(self):
@@ -83,7 +95,7 @@ def initialize_drslistener():
     while True:
         time.sleep(2)
         if not conn.is_connected():
-            print('Disconnected in loop, reconnecting')
+            logging.debug('Disconnected in loop, reconnecting')
             subscribe_to_listener(mqlistener.connection_params)
 
 def initialize_processlistener():
@@ -95,7 +107,7 @@ def initialize_processlistener():
     while True:
          time.sleep(2)
          if not conn.is_connected():
-             print('Disconnected in loop, reconnecting')
+             logging.debug('Disconnected in loop, reconnecting')
              subscribe_to_listener(mqlistener.connection_params)
 
 def get_drsmqlistener(queue=None):

@@ -8,6 +8,7 @@ services:
     container_name: 'mqutils'
     build:
       context: '.'
+      dockerfile: 'Dockerfile'
     tty: true
     volumes:
       # App

@@ -2,7 +2,7 @@ FROM python:3.8-slim-buster
 
 COPY requirements.txt /tmp/
 
-RUN apt-get update && apt-get install -y libpq-dev gcc python-dev supervisor nginx && \
+RUN apt-get update && apt-get install -y curl libpq-dev gcc python-dev supervisor nginx && \
   mkdir -p /etc/nginx/ssl/ && \
   openssl req \
           -x509 \
@@ -16,9 +16,9 @@ RUN apt-get update && apt-get install -y libpq-dev gcc python-dev supervisor ngi
   chmod -R 755 /etc/nginx/ssl/ && \
   pip install --upgrade pip && \
   pip install gunicorn && \
-  pip install --upgrade --force-reinstall -r /tmp/requirements.txt -i https://pypi.org/simple/ --extra-index-url https://test.pypi.org/simple/
-
-RUN useradd --create-home appuser
+  pip install --upgrade --force-reinstall -r /tmp/requirements.txt -i https://pypi.org/simple/ --extra-index-url https://test.pypi.org/simple/ &&\
+  groupadd -r -g 55020 appuser && \
+  useradd -u 55020 -g 55020 --create-home appuser
 
 # Supervisor to run and manage multiple apps in the same container
 ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
