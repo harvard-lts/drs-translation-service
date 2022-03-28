@@ -1,4 +1,4 @@
-import os, json, time, datetime, stomp
+import os, json, datetime, stomp
 
 class ConnectionParams:
     def __init__(self, conn, queue, host, port, user, password):
