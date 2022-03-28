@@ -1,4 +1,4 @@
-import datetime, json, time, traceback, stomp, sys
+import json, time, traceback, stomp, sys
 import mqutils
 import mqexception
 
@@ -20,7 +20,7 @@ def subscribe_to_listener(connection_params):
                 print(f'subscribe_to_listener connecting {connection_params.queue} to with connection id 1 reconnect attempts: {_reconnect_attempts}', flush=True)
             else:
                 print(f'connect_and_subscibe already connected {connection_params.queue} to with connection id 1 reconnect attempts {_reconnect_attempts}', flush=True)
-        except Exception as e:
+        except Exception:
             print('Exception on disconnect. reconnecting...')
             print(traceback.format_exc())
             subscribe_to_listener(connection_params)
@@ -117,7 +117,7 @@ if __name__ == "__main__":
         listener = args[0]
      
     if (listener not in permitted_values):
-        raise RuntimeException("Argument syntax requires either drs or process for parameters")
+        raise RuntimeError("Argument syntax requires either drs or process for parameters")
      
     if (listener == "drs"):    
         initialize_drslistener()   
