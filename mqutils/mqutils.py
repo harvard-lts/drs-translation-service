@@ -1,4 +1,4 @@
-import os, json, datetime, stomp, logging
+import os, json, stomp, logging
 
 logfile=os.getenv('LOGFILE_PATH', 'drs_translation_service')
 loglevel=os.getenv('LOGLEVEL', 'WARNING')
