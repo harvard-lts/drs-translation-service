@@ -1,8 +1,7 @@
-import sys, os, pytest, logging, stomp, time, datetime, json
+import sys, os, logging, time, datetime, json
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
 import mqutils as mqutils
 import mqlistener as mqlistener
-from mqexception import MQException
 
 logging.basicConfig(format='%(message)s')
 
@@ -66,8 +65,7 @@ def notify_data_ready_process_message():
     the DRS Import Management Service'''
     message = "No message"
     try:
-        timestamp = datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc, microsecond=0).isoformat()
-       
+
         #Add more details that will be needed from the load report.
         msg_json = {
             "package_id": "12345",
