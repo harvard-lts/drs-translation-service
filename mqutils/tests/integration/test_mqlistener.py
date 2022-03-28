@@ -65,7 +65,8 @@ def notify_data_ready_process_message():
     the DRS Import Management Service'''
     message = "No message"
     try:
-
+        timestamp = datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc, microsecond=0).isoformat()
+       
         #Add more details that will be needed from the load report.
         msg_json = {
             "package_id": "12345",
@@ -92,8 +93,6 @@ def notify_drs_message():
     the DRS Ingest'''
     message = "No message"
     try:
-        timestamp = datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc, microsecond=0).isoformat()
-       
         #Sample DRS Ingest message.
         msg_json = {"data":
                     {"objectId":123,
