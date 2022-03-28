@@ -21,9 +21,9 @@ def subscribe_to_listener(connection_params):
         try:
             if not connection_params.conn.is_connected():
                 connection_params.conn.connect(connection_params.user, connection_params.password, wait=True)
-                logging.debug(f'subscribe_to_listener connecting {connection_params.queue} to with connection id 1 reconnect attempts: {_reconnect_attempts}', flush=True)
+                logging.debug(f'subscribe_to_listener connecting {connection_params.queue} to with connection id 1 reconnect attempts: {_reconnect_attempts}')
             else:
-                logging.debug(f'connect_and_subscibe already connected {connection_params.queue} to with connection id 1 reconnect attempts {_reconnect_attempts}', flush=True)
+                logging.debug(f'connect_and_subscibe already connected {connection_params.queue} to with connection id 1 reconnect attempts {_reconnect_attempts}')
         except Exception:
             logging.debug('Exception on disconnect. reconnecting...')
             logging.debug(traceback.format_exc())
@@ -32,7 +32,7 @@ def subscribe_to_listener(connection_params):
             connection_params.conn.subscribe(destination=connection_params.queue, id=1, ack='client-individual')
             _reconnect_attempts = 0
     else:
-        logging.error('Maximum reconnect attempts reached for this connection. reconnect attempts: {}'.format(_reconnect_attempts), flush=True)
+        logging.error('Maximum reconnect attempts reached for this connection. reconnect attempts: {}'.format(_reconnect_attempts))
 
 
 class MqListener(stomp.ConnectionListener):
