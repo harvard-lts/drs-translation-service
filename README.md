@@ -1,5 +1,7 @@
 # drs-translation-service
 
+[![Build Status](https://github.com/harvard-lts/drs-translation-service/actions/workflows/main.yml/badge.svg)](https://github.com/harvard-lts/drs-translation-service/actions)
+
 ## Local setup
     
 1. Make a copy of the env-template.txt to .env and modify the user and password variables.

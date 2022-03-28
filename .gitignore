@@ -4,6 +4,7 @@ __pycache__/
 
 .env*
 .project
+.idea
 .bash*
 
 .bash*
