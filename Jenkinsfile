@@ -74,6 +74,28 @@ pipeline {
     }
    // test that dev is running, smoke tests
     // test that dev worked
+    stage('TrialDevIntegrationTest') {
+      when {
+          branch 'trial'
+        }
+      steps {
+          echo "Running integration tests on dev"
+          script {
+              sshagent(credentials : ['hgl_svcupd']) {
+                script{
+                  TESTS_PASSED = sh (script: "ssh -t -t ${env.DEV_SERVER} 'curl -k https://${env.CLOUD_DEV}:10582/apps/healthcheck'",
+                  returnStdout: true).trim()
+                  echo "${TESTS_PASSED}"
+                  if (!TESTS_PASSED.contains("\"num_failed\": 0")){
+                    error "Dev trial integration tests did not pass"
+                  } else {
+                    echo "All test passed!"
+                  }
+                }
+              }
+          }
+      }
+    }
     stage('Publish main dev image') {
       when {
             branch 'main'
@@ -122,6 +144,28 @@ pipeline {
       }
     }
    //dev smoke tests
+   stage('MainDevIntegrationTest') {
+     when {
+         branch 'main'
+       }
+     steps {
+         echo "Running integration tests on dev"
+         script {
+             sshagent(credentials : ['hgl_svcupd']) {
+               script{
+                 TESTS_PASSED = sh (script: "ssh -t -t ${env.DEV_SERVER} 'curl -k https://${env.CLOUD_DEV}:10582/apps/healthcheck'",
+                 returnStdout: true).trim()
+                 echo "${TESTS_PASSED}"
+                 if (!TESTS_PASSED.contains("\"num_failed\": 0")){
+                   error "Dev main integration tests did not pass"
+                 } else {
+                   echo "All test passed!"
+                 }
+               }
+             }
+         }
+     }
+   }
     stage('Publish main qa image') {
       when {
             branch 'main'
@@ -168,6 +212,28 @@ pipeline {
       }
     }
     // qa smoke tests
+    stage('MainQAIntegrationTest') {
+      when {
+          branch 'main'
+        }
+      steps {
+          echo "Running integration tests on QA"
+          script {
+              sshagent(credentials : ['qatest']) {
+                script{
+                  TESTS_PASSED = sh (script: "ssh -t -t ${env.QA_SERVER} 'curl -k https://${env.CLOUD_QA}:10582/apps/healthcheck'",
+                  returnStdout: true).trim()
+                  echo "${TESTS_PASSED}"
+                  if (!TESTS_PASSED.contains("\"num_failed\": 0")){
+                    error "QA main integration tests did not pass"
+                  } else {
+                    echo "All test passed!"
+                  }
+                }
+              }
+          }
+      }
+    }
    }
    environment {
     imageName = 'dts'
