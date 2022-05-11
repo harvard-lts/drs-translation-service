@@ -6,7 +6,7 @@ pipeline {
       when { anyOf { branch 'main'; branch 'trial' } }
       steps {
         script {
-          GIT_TAG = sh(returnStdout: true, script: "git tag | head -1").trim()
+          GIT_TAG = sh(returnStdout: true, script: "git describe --tags --abbrev=0").trim()
           echo "${GIT_TAG}"
           echo "$GIT_TAG"
           GIT_HASH = sh(returnStdout: true, script: "git rev-parse --short HEAD").trim()
