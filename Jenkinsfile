@@ -42,9 +42,9 @@ pipeline {
                     echo "$GIT_HASH"
                     docker.withRegistry(registryUri, registryCredentialsId){
                     // this says build but its really just using the build from above and tagging it
-                    def customImage = docker.build("registry.lts.harvard.edu/lts/${imageName}-snapshot:$GIT_HASH")
+                    def customImage = docker.build("registry.lts.harvard.edu/lts/${imageName}-dev:$GIT_HASH")
                     customImage.push()
-                    def devImage = docker.build("registry.lts.harvard.edu/lts/${imageName}-snapshot:dev")
+                    def devImage = docker.build("registry.lts.harvard.edu/lts/${imageName}-dev:latest")
                     devImage.push()
                     }
             }
@@ -113,9 +113,9 @@ pipeline {
             } else {
                     echo "$GIT_HASH"
                     docker.withRegistry(registryUri, registryCredentialsId){
-                    def customImage = docker.build("registry.lts.harvard.edu/lts/${imageName}-snapshot:$GIT_HASH")
+                    def customImage = docker.build("registry.lts.harvard.edu/lts/${imageName}-dev:$GIT_HASH")
                     customImage.push()
-                    def devImage = docker.build("registry.lts.harvard.edu/lts/${imageName}-snapshot:dev")
+                    def devImage = docker.build("registry.lts.harvard.edu/lts/${imageName}-dev:latest")
                     devImage.push()
                     }
             }
@@ -183,7 +183,7 @@ pipeline {
             } else {
                     echo "$GIT_HASH"
                     docker.withRegistry(registryUri, registryCredentialsId){
-                    def qaImage = docker.build("registry.lts.harvard.edu/lts/${imageName}-snapshot:qa")
+                    def qaImage = docker.build("registry.lts.harvard.edu/lts/${imageName}-qa:latest")
                     qaImage.push()
                     }
             }
