@@ -61,12 +61,12 @@ pipeline {
               if (GIT_TAG != "") {
                   echo "$GIT_TAG"
                   sshagent(credentials : ['hgl_svcupd']) {
-                      sh "ssh -t -t ${env.DEV_SERVER} '${env.RESTART_COMMAND} ${stackName}_${imageName}'"
+                      sh "ssh -t -t ${env.DEV_SERVER} '${env.STACK_COMMAND} ${env.HOME}${projName}${env.DOCKER} ${stackName}'"
                   }
               } else {
                       echo "$GIT_HASH"
                       sshagent(credentials : ['hgl_svcupd']) {
-                      sh "ssh -t -t ${env.DEV_SERVER} '${env.RESTART_COMMAND} ${stackName}_${imageName}'"
+                      sh "ssh -t -t ${env.DEV_SERVER} '${env.STACK_COMMAND} ${env.HOME}${projName}${env.DOCKER} ${stackName}'"
                   }
               }
           }
@@ -132,12 +132,12 @@ pipeline {
               if (GIT_TAG != "") {
                   echo "$GIT_TAG"
                   sshagent(credentials : ['hgl_svcupd']) {
-                      sh "ssh -t -t ${env.DEV_SERVER} '${env.RESTART_COMMAND} ${stackName}_${imageName}'"
+                      sh "ssh -t -t ${env.DEV_SERVER} '${env.STACK_COMMAND} ${env.HOME}${projName}${env.DOCKER} ${stackName}'"
                   }
               } else {
                       echo "$GIT_HASH"
                       sshagent(credentials : ['hgl_svcupd']) {
-                      sh "ssh -t -t ${env.DEV_SERVER} '${env.RESTART_COMMAND} ${stackName}_${imageName}'"
+                      sh "ssh -t -t ${env.DEV_SERVER} '${env.STACK_COMMAND} ${env.HOME}${projName}${env.DOCKER} ${stackName}'"
                   }
               }
           }
@@ -202,12 +202,12 @@ pipeline {
               if (GIT_TAG != "") {
                   echo "$GIT_TAG"
                   sshagent(credentials : ['qatest']) {
-                      sh "ssh -t -t ${env.QA_SERVER} '${env.RESTART_COMMAND} ${stackName}_${imageName}'"
+                      sh "ssh -t -t ${env.QA_SERVER} '${env.STACK_COMMAND} ${env.HOME}${projName}${env.DOCKER} ${stackName}'""
                   }
               } else {
                       echo "$GIT_HASH"
                       sshagent(credentials : ['qatest']) {
-                      sh "ssh -t -t ${env.QA_SERVER} '${env.RESTART_COMMAND} ${stackName}_${imageName}'"
+                      sh "ssh -t -t ${env.QA_SERVER} '${env.STACK_COMMAND} ${env.HOME}${projName}${env.DOCKER} ${stackName}'"
                   }
               }
           }
@@ -240,6 +240,7 @@ pipeline {
    environment {
     imageName = 'dts'
     stackName = 'HDC3A'
+    projName = 'hdc3a'
     registryCredentialsId = "${env.REGISTRY_ID}"
     registryUri = 'https://registry.lts.harvard.edu'
    }
