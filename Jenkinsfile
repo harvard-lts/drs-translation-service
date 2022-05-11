@@ -202,7 +202,7 @@ pipeline {
               if (GIT_TAG != "") {
                   echo "$GIT_TAG"
                   sshagent(credentials : ['qatest']) {
-                      sh "ssh -t -t ${env.QA_SERVER} '${env.STACK_COMMAND} ${env.HOME}${projName}${env.DOCKER} ${stackName}'""
+                      sh "ssh -t -t ${env.QA_SERVER} '${env.STACK_COMMAND} ${env.HOME}${projName}${env.DOCKER} ${stackName}'"
                   }
               } else {
                       echo "$GIT_HASH"
