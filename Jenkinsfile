@@ -183,8 +183,10 @@ pipeline {
             } else {
                     echo "$GIT_HASH"
                     docker.withRegistry(registryUri, registryCredentialsId){
-                    def qaImage = docker.build("registry.lts.harvard.edu/lts/${imageName}-qa:latest")
-                    qaImage.push()
+                    def customImage = docker.build("registry.lts.harvard.edu/lts/${imageName}-qa:$GIT_HASH")
+                    customImage.push()
+                    def devImage = docker.build("registry.lts.harvard.edu/lts/${imageName}-qa:latest")
+                    devImage.push()
                     }
             }
         }
