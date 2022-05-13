@@ -244,7 +244,7 @@ pipeline {
             script {
                 if(env.BRANCH_NAME == "main" || env.BRANCH_NAME == "trial") {
                     // Specify your project channel here. Feel free to add/remove states that are relevant to your project (i.e. fixed, failure,...)
-                    slackSend channel: "#hdc-3a", color: "##77caed", message: "Build Fixed: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
+                    slackSend channel: "#hdc-3a", color: "##77caed", message: "Build Fixed: ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"
                 }
             }
         }
@@ -252,7 +252,7 @@ pipeline {
             script {
                 if(env.BRANCH_NAME == "main" || env.BRANCH_NAME == "trial") {
                     // Specify your project channel here. Feel free to add/remove states that are relevant to your project (i.e. fixed, failure,...)
-                    slackSend channel: "#hdc-3a", color: "danger", message: "Build Failed: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
+                    slackSend channel: "#hdc-3a", color: "danger", message: "Build Failed: ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"
                 }
             }
         }
@@ -260,7 +260,7 @@ pipeline {
             script {
                 if(env.BRANCH_NAME == "main" || env.BRANCH_NAME == "trial") {
                     // Specify your project channel here. Feel free to add/remove states that are relevant to your project (i.e. fixed, failure,...)
-                    slackSend channel: "#hdc-3a", color: "good", message: "Build Succeeded: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
+                    slackSend channel: "#hdc-3a", color: "good", message: "Build Succeeded: ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"
                 }
             }
         }
