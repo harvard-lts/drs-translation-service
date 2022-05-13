@@ -5,33 +5,8 @@ import mqlistener as mqlistener
 
 logging.basicConfig(format='%(message)s')
 
-_process_queue = "/queue/dims-data-ready"
-_drs_queue = "/topic/dvn-dev-DRS_OBJECT_UPDATED"
+_process_queue = "/queue/dims-data-ready-testing"
 
-def test_drs_listener():
-    '''Tests to see if the listener picks up a topic from the queue'''
-    mqlistenerobject = mqlistener.get_drsmqlistener(_drs_queue)
-    
-    conn = mqlistenerobject.get_connection()
-    conn.set_listener('', mqlistenerobject)
-    mqlistener.subscribe_to_listener(mqlistenerobject.connection_params)
-    
-    message = notify_drs_message()
-    messagedict = json.loads(message)
-    
-    counter = 0
-    #Try for 30 seconds then fail
-    while mqlistenerobject.get_message_data() is None:
-        time.sleep(2)
-        counter = counter+2
-        if not conn.is_connected():
-            mqlistener.subscribe_to_listener(mqlistenerobject.connection_params)
-        if counter >= 30:
-            assert False, "test_drs_listener: could not find anything on the queue after 30 seconds"
-        
-    assert mqlistenerobject.get_message_data() is not None
-    assert type(mqlistenerobject.get_message_data()) is dict
-    assert mqlistenerobject.get_message_data() == messagedict
     
 def test_process_listener():
     message = notify_data_ready_process_message()
