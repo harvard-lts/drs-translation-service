@@ -235,7 +235,6 @@ pipeline {
           }
       }
     }
-   }
    post {
         fixed {
             script {
