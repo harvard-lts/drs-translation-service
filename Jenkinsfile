@@ -14,13 +14,6 @@ pipeline {
        }
       }
     }
-    stage('Build image') {
-      when { anyOf { branch 'main'; branch 'trial' } }
-      steps {
-        echo 'Building'
-        sh 'docker build -t registry.lts.harvard.edu/lts/${imageName} .'
-      }
-    }
 
     // trial is optional and only goes to dev
    stage('Build and Publish trial image') {
