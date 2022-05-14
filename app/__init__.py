@@ -1,6 +1,6 @@
 from flask import Flask
 from healthcheck import HealthCheck, EnvironmentDump
-import mqutils.mqutils as mqutils
+import mqresources.mqutils as mqutils
 
 '''This class is currently entirely for the purpose of providing
 a healthcheck '''

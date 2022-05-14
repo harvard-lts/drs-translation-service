@@ -2,6 +2,8 @@ import json, time, traceback, stomp, sys, os, logging
 import mqutils
 import mqexception
 
+import translation_service.translation_service as translation_service
+
 # Subscription id is unique to the subscription in this case there is only one subscription per connection
 _sub_id = 1
 _reconnect_attempts = 0
@@ -64,6 +66,7 @@ class MqListener(stomp.ConnectionListener):
             mqutils.notify_mock_drs_trigger_message(self.message_data["package_id"])
             #TODO This will call a method to handle prepping the batch for
             #distribution to the DRS
+            translation_service.translation_data_structure()
         #This is here to demo end to end testing
         elif self.connection_params.queue == os.getenv('DRS_QUEUE_CONSUME_NAME'):
             #Send ingest status message to process queue 

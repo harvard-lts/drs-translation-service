@@ -1,7 +1,8 @@
 import sys, os, logging, time, json
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
-import mqutils as mqutils
-import mqlistener as mqlistener
+sys.path.append('app/mqresources')
+sys.path.append('app/translation_service')
+import mqutils
+import mqlistener
 
 logging.basicConfig(format='%(message)s')
 
