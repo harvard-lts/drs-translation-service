@@ -1,0 +1,20 @@
+
+{
+    "accessFlag": "N",
+    "contentModel": "opaque",
+    "depositingSystem": "Harvard Dataverse",
+    "firstGenerationInDrs": "unspecified",
+    "objectRole": "CG:DATASET",
+    "usageClass": "LOWUSE",
+    "storageClass": "AR",
+    "ownerCode": "123",
+    "billingCode": "456",
+    "resourceNamePattern": "pattern",
+    "urnAuthorityPath": "path",
+    "depositAgent": "789",
+    "depositAgentEmail": "someone@mailinator.com",
+    "successEmail": "winner@mailinator.com",
+    "failureEmail": "loser@mailinator.com",
+    "successMethod": "method",
+    "adminCategory": "arch"
+}
