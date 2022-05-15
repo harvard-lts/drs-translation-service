@@ -1,4 +1,4 @@
-import os, json, stomp, logging
+import os, json, stomp, logging, time
 
 logfile=os.getenv('LOGFILE_PATH', 'drs_translation_service')
 loglevel=os.getenv('LOGLEVEL', 'WARNING')
@@ -34,7 +34,7 @@ def get_process_mq_connection(queue=None):
         raise(e)
     return connection_params
 
-def notify_ingest_status_process_message(package_id, status, urn, queue=None):
+def notify_ingest_status_process_message(package_id, status, urn=None, queue=None):
     '''Creates a json message to notify the DIMS that the drs ingest has finished an ingest attempt'''
     logging.debug("************************ MQUTILS - CREATE_PROCESS_MESSAGE *******************************")
     message = "No message"
@@ -56,11 +56,15 @@ def notify_ingest_status_process_message(package_id, status, urn, queue=None):
 
         }
                 
+        #Default to one hour from now
+        now_in_ms = int(time.time())*1000
+        expiration = int(os.getenv('MESSAGE_EXPIRATION_MS', 36000000)) + now_in_ms
+        
         logging.debug("msg json:")
         logging.debug(msg_json)
         message = json.dumps(msg_json)
         connection_params = get_process_mq_connection(process_queue)
-        connection_params.conn.send(process_queue, message, headers = {"persistent": "true"})
+        connection_params.conn.send(process_queue, message, headers = {"persistent": "true", "expires": expiration})
         logging.debug("MESSAGE TO QUEUE create_initial_queue_message")
         logging.debug(message)
     except Exception as e:
@@ -103,11 +107,15 @@ def notify_mock_drs_trigger_message(package_id):
         }
         queue = os.getenv('DRS_QUEUE_PUBLISH_NAME')
       
+        #Default to one hour from now
+        now_in_ms = int(time.time())*1000
+        expiration = int(os.getenv('MESSAGE_EXPIRATION_MS', 36000000)) + now_in_ms
+        
         logging.debug("msg json:")
         logging.debug(msg_json)
         message = json.dumps(msg_json)
         connection_params = get_drs_mq_connection(queue)
-        connection_params.conn.send(queue, message, headers = {"persistent": "true"})
+        connection_params.conn.send(queue, message, headers = {"persistent": "true", "expires": expiration})
         logging.debug("MESSAGE TO QUEUE create_initial_queue_message")
         logging.debug(message)
     except Exception as e:

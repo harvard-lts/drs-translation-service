@@ -1,6 +1,10 @@
-from flask import Flask
+from flask import Flask, request
+from flask_restx import Resource, fields, Api
+import werkzeug
+
 from healthcheck import HealthCheck, EnvironmentDump
 import mqresources.mqutils as mqutils
+import load_report_service.load_report_service as load_report_service
 
 '''This class is currently entirely for the purpose of providing
 a healthcheck '''
@@ -42,4 +46,15 @@ def create_app():
     # Add a flask route to expose information
     app.add_url_rule("/healthcheck", "healthcheck", view_func=health.run)
     app.add_url_rule("/environment", "environment", view_func=envdump.run)
+    
+    
+    @app.route('/loadreport', endpoint="loadreport")
+    @app.errorhandler(werkzeug.exceptions.BadRequest)
+    def loadreport():
+        args = request.args
+        if ("filename" not in args):
+            return 'Missing filename argument!', 400
+        load_report_service.handle_load_report(args['filename'])
+        return "ok", 200
+
     return app
