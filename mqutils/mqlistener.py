@@ -29,7 +29,10 @@ def subscribe_to_listener(connection_params):
             logging.debug(traceback.format_exc())
             subscribe_to_listener(connection_params)
         else:
-            connection_params.conn.subscribe(destination=connection_params.queue, id=1, ack='client-individual')
+            if (connection_params.ack is not None):
+                connection_params.conn.subscribe(destination=connection_params.queue, id=1, ack=connection_params.ack)
+            else:
+                connection_params.conn.subscribe(destination=connection_params.queue, id=1, ack='client-individual')
             _reconnect_attempts = 0
     else:
         logging.error('Maximum reconnect attempts reached for this connection. reconnect attempts: {}'.format(_reconnect_attempts))
@@ -58,13 +61,15 @@ class MqListener(stomp.ConnectionListener):
         
         if self.connection_params.queue == os.getenv('PROCESS_QUEUE_CONSUME_NAME'):
             #Trigger the mock services to 'run the drs ingest'
-            mqutils.notify_mock_drs_trigger_message()
+            mqutils.notify_mock_drs_trigger_message(self.message_data["package_id"])
             #TODO This will call a method to handle prepping the batch for
             #distribution to the DRS
         #This is here to demo end to end testing
-        elif self.connection_params.queue == os.getenv('DRS_TOPIC_NAME'):
-            #Send dummy ingest status message to process queue 
-            mqutils.notify_ingest_status_process_message()
+        elif self.connection_params.queue == os.getenv('DRS_QUEUE_CONSUME_NAME'):
+            #Send ingest status message to process queue 
+            #TODO - this will have to get pull the actual URN once it is available
+            urn = "https://nrs-dev.lts.harvard.edu/URN-3:HUL.TEST:101113553"
+            mqutils.notify_ingest_status_process_message(self.message_data["package_id"], self.message_data["batch_ingest_status"], urn)
         self.connection_params.conn.ack(self.message_id, 1)
 
         #TODO- Handle

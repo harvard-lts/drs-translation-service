@@ -12,7 +12,7 @@ def test_get_process_mq_connection():
 def test_notification():
     '''Sends a status message to the process queue and verifies that it made it'''
     #Send the message
-    message = mqutils.notify_process_message("/queue/drs-ingest-status-testing")
+    message = mqutils.notify_ingest_status_process_message("12345", "success", "https://nrs-dev.lts.harvard.edu/URN-3:HUL.TEST:101113553", "/queue/drs-ingest-status-testing")
     assert type(message) is str
     messagedict = json.loads(message)
     
