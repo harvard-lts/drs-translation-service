@@ -1,4 +1,4 @@
-import os, os.path, logging, shutil
+import os, os.path, logging
 import translate_data_structure_service 
 
 logfile=os.getenv('LOGFILE_PATH', 'drs_translation_service')

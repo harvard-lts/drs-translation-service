@@ -64,7 +64,7 @@ class MqListener(stomp.ConnectionListener):
         
         except json.decoder.JSONDecodeError: 
             raise mqexception.MQException("Incorrect formatting of message detected.  Required JSON but received {} ".format(body))
-        except Exception as e:
+        except Exception:
             mqutils.notify_ingest_status_process_message(self.message_data["package_id"], "failure")
             logging.exception("json validation failed so ingest was not completed")
             
@@ -75,7 +75,7 @@ class MqListener(stomp.ConnectionListener):
             #distribution to the DRS
             try:
                 translation_service.prepare_and_send_to_drs(os.path.join(self.message_data["destination_path"], self.message_data["package_id"]))
-            except Exception as e:
+            except Exception:
                 mqutils.notify_ingest_status_process_message(self.message_data["package_id"], "failure")
                 logging.exception("Could not translate data structure for {}".format(self.message_data["destination_path"]))
         #This is here to demo end to end testing

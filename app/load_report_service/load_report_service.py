@@ -1,4 +1,4 @@
-import os, os.path, logging, shutil
+import os, os.path, logging
 
 logfile=os.getenv('LOGFILE_PATH', 'drs_translation_service')
 loglevel=os.getenv('LOGLEVEL', 'WARNING')
