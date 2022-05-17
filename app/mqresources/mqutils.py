@@ -55,10 +55,8 @@ def notify_ingest_status_process_message(package_id, status, urn=None, queue=Non
             }
 
         }
-                
-        #Default to one hour from now
-        now_in_ms = int(time.time())*1000
-        expiration = int(os.getenv('MESSAGE_EXPIRATION_MS', 36000000)) + now_in_ms
+        
+        expiration = _get_expiration()        
         
         logging.debug("msg json:")
         logging.debug(msg_json)
@@ -107,9 +105,7 @@ def notify_mock_drs_trigger_message(package_id):
         }
         queue = os.getenv('DRS_QUEUE_PUBLISH_NAME')
       
-        #Default to one hour from now
-        now_in_ms = int(time.time())*1000
-        expiration = int(os.getenv('MESSAGE_EXPIRATION_MS', 36000000)) + now_in_ms
+        expiration = _get_expiration()
         
         logging.debug("msg json:")
         logging.debug(msg_json)
@@ -122,4 +118,11 @@ def notify_mock_drs_trigger_message(package_id):
         logging.error(e)
         raise(e)
     return message
+
+def _get_expiration():
+    #Default to one hour from now
+    now_in_ms = int(time.time())*1000
+    expiration = int(os.getenv('MESSAGE_EXPIRATION_MS', 36000000)) + now_in_ms
+    return expiration
+        
 

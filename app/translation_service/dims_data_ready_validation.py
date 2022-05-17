@@ -13,6 +13,7 @@ def validate_json_schema(json_data):
     print("Schemas dir: {}".format(schemasdir))
     
     if json_data is None:
+        logging.error("Missing JSON data in validate_json_schema.")
         raise Exception("Missing JSON data in validate_json_schema")
         
     try:

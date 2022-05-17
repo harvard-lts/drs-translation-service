@@ -21,7 +21,6 @@ def translate_data_structure(package_path):
             os.mkdir(content_path)
         _move_content_files(data_dir, content_path)
     else:
-        print("No contents exist in {}".format(data_dir))
         logging.debug("No contents exist in {}".format(data_dir))
         
     doc_path = os.path.join(package_path, "documentation")
