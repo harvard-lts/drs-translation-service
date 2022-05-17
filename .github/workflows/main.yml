@@ -32,4 +32,4 @@ jobs:
       # Run Pyflakes
       - name: Run pyflakes
         run: |
-          pyflakes mqutils
+          pyflakes app
