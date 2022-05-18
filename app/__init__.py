@@ -56,4 +56,12 @@ def create_app():
         load_report_service.handle_load_report(args['filename'])
         return "ok", 200
 
+    @app.route('/failedBatch', endpoint="failedBatch")
+    @app.errorhandler(werkzeug.exceptions.BadRequest)
+    def loadreport():
+        args = request.args
+        if ("batchName" not in args):
+            return 'Missing batchName argument!', 400
+        load_report_service.handle_load_report(args['batchName'])
+        return "ok", 200
     return app
