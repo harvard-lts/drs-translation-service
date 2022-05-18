@@ -22,7 +22,7 @@ Note, testing uses its own queues so they will not interfere with the queues use
 2. Exec into the container:
 
 ```
-docker exec -it mqutils bash
+docker exec -it dts bash
 ```
 
 3. Run the tests
