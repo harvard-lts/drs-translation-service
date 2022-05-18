@@ -14,7 +14,6 @@ def translate_data_structure(package_path):
     
     data_dir = os.path.join(extracted_files_dir, extracted_files[0], "data")
     if os.path.exists(data_dir):
-        print("Moving content for {}".format(data_dir))
         logging.debug("Moving content for {}".format(data_dir))
         content_path = os.path.join(package_path, "content")
         if not os.path.exists(content_path):
