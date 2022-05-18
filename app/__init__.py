@@ -58,7 +58,7 @@ def create_app():
 
     @app.route('/failedBatch', endpoint="failedBatch")
     @app.errorhandler(werkzeug.exceptions.BadRequest)
-    def loadreport():
+    def failedbatch():
         args = request.args
         if ("batchName" not in args):
             return 'Missing batchName argument!', 400
