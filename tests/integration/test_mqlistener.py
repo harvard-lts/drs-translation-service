@@ -1,7 +1,8 @@
 import sys, os, logging, time, json
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
-import mqutils as mqutils
-import mqlistener as mqlistener
+sys.path.append('app/mqresources')
+sys.path.append('app/translation_service')
+import mqutils
+import mqlistener
 
 logging.basicConfig(format='%(message)s')
 
@@ -49,11 +50,15 @@ def notify_data_ready_process_message():
             "message": "Message"
         }
 
+        #Default to one hour from now
+        now_in_ms = int(time.time())*1000
+        expiration = int(os.getenv('MESSAGE_EXPIRATION_MS', 36000000)) + now_in_ms
+        
         print("msg json:")
         print(msg_json)
         message = json.dumps(msg_json)
         connection_params = mqutils.get_process_mq_connection(_process_queue)
-        connection_params.conn.send(_process_queue, message, headers = {"persistent": "true"})
+        connection_params.conn.send(_process_queue, message, headers = {"persistent": "true", "expires": expiration})
         print("MESSAGE TO QUEUE notify_data_ready_process_message")
         print(message)
     except Exception as e:
@@ -80,9 +85,13 @@ def notify_drs_message():
 
         print("msg json:")
         print(msg_json)
+        #Default to one hour from now
+        now_in_ms = int(time.time())*1000
+        expiration = int(os.getenv('MESSAGE_EXPIRATION_MS', 36000000)) + now_in_ms
+
         message = json.dumps(msg_json)
         connection_params = mqutils.get_drs_mq_connection(_drs_queue)
-        connection_params.conn.send(_drs_queue, message, headers = {"persistent": "true"})
+        connection_params.conn.send(_drs_queue, message, headers = {"persistent": "true", "expires": expiration})
         print("MESSAGE TO QUEUE notify_drs_message")
         print(message)
     except Exception as e:

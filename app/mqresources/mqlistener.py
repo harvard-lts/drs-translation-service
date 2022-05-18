@@ -2,6 +2,9 @@ import json, time, traceback, stomp, sys, os, logging
 import mqutils
 import mqexception
 
+import translation_service.translation_service as translation_service
+import translation_service.dims_data_ready_validation as dims_data_ready_validation
+
 # Subscription id is unique to the subscription in this case there is only one subscription per connection
 _sub_id = 1
 _reconnect_attempts = 0
@@ -56,14 +59,25 @@ class MqListener(stomp.ConnectionListener):
         self.message_id = headers.get('message-id')
         try: 
             self.message_data = json.loads(body)
+            #Validate json
+            dims_data_ready_validation.validate_json_schema(self.message_data)
+        
         except json.decoder.JSONDecodeError: 
             raise mqexception.MQException("Incorrect formatting of message detected.  Required JSON but received {} ".format(body))
-        
+        except Exception:
+            mqutils.notify_ingest_status_process_message(self.message_data["package_id"], "failure")
+            logging.exception("json validation failed so ingest was not completed")
+            
         if self.connection_params.queue == os.getenv('PROCESS_QUEUE_CONSUME_NAME'):
             #Trigger the mock services to 'run the drs ingest'
             mqutils.notify_mock_drs_trigger_message(self.message_data["package_id"])
-            #TODO This will call a method to handle prepping the batch for
+            #This calls a method to handle prepping the batch for
             #distribution to the DRS
+            try:
+                translation_service.prepare_and_send_to_drs(os.path.join(self.message_data["destination_path"], self.message_data["package_id"]))
+            except Exception:
+                mqutils.notify_ingest_status_process_message(self.message_data["package_id"], "failure")
+                logging.exception("Could not translate data structure for {}".format(self.message_data["destination_path"]))
         #This is here to demo end to end testing
         elif self.connection_params.queue == os.getenv('DRS_QUEUE_CONSUME_NAME'):
             #Send ingest status message to process queue 

@@ -1,0 +1,44 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "http://hdc3adomain.com/schemas/dims-data-ready.json",
+	"title": "Data ready for transfer",
+	"type": "object",
+	"properties": {
+		"package_id": {
+			"type": "string",
+			"description": "The name of the package being transferred"
+		},
+		"application_name": {
+			"type": "string",
+			"description": "The name of the submitting application"
+		},
+		"destination_path": {
+			"type": "string",
+			"description": "The destination path for the data"
+		},
+		"admin_metadata": {
+			"type": "object",
+			"properties": {
+				"original_queue": {
+					"type": "string",
+					"description": "The name of the queue that this message is being placed in"
+				},
+				"retry_count": {
+					"type": "integer",
+					"description": "The number of times this has been retried"
+				}
+			},
+			"required": [
+				"original_queue",
+				"retry_count"
+			]
+		}
+	},
+	"required": [
+		"package_id",
+		"application_name",
+		"destination_path",
+		"admin_metadata"
+	],
+	"additionalProperties": true
+}

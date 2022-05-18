@@ -5,6 +5,10 @@ LOGFILE_PATH=/home/appuser/logs/drs_translation_service.log
 #Choose from CRITICAL, ERROR, WARNING, INFO, DEBUG
 LOGLEVEL=DEBUG
 
+PYTHONPATH=/home/appuser/app
+#Default to one hour
+MESSAGE_EXPIRATION_MS=60000
+
 DRS_MQ_HOST=b-20382e88-7651-49e3-b904-76b421818e4f-1.mq.us-east-1.amazonaws.com
 DRS_MQ_PORT=61614
 DRS_MQ_USER=XXX
