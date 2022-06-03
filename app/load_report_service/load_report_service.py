@@ -50,7 +50,7 @@ def _delete_load_report_from_dropbox(load_report_path):
     since it will try again next time
     '''
     try:
-        shutils.rmtree(load_report_path)
+        shutil.rmtree(load_report_path)
     except Exception:
         logging.exception("Error in deleting load report {} from the dropbox.".format(load_report_path))
         raise LoadReportException("ERROR Deleting Load Report from dropbox", "Error in deleting load report {} from the dropbox.".format(load_report_path)) 
@@ -61,7 +61,7 @@ def _delete_batch_from_dropbox(batch_path):
     If an error occurs in the deletion, the error is written to the log but no exception is thrown
     '''
     try:
-        shutils.rmtree(batch_path)
+        shutil.rmtree(batch_path)
     except Exception:
         logging.exception("Error in deleting batch {} from the dropbox".format(batch_path))
         raise LoadReportException("ERROR Deleting Batch from Dropbox", "Error in deleting batch {} from the dropbox".format(batch_path)) 

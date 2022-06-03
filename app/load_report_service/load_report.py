@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import sys, os.path, logging
+import logging
 from load_report_service.load_report_exception import LoadReportException
 
 '''
