@@ -12,7 +12,7 @@ _max_attempts = 1000
 
 logfile=os.getenv('LOGFILE_PATH', 'drs_translation_service')
 loglevel=os.getenv('LOGLEVEL', 'WARNING')
-logging.basicConfig(filename=logfile, level=loglevel)
+logging.basicConfig(filename=logfile, level=loglevel, format="%(asctime)s:%(levelname)s:%(message)s")
 
 def subscribe_to_listener(connection_params):
     logging.debug("************************ MQUTILS MQLISTENER - CONNECT_AND_SUBSCRIBE *******************************")

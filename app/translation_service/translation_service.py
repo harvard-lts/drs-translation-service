@@ -1,5 +1,5 @@
 import os, os.path, logging
-import translate_data_structure_service 
+import translation_service.translate_data_structure_service as translate_data_structure_service
 
 logfile=os.getenv('LOGFILE_PATH', 'drs_translation_service')
 loglevel=os.getenv('LOGLEVEL', 'WARNING')
