@@ -9,6 +9,11 @@ PYTHONPATH=/home/appuser/app
 #Default to one hour
 MESSAGE_EXPIRATION_MS=60000
 
+NRS_PREFIX=https://nrs-dev.harvard.edu
+
+DROPBOX_PATH=XXX
+LOADREPORT_PATH=XXX
+
 DRS_MQ_HOST=b-20382e88-7651-49e3-b904-76b421818e4f-1.mq.us-east-1.amazonaws.com
 DRS_MQ_PORT=61614
 DRS_MQ_USER=XXX
