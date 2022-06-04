@@ -24,3 +24,7 @@ PROCESS_MQ_PASSWORD=XXX
 PROCESS_QUEUE_CONSUME_NAME=/queue/dims-data-ready
 PROCESS_QUEUE_PUBLISH_NAME=/queue/drs-ingest-status
 
+#Batch builder files
+PROJECT_CONF_TEMPLATE=/home/appuser/app/bbtemplates/project.conf_template_opaque
+OBJECT_XML_TEMPLATE=/home/appuser/app/bbtemplates/object.xml.template
+

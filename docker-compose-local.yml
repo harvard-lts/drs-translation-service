@@ -15,13 +15,9 @@ services:
       - './:/home/appuser'
       # Logs
       - './logs:/home/appuser/logs'
+      #BB
+      - './batch_builder_client/BatchBuilder-2.3.0-SNAPSHOT:/home/batchbuilder'
     env_file:
       - '.env'
-    # Join this service to a custom docker network
-    networks:
-      - drsts-net
     ports:
       - "10581:8443"
-networks:
-  drsts-net:
-    name: "drsts-net"

@@ -13,4 +13,7 @@ logs/*
 !logs/.keep
 .DS_Store
 
+batch_builder_client/*
+!batch_builder_client/.keep
+
 
