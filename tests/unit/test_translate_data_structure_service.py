@@ -5,16 +5,17 @@ import translation_service.translate_data_structure_service as translate_data_st
 def test_translate_data_structure():
     '''Formats the directory and verifies that all files ended up where they should be'''
     loc = "/home/appuser/tests/data/doi-translation-service-test"
-    batch_dir = os.path.join(loc, os.path.basename(loc) + "-batch")
+    expected_batch_dir = os.path.join(loc, os.path.basename(loc) + "-batch")
+    
+    batch_dir = translate_data_structure_service.translate_data_structure(loc)
+    assert(expected_batch_dir == batch_dir)
+    
     obj_dir = os.path.join(batch_dir, os.path.basename(loc))
     obj_aux_dir= os.path.join(loc, "_aux", os.path.basename(loc) + "-batch", os.path.basename(loc))
     
-    assert translate_data_structure_service.translate_data_structure(loc)
-    
-    assert os.path.exists(batch_dir)
     assert os.path.exists(obj_dir)
     assert os.path.exists(obj_aux_dir)
-    
+
     #Check that all files are where they are expected to be
     assert os.path.exists(os.path.join(obj_dir, "content", "test1.Bin"))
     assert os.path.exists(os.path.join(obj_dir, "content", "test2.Bin"))
@@ -28,11 +29,12 @@ def test_translate_data_structure():
     assert os.path.exists(os.path.join(obj_dir, "documentation", "doi-translation-service-test_datacite.v1.0.xml"))
     cleanup_batch_dirs(batch_dir, os.path.join(loc, "_aux"), os.path.join(loc, "project.conf"))
     
-def cleanup_batch_dirs(dir_path, aux_dir, project_conf):
+def cleanup_batch_dirs(batch_path, aux_dir, project_conf):
     '''Removes the newly created batch folders'''
     try:
-        shutil.rmtree(dir_path)
+        shutil.rmtree(batch_path)
         shutil.rmtree(aux_dir)
         os.remove(project_conf)
+        shutil.rmtree(os.path.join(os.getenv("DROPBOX_PATH"), os.path.basename(batch_path)))
     except OSError as e:
         print("Error in cleanup: %s" % (e.strerror))

@@ -5,7 +5,6 @@ loglevel=os.getenv('LOGLEVEL', 'WARNING')
 logging.basicConfig(filename=logfile, level=loglevel)
 
 def translate_data_structure(package_path):
-    print("translating ds" + package_path)
     #Project name is the doi-name
     #Batch name doi-name-batch
     batch_name= os.path.basename(package_path) + "-batch"
@@ -22,8 +21,6 @@ def translate_data_structure(package_path):
     
     #Make batch dir and object dir
     os.makedirs(object_dir, exist_ok=True)
-    print('made dirs')
-    print(object_dir)
     #/package_path/extracted
     extracted_files_dir = os.path.join(package_path, "extracted")
     #/package_path/extracted/unzippeddir
@@ -51,7 +48,8 @@ def translate_data_structure(package_path):
         if os.path.isfile(os.path.join(package_path, f)):
             if f.endswith(".xml"):
                 __move_files(package_path, os.path.join(package_path, f), doc_path)
-    return True
+                
+    return batch_dir
 
 def __move_content_files(data_dir, content_path):
     __move_files(data_dir, data_dir, content_path)
@@ -97,7 +95,5 @@ def __copy_project_conf(project_dir):
 def __copy_object_xml(aux_object_dir):
     object_xml = os.getenv("OBJECT_XML_TEMPLATE")
     shutil.copy2(object_xml, os.path.join(aux_object_dir, "object.xml"))
-
     
-        
-        
+   
