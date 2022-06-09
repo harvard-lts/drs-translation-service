@@ -2,7 +2,7 @@ FROM python:3.8-slim-buster
 
 COPY requirements.txt /tmp/
 
-RUN apt-get update && apt-get install -y curl libpq-dev gcc python-dev supervisor nginx && \
+RUN apt-get update && apt-get install -y curl libpq-dev gcc python-dev supervisor nginx openjdk-11-jdk && \
   mkdir -p /etc/nginx/ssl/ && \
   openssl req \
           -x509 \
@@ -24,7 +24,8 @@ RUN apt-get update && apt-get install -y curl libpq-dev gcc python-dev superviso
 ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 # Copy code into the image
-COPY --chown=appuser . /home/appuser
+COPY --chown=appuser ./app /home/appuser/app
+COPY --chown=appuser webapp.conf.example /home/appuser/webapp.conf.example
 
 RUN rm -f /etc/nginx/sites-enabled/default && \
     rm -f /etc/service/nginx/down && \
