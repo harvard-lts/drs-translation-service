@@ -31,6 +31,7 @@ def __move_batch_to_incoming(batch_dir):
 
 def __cleanup_project_dir(project_dir):
     '''Remove project directory'''
+    shutil.rmtree(project_dir)
     pass 
 
 def __create_loading_file(batch_dir):
