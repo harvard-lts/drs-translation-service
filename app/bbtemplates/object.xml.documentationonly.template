@@ -10,13 +10,6 @@
             <property name="resourceNamePattern" value="{n}"/>
             <property name="urnAuthorityPath" value="HUL.TEST"/>
         </metadataCategory>
-        <directory name="content">
-            <metadataCategory name="fileMetadata">
-                <property name="usageClass" value="LOWUSE"/>
-                <property name="fileAccessFlag" value="N"/>
-                <property name="isFirstGenerationInDrs" value="yes"/>
-            </metadataCategory>
-        </directory>
         <directory name="documentation">
             <metadataCategory name="fileMetadata">
                 <property name="usageClass" value="LOWUSE"/>

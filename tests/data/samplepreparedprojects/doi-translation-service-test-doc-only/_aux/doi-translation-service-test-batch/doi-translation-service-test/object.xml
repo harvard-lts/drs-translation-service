@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Objectconfig cm="OPAQUE">
-    <directory name="OBJECT_NAME">
+    <directory name="doi-translation-service-test">
         <metadataCategory name="objectMetadata">
             <property name="ownerCode" value="HUL.TEST"/>
             <property name="billingCode" value="HUL.TEST.BILL.0001"/>
@@ -10,13 +10,6 @@
             <property name="resourceNamePattern" value="{n}"/>
             <property name="urnAuthorityPath" value="HUL.TEST"/>
         </metadataCategory>
-        <directory name="content">
-            <metadataCategory name="fileMetadata">
-                <property name="usageClass" value="LOWUSE"/>
-                <property name="fileAccessFlag" value="N"/>
-                <property name="isFirstGenerationInDrs" value="yes"/>
-            </metadataCategory>
-        </directory>
         <directory name="documentation">
             <metadataCategory name="fileMetadata">
                 <property name="usageClass" value="LOWUSE"/>

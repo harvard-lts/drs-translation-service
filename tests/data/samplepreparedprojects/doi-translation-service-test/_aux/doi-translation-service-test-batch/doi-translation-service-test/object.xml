@@ -1,19 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Projectconfig genre="opaque">
-    <metadataCategory name="projectMetadata">
-        <property name="batchName" value="{owner}_{batchDir}_{yyyy}{mo}{dd}_{hh24}{mm}{ss}"/>
-        <property name="successMethod" value="dropbox"/>
-        <property name="projectName" value="dvnopaqueproject"/>
-        <property name="projectDescription" value=""/>
-        <property name="successEmail" value="DTS@HU.onmicrosoft.com"/>
-        <property name="failureEmail" value="DTS@HU.onmicrosoft.com"/>
-        <property name="depositAgent" value="dimsdts1"/>
-        <property name="depositAgentEmail" value="DTS@HU.onmicrosoft.com"/>
-    </metadataCategory>
-    <directory name="OBJECT TEMPLATE">
+<Objectconfig cm="OPAQUE">
+    <directory name="doi-translation-service-test">
         <metadataCategory name="objectMetadata">
             <property name="ownerCode" value="HUL.TEST"/>
-            <property name="billingCode" value="HUL.TEST.BILL_0001"/>
+            <property name="billingCode" value="HUL.TEST.BILL.0001"/>
             <property name="accessFlag" value="N"/>
         </metadataCategory>
         <metadataCategory name="nrsMetadata">
@@ -27,5 +17,12 @@
                 <property name="isFirstGenerationInDrs" value="yes"/>
             </metadataCategory>
         </directory>
+        <directory name="documentation">
+            <metadataCategory name="fileMetadata">
+                <property name="usageClass" value="LOWUSE"/>
+                <property name="fileAccessFlag" value="N"/>
+                <property name="isFirstGenerationInDrs" value="yes"/>
+            </metadataCategory>
+        </directory>
     </directory>
-</Projectconfig>
+</Objectconfig>

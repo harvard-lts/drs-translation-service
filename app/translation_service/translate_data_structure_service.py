@@ -16,9 +16,6 @@ def translate_data_structure(package_path):
     aux_object_dir = os.path.join(package_path, "_aux", batch_name, object_name)
     os.makedirs(aux_object_dir, exist_ok=True)
     
-    __copy_project_conf(package_path)
-    __copy_object_xml(aux_object_dir)
-    
     #Make batch dir and object dir
     os.makedirs(object_dir, exist_ok=True)
     #/package_path/extracted
@@ -29,14 +26,20 @@ def translate_data_structure(package_path):
         raise Exception("{} directory expected 1 item but found {}".format(extracted_files_dir, len(extracted_files)))    
     
     data_dir = os.path.join(extracted_files_dir, extracted_files[0], "data")
+    
     if os.path.exists(data_dir):
         logging.debug("Moving content for {}".format(data_dir))
         content_path = os.path.join(object_dir, "content")
         if not os.path.exists(content_path):
             os.mkdir(content_path)
         __move_content_files(data_dir, content_path)
+        hascontent = True
     else:
+        hascontent = False
         logging.debug("No contents exist in {}".format(data_dir))
+    
+    __copy_project_conf(package_path)
+    __copy_object_xml_and_rename_object(aux_object_dir, hascontent)
         
     doc_path = os.path.join(object_dir, "documentation")
     if not os.path.exists(doc_path):
@@ -92,8 +95,25 @@ def __copy_project_conf(project_dir):
     project_conf = os.getenv("PROJECT_CONF_TEMPLATE")
     shutil.copy2(project_conf, os.path.join(project_dir, "project.conf"))
 
-def __copy_object_xml(aux_object_dir):
-    object_xml = os.getenv("OBJECT_XML_TEMPLATE")
-    shutil.copy2(object_xml, os.path.join(aux_object_dir, "object.xml"))
+def __copy_object_xml_and_rename_object(aux_object_dir, hascontent):
+    
+    if not hascontent:
+        object_xml_template = os.getenv("OBJECT_XML_DOC_ONLY_TEMPLATE")
+    else:
+        object_xml_template = os.getenv("OBJECT_XML_TEMPLATE")
+        
+    object_xml = os.path.join(aux_object_dir, "object.xml")
+    object_name = os.path.basename(aux_object_dir)
+    
+    # Read in the template file
+    with open(object_xml_template, 'r') as file:
+        filedata = file.read()
+
+    # Replace the object name
+    filedata = filedata.replace('OBJECT_NAME', object_name)
+    
+    # Write the object.xml file out in the aux directory
+    with open(object_xml, 'w') as file:
+      file.write(filedata)
     
    
