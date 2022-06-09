@@ -1,4 +1,4 @@
-import os, os.path, logging
+import os, os.path, logging, shutil
 import translate_data_structure_service 
 from batch_builder_assistant import BatchBuilderAssistant
 

@@ -1,4 +1,4 @@
-import os, os.path, shutil, logging
+import os, os.path, logging
 from translation_service.translation_exceptions import BatchBuilderException
 
 '''
@@ -30,7 +30,7 @@ class BatchBuilderAssistant:
             command += self.build_command(project_path, batch_name, supplemental_deposit_metadata)
 
             logging.info("batch builder command: " + command)
-            output = os.system(command)
+            os.system(command)
                         
             expected_batch_file = os.path.join(project_path, batch_name, "batch.xml")
             if not os.path.isfile(expected_batch_file):
