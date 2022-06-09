@@ -4,6 +4,7 @@ import werkzeug
 from healthcheck import HealthCheck, EnvironmentDump
 import mqresources.mqutils as mqutils
 import load_report_service.load_report_service as load_report_service
+from load_report_service.load_report_exception import LoadReportException
 
 '''This class is currently entirely for the purpose of providing
 a healthcheck '''
@@ -53,7 +54,15 @@ def create_app():
         args = request.args
         if ("filename" not in args):
             return 'Missing filename argument!', 400
-        load_report_service.handle_load_report(args['filename'])
+        dryrun = False
+        if ("dryrun" in args):
+            dryrun = True
+        try:
+            load_report_service.handle_load_report(args['filename'], dryrun)
+        except LoadReportException as lre:
+            return "Handling of load report failed: {}".format(str(lre)), 400
+        except Exception as e: 
+            return "Handling of load report failed: {}".format(str(e)), 500
         return "ok", 200
 
     @app.route('/failedBatch', endpoint="failedBatch")
@@ -62,6 +71,15 @@ def create_app():
         args = request.args
         if ("batchName" not in args):
             return 'Missing batchName argument!', 400
-        load_report_service.handle_load_report(args['batchName'])
+        dryrun = False
+        if ("dryrun" in args):
+            dryrun = True
+        
+        try:
+            load_report_service.handle_failed_batch(args['batchName'], dryrun)
+        except LoadReportException as lre:
+            return "Handling of failed batch returned an error: {}".format(str(lre)), 400
+        except Exception as e: 
+            return "Handling of failed batch returned an error: {}".format(str(e)), 500
         return "ok", 200
     return app
