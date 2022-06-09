@@ -2,7 +2,7 @@ import os, json, stomp, logging, time
 
 logfile=os.getenv('LOGFILE_PATH', 'drs_translation_service')
 loglevel=os.getenv('LOGLEVEL', 'WARNING')
-logging.basicConfig(filename=logfile, level=loglevel)
+logging.basicConfig(filename=logfile, level=loglevel, format="%(asctime)s:%(levelname)s:%(message)s")
 
 class ConnectionParams:
     def __init__(self, conn, queue, host, port, user, password, ack="client-individual"):
