@@ -1,6 +1,6 @@
 import os, os.path, logging, shutil
-import translate_data_structure_service 
-from batch_builder_assistant import BatchBuilderAssistant
+import translation_service.translate_data_structure_service as translate_data_structure_service
+from translation_service.batch_builder_assistant import BatchBuilderAssistant
 
 logfile=os.getenv('LOGFILE_PATH', 'drs_translation_service')
 loglevel=os.getenv('LOGLEVEL', 'WARNING')
@@ -15,24 +15,25 @@ def prepare_and_send_to_drs(package_dir, supplemental_deposit_data):
     batch_builder_assistant.process_batch(package_dir, os.path.basename(batch_dir), supplemental_deposit_data)
     
     #Move Batch to incoming
-    __move_batch_to_incoming(batch_dir)
+    batch_dir = __move_batch_to_incoming(batch_dir)
     
     #Remove old project dir
     __cleanup_project_dir(package_dir)
     
     #Add LOADING file to package directory
     __create_loading_file(batch_dir)
+    
+    return batch_dir
 
 def __move_batch_to_incoming(batch_dir):
     dropbox_path = os.getenv("DROPBOX_PATH")
     shutil.move(batch_dir, dropbox_path)
-    pass   
+    return os.path.join(dropbox_path, os.path.basename(batch_dir))   
 
 
 def __cleanup_project_dir(project_dir):
     '''Remove project directory'''
-    shutil.rmtree(project_dir)
-    pass 
+    shutil.rmtree(project_dir) 
 
 def __create_loading_file(batch_dir):
     '''Creates a sample failed batch'''
