@@ -48,7 +48,7 @@ def notify_ingest_status_process_message(package_id, status, urn=None, queue=Non
             "package_id": package_id,
             "application_name": "Dataverse",
             "batch_ingest_status": status,
-            "drs_uri": urn,
+            "drs_url": urn,
             "admin_metadata": { 
                 "original_queue": process_queue,
                 "retry_count": 0 
