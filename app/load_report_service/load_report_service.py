@@ -20,11 +20,11 @@ def handle_load_report(load_report_name, dry_run = False):
    
     # Parse the LRs (attempt even if none were brought from the dropbox)
     obj_osn = _parse_load_report(load_report_path)
-    if not dry_run:
-        #Delete the LR from the dropbox
-        _delete_load_report_from_dropbox(os.path.join(load_report_dir, batch_name))
-        #Delete the batch
-        _delete_batch_from_dropbox(os.path.join(dropbox_dir, batch_name))  
+    # if not dry_run:
+    #     #Delete the LR from the dropbox
+    #     _delete_load_report_from_dropbox(os.path.join(load_report_dir, batch_name))
+    #     #Delete the batch
+    #     _delete_batch_from_dropbox(os.path.join(dropbox_dir, batch_name))
         
     if (obj_osn is None):
         raise LoadReportException("ERROR Object OSN could not be found in load report, {}.".format(load_report_path))
