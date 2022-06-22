@@ -18,6 +18,7 @@ RUN apt-get update && apt-get install -y curl libpq-dev gcc python-dev superviso
   pip install gunicorn && \
   pip install --upgrade --force-reinstall -r /tmp/requirements.txt -i https://pypi.org/simple/ --extra-index-url https://test.pypi.org/simple/ &&\
   groupadd -r -g 55020 appuser && \
+  groupadd -r -g 4000 appuser && \
   useradd -u 55020 -g 55020 --create-home appuser
 
 # Supervisor to run and manage multiple apps in the same container
@@ -37,7 +38,8 @@ RUN rm -f /etc/nginx/sites-enabled/default && \
     chown -R appuser /var/log/nginx && \
     chown -R appuser /var/lib/nginx && \
     chown -R appuser /data && \
-    chown -R appuser /run
+    chown -R appuser /run && \
+    chmod -R 755 /drs2dev/drsfs/dropbox/dvndev/incoming/
 
 WORKDIR /home/appuser
 USER appuser
