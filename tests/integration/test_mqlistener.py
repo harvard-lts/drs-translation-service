@@ -31,7 +31,7 @@ def test_process_listener(get_queue_name_mock, handle_received_message_mock):
         time.sleep(2)
         counter = counter + 2
         if counter >= 10:
-            assert False, "test_listener: could not find anything on the {} after 30 seconds".format(transfer_queue)
+            assert False, "test_listener: could not find anything on the {} after 30 seconds".format(_process_queue)
 
     args, kwargs = handle_received_message_mock.call_args
     assert type(args[0]) is dict
