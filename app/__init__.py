@@ -10,6 +10,7 @@ from healthcheck import HealthCheck, EnvironmentDump
 from load_report_service.load_report_exception import LoadReportException
 from mqresources.listener.drs_complete_queue_listener import DrsCompleteQueueListener
 from mqresources.listener.process_ready_queue_listener import ProcessReadyQueueListener
+from requests import Response
 
 LOG_FILE_DEFAULT_PATH = os.getenv('LOGFILE_PATH', 'drs_translation_service')
 LOG_FILE_DEFAULT_LEVEL = os.getenv('LOGLEVEL', 'WARNING')
@@ -91,6 +92,8 @@ def create_app():
             return "Handling of failed batch returned an error: {}".format(str(e)), 500
         return "ok", 200
 
+    disable_cached_responses(app)
+
     # Initializing queue listeners
     initialize_listeners()
 
@@ -110,6 +113,16 @@ def configure_logger():
 
     log_level = os.getenv('LOGLEVEL', LOG_FILE_DEFAULT_LEVEL)
     logger.setLevel(log_level)
+
+
+def disable_cached_responses(app: Flask) -> None:
+    @app.after_request
+    def add_response_headers(response: Response) -> Response:
+        response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+        response.headers["Pragma"] = "no-cache"
+        response.headers["Expires"] = "0"
+        response.headers['Cache-Control'] = 'public, max-age=0'
+        return response
 
 
 def initialize_listeners():
