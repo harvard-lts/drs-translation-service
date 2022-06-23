@@ -1,14 +1,27 @@
+import logging
+import os
+from logging.handlers import RotatingFileHandler
+
 import load_report_service.load_report_service as load_report_service
 import mqresources.mqutils as mqutils
 import werkzeug
 from flask import Flask, request
 from healthcheck import HealthCheck, EnvironmentDump
 from load_report_service.load_report_exception import LoadReportException
+from mqresources.listener.drs_complete_queue_listener import DrsCompleteQueueListener
+from mqresources.listener.process_ready_queue_listener import ProcessReadyQueueListener
 from requests import Response
+
+LOG_FILE_DEFAULT_PATH = os.getenv('LOGFILE_PATH', 'drs_translation_service')
+LOG_FILE_DEFAULT_LEVEL = os.getenv('LOGLEVEL', 'WARNING')
+LOG_FILE_MAX_SIZE_BYTES = 2 * 1024 * 1024
+LOG_FILE_BACKUP_COUNT = 1
 
 
 # App factory
 def create_app():
+    configure_logger()
+
     app = Flask(__name__)
 
     health = HealthCheck()
@@ -81,7 +94,25 @@ def create_app():
 
     disable_cached_responses(app)
 
+    # Initializing queue listeners
+    initialize_listeners()
+
     return app
+
+
+def configure_logger():
+    log_file_path = os.getenv('LOGFILE_PATH', LOG_FILE_DEFAULT_PATH)
+    logger = logging.getLogger()
+
+    file_handler = RotatingFileHandler(
+        filename=log_file_path,
+        maxBytes=LOG_FILE_MAX_SIZE_BYTES,
+        backupCount=LOG_FILE_BACKUP_COUNT
+    )
+    logger.addHandler(file_handler)
+
+    log_level = os.getenv('LOGLEVEL', LOG_FILE_DEFAULT_LEVEL)
+    logger.setLevel(log_level)
 
 
 def disable_cached_responses(app: Flask) -> None:
@@ -92,3 +123,10 @@ def disable_cached_responses(app: Flask) -> None:
         response.headers["Expires"] = "0"
         response.headers['Cache-Control'] = 'public, max-age=0'
         return response
+
+
+def initialize_listeners():
+    logging.debug("Creating Process Ready queue listener...")
+    ProcessReadyQueueListener()
+    logging.debug("Creating DRS Complete queue listener...")
+    DrsCompleteQueueListener()
