@@ -10,7 +10,7 @@ logging.basicConfig(filename=logfile, level=loglevel, format="%(asctime)s:%(leve
 load_report_dir = os.getenv("LOADREPORT_PATH")
 dropbox_dir = os.getenv("DROPBOX_PATH")
 
-def handle_load_report(load_report_name, dry_run = False):
+def handle_load_report(package_id, load_report_name, dry_run = False):
     #Strip off the LOADREPORT_ to get the batch name
     if (not load_report_name.startswith("LOADREPORT_")):
         raise LoadReportException("ERROR Expected load report name, {}, to begin with LOADREPORT_".format(load_report_name))
@@ -20,6 +20,9 @@ def handle_load_report(load_report_name, dry_run = False):
    
     # Parse the LRs (attempt even if none were brought from the dropbox)
     obj_osn = _parse_load_report(load_report_path)
+    # TODO: Fix delete
+    # Not deleting for now, the loadreport is written with appadmin permissions
+    # and will have to be updated on the DRS side
     # if not dry_run:
     #     #Delete the LR from the dropbox
     #     _delete_load_report_from_dropbox(os.path.join(load_report_dir, batch_name))
@@ -31,16 +34,19 @@ def handle_load_report(load_report_name, dry_run = False):
     
     nrs_prefix = os.getenv("NRS_PREFIX")    
     urn = os.path.join(nrs_prefix, obj_osn)
-    mqutils.notify_ingest_status_process_message(batch_name, "success", urn)
+    mqutils.notify_ingest_status_process_message(package_id, "success", urn)
     return urn
     
 
-def handle_failed_batch(batch_name, dry_run = False):
+def handle_failed_batch(package_id, batch_name, dry_run = False):
     #Send failed notification
-    mqutils.notify_ingest_status_process_message(batch_name, "failed")
+    mqutils.notify_ingest_status_process_message(package_id, "failed")
     #Delete batch from dropbox
-    if not dry_run:
-        _delete_batch_from_dropbox(os.path.join(dropbox_dir, batch_name)) 
+    # TODO: Fix delete
+    # Not deleting for now, the loadreport is written with appadmin permissions
+    # and will have to be updated on the DRS side
+    # if not dry_run:
+    #     _delete_batch_from_dropbox(os.path.join(dropbox_dir, batch_name))
     return batch_name
     
 def _delete_load_report_from_dropbox(load_report_path):

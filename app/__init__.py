@@ -62,11 +62,13 @@ def create_app():
         args = request.args
         if ("filename" not in args):
             return 'Missing filename argument!', 400
+        if ("package_id" not in args):
+            return 'Missing package_id argument!', 400
         dryrun = False
         if ("dryrun" in args):
             dryrun = True
         try:
-            load_report_service.handle_load_report(args['filename'], dryrun)
+            load_report_service.handle_load_report(args['package_id'], args['filename'], dryrun)
         except LoadReportException as lre:
             return "Handling of load report failed: {}".format(str(lre)), 400
         except Exception as e:
@@ -79,12 +81,14 @@ def create_app():
         args = request.args
         if ("batchName" not in args):
             return 'Missing batchName argument!', 400
+        if ("package_id" not in args):
+            return 'Missing package_id argument!', 400
         dryrun = False
         if ("dryrun" in args):
             dryrun = True
 
         try:
-            load_report_service.handle_failed_batch(args['batchName'], dryrun)
+            load_report_service.handle_failed_batch(args['package_id'], args['batchName'], dryrun)
         except LoadReportException as lre:
             return "Handling of failed batch returned an error: {}".format(str(lre)), 400
         except Exception as e:
