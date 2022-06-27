@@ -57,3 +57,5 @@ def __update_permissions(batch_dir):
         for file in files:
             os.chown(os.path.join(root, file), 55020, 4000)
             os.chmod(os.path.join(root, file), 0o775)
+    os.chown(batch_dir, 55020, 4000)
+    os.chmod(batch_dir, 0o775)
