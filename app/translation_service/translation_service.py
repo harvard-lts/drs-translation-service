@@ -22,6 +22,9 @@ def prepare_and_send_to_drs(package_dir, supplemental_deposit_data):
     
     #Add LOADING file to package directory
     __create_loading_file(batch_dir)
+
+    #Update batch_dir permissions
+    __update_permissions(batch_dir)
     
     return batch_dir
 
@@ -36,6 +39,21 @@ def __cleanup_project_dir(project_dir):
     shutil.rmtree(project_dir) 
 
 def __create_loading_file(batch_dir):
-    '''Creates a sample failed batch'''
+    '''Creates a LOADING file for DRS'''
     loading_file = os.path.join(batch_dir, "LOADING")
     open(loading_file, 'a').close()
+
+def __update_permissions(batch_dir):
+    '''
+    Sets group and r/w permission for DRS as follows:
+        Directory - batch_dir
+        User - hdc3aadm (55020)
+        Group - guestftp (4000)
+    '''
+    for root, dirs, files in os.walk(batch_dir):
+        for dir in dirs:
+            os.chown(os.path.join(root, dir), 55020, 4000)
+            os.chmod(os.path.join(root, dir), 0o775)
+        for file in files:
+            os.chown(os.path.join(root, file), 55020, 4000)
+            os.chmod(os.path.join(root, file), 0o775)
