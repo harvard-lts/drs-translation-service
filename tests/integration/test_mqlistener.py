@@ -72,38 +72,5 @@ def notify_data_ready_process_message():
     return message_json
 
 
-def notify_drs_message():
-    '''Creates a dummy queue drs json message This is normally placed on the topic by
-    the DRS Ingest'''
-    try:
-        # Sample DRS Ingest message.
-        message_json = {"data":
-                            {"objectId": 123,
-                             "contentModel": "CMID-5.0",
-                             "accessFlag": "N",
-                             "isFile": "false",
-                             "ocflObjectKey": "12345678",
-                             "ocflObjectPath": "/8765/4321/12345678",
-                             "primaryUrn": "URN-3.HUL.ARCH:123456",
-                             "status": "current"}
-                        }
-
-        print("msg json:")
-        print(message_json)
-        # Default to one hour from now
-        now_in_ms = int(time.time()) * 1000
-        expiration = int(os.getenv('MESSAGE_EXPIRATION_MS', 36000000)) + now_in_ms
-
-        message = json.dumps(message_json)
-        connection_params = mqutils.get_drs_mq_connection(_drs_queue)
-        connection_params.conn.send(_drs_queue, message, headers={"persistent": "true", "expires": expiration})
-        print("MESSAGE TO QUEUE notify_drs_message")
-        print(message)
-    except Exception as e:
-        print(e)
-        raise e
-    return message_json
-
-
 if __name__ == "__main__":
     notify_data_ready_process_message()

@@ -8,7 +8,6 @@ import werkzeug
 from flask import Flask, request
 from healthcheck import HealthCheck, EnvironmentDump
 from load_report_service.load_report_exception import LoadReportException
-from mqresources.listener.drs_complete_queue_listener import DrsCompleteQueueListener
 from mqresources.listener.process_ready_queue_listener import ProcessReadyQueueListener
 from requests import Response
 
@@ -128,5 +127,3 @@ def disable_cached_responses(app: Flask) -> None:
 def initialize_listeners():
     logging.debug("Creating Process Ready queue listener...")
     ProcessReadyQueueListener()
-    logging.debug("Creating DRS Complete queue listener...")
-    DrsCompleteQueueListener()
