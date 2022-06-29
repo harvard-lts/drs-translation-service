@@ -14,14 +14,6 @@ NRS_PREFIX=https://nrs-dev.harvard.edu
 DROPBOX_PATH=XXX
 LOADREPORT_PATH=XXX
 
-DRS_MQ_HOST=b-20382e88-7651-49e3-b904-76b421818e4f-1.mq.us-east-1.amazonaws.com
-DRS_MQ_PORT=61614
-DRS_MQ_USER=XXX
-DRS_MQ_PASSWORD=XXX
-DRS_QUEUE_CONSUME_NAME=/queue/mock-drs-ingest-complete
-DRS_QUEUE_PUBLISH_NAME=/queue/mock-drs-ingest-trigger
-
-
 PROCESS_MQ_HOST=b-cfb7f4c2-9140-4b5b-a551-1ccaf8c61d4e-1.mq.us-east-1.amazonaws.com
 PROCESS_MQ_PORT=61614
 PROCESS_MQ_USER=XXX
