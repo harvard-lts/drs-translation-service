@@ -33,17 +33,8 @@ def create_app():
             return False, "process mq connection failed"
         connection_params.conn.disconnect()
         return True, "process mq connection ok"
-
-    # add a check for the drs mq connection
-    def checkdrsmqconnection():
-        connection_params = mqutils.get_drs_mq_connection()
-        if connection_params.conn is None:
-            return False, "drs mq connection failed"
-        connection_params.conn.disconnect()
-        return True, "drs mq connection ok"
-
+    
     health.add_check(checkprocessmqconnection)
-    health.add_check(checkdrsmqconnection)
 
     # add your own data to the environment dump
     def application_data():
