@@ -33,6 +33,7 @@ def get_process_mq_connection(queue=None):
         else:
             process_queue = queue
         conn = stomp.Connection([(host, port)], heartbeats=(40000, 40000), keepalive=True)
+        conn.set_ssl([(host, port)])
         connection_params = ConnectionParams(conn, process_queue, host, port, user, password)
         conn.connect(user, password, wait=True)
     except Exception as e:
