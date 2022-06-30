@@ -28,8 +28,6 @@ class ProcessReadyQueueListener(StompListenerBase):
             )
         )
         try:
-            # Trigger the mock services to 'run the drs ingest'
-            mqutils.notify_mock_drs_trigger_message(message_body["package_id"])
             # This calls a method to handle prepping the batch for distribution to the DRS
             translation_service.prepare_and_send_to_drs(
                 os.path.join(
