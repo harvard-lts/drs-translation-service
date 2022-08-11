@@ -39,6 +39,8 @@ def test_prepare_and_create_mock_lr():
     assert os.path.exists(mock_lr)
     
     #Remove the files
+    cleanup_batch(batch_dir)
+    #Remove the files
     cleanup_mock_loadreport(mock_lr)
 
 
