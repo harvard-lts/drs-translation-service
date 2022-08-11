@@ -8,7 +8,7 @@ logging.basicConfig(filename=logfile, level=loglevel)
 
 batch_builder_assistant = BatchBuilderAssistant()
 
-def prepare_and_send_to_drs(package_dir, supplemental_deposit_data):
+def prepare_and_send_to_drs(package_dir, supplemental_deposit_data, testing = False):
     #Set up directories
     batch_dir = translate_data_structure_service.translate_data_structure(package_dir)
     #Run BB
@@ -20,11 +20,12 @@ def prepare_and_send_to_drs(package_dir, supplemental_deposit_data):
     #Remove old project dir
     __cleanup_project_dir(package_dir)
     
-    #Add LOADING file to package directory
-    __create_loading_file(batch_dir)
-
     #Update batch_dir permissions
     __update_permissions(batch_dir)
+    
+    #Add LOADING file to package directory if we are not testing
+    if not testing:
+        __create_loading_file(batch_dir)
     
     return batch_dir
 
