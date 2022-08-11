@@ -2,6 +2,8 @@ import os, os.path, logging, shutil
 import translation_service.translate_data_structure_service as translate_data_structure_service
 from translation_service.batch_builder_assistant import BatchBuilderAssistant
 
+load_report_dir = os.getenv("LOADREPORT_PATH")
+sample_load_report="/home/appuser/tests/data/sampleloadreport/LOADREPORT_sample.txt"
 logfile=os.getenv('LOGFILE_PATH', 'drs_translation_service')
 loglevel=os.getenv('LOGLEVEL', 'WARNING')
 logging.basicConfig(filename=logfile, level=loglevel)
@@ -26,6 +28,9 @@ def prepare_and_send_to_drs(package_dir, supplemental_deposit_data, testing = Fa
     #Add LOADING file to package directory if we are not testing
     if not testing:
         __create_loading_file(batch_dir)
+    #If testing, place a mock load report to allow for the flow to continue
+    else:
+        __place_mock_load_report(os.path.basename(batch_dir))
     
     return batch_dir
 
@@ -60,3 +65,13 @@ def __update_permissions(batch_dir):
             os.chmod(os.path.join(root, file), 0o775)
     os.chown(batch_dir, 55020, 4000)
     os.chmod(batch_dir, 0o775)
+    
+    
+def __place_mock_load_report(batch_name):
+    batch_load_report_dir = os.path.join(load_report_dir, batch_name)
+    #Create dir in LR dir
+    os.mkdir(batch_load_report_dir)
+    
+    mock_load_report_name = "LOADREPORT_{}.txt".format(batch_name)
+    mock_load_report_dest = os.path.join(batch_load_report_dir, mock_load_report_name)
+    shutil.copy(sample_load_report, mock_load_report_dest)
