@@ -3,7 +3,7 @@ pipeline {
   agent any
   stages {
     stage('Configure') {
-      when { anyOf { branch 'main'; branch 'trial' } }
+      when { anyOf { branch 'hdcfixes'; branch 'trial' } }
       steps {
         script {
           GIT_TAG = sh(returnStdout: true, script: "git tag | head -1").trim()
