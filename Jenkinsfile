@@ -3,7 +3,7 @@ pipeline {
   agent any
   stages {
     stage('Configure') {
-      when { anyOf { branch 'hdcfixes'; branch 'trial' } }
+      when { anyOf { branch 'main'; branch 'trial' } }
       steps {
         script {
           GIT_TAG = sh(returnStdout: true, script: "git tag | head -1").trim()
@@ -90,7 +90,7 @@ pipeline {
 //     }
    stage('Build and Publish dev image') {
       when {
-            branch 'hdcfixes'
+            branch 'main'
         }
       steps {
         echo 'Building and Pushing docker image to the registry...'
@@ -116,7 +116,7 @@ pipeline {
     }
     stage('MainDevDeploy') {
       when {
-          branch 'hdcfixes'
+          branch 'main'
         }
       steps {
           echo "Deploying to dev"
@@ -163,7 +163,7 @@ pipeline {
 //     }
     stage('Publish main qa image') {
       when {
-            branch 'hdcfixes'
+            branch 'main'
         }
       steps {
         echo 'Pushing docker image to the registry...'
@@ -186,7 +186,7 @@ pipeline {
     }
     stage('MainQADeploy') {
       when {
-          branch 'hdcfixes'
+          branch 'main'
         }
       steps {
           echo "Deploying to qa"
