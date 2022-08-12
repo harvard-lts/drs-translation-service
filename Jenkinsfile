@@ -90,7 +90,7 @@ pipeline {
 //     }
    stage('Build and Publish dev image') {
       when {
-            branch 'main'
+            branch 'hdcfixes'
         }
       steps {
         echo 'Building and Pushing docker image to the registry...'
@@ -116,7 +116,7 @@ pipeline {
     }
     stage('MainDevDeploy') {
       when {
-          branch 'main'
+          branch 'hdcfixes'
         }
       steps {
           echo "Deploying to dev"
