@@ -55,16 +55,18 @@ def translate_data_structure(package_path):
     return batch_dir
 
 def __move_content_files(data_dir, content_path):
+    print("Moving content files from {} to {}".format(data_dir, content_path))
+    logging.debug("Moving content files from {} to {}".format(data_dir, content_path))
     __move_files(data_dir, data_dir, content_path)
     return True
 
-def __move_files(root, source, dest_dir):
+def __move_files(root_dir, source, dest_dir):
     '''This method actually copies the files from source to destination rather than
     moves them to preserve the original structure and to aid in error handling'''
     if (os.path.isfile(source)):
-        print("Moving {} to {}".format(os.path.join(root, source), os.path.join(dest_dir, source)))
-        logging.debug("Moving {} to {}".format(os.path.join(root, source), os.path.join(dest_dir, source)))
-        shutil.copy2(os.path.join(root, source), os.path.join(dest_dir, os.path.basename(source)))
+        print("Moving {} to {}".format(os.path.join(root_dir, source), os.path.join(dest_dir, source)))
+        logging.debug("Moving {} to {}".format(os.path.join(root_dir, source), os.path.join(dest_dir, source)))
+        shutil.copy2(os.path.join(root_dir, source), os.path.join(dest_dir, os.path.basename(source)))
     else:
         for root, subdirs, files in os.walk(source):
             for subdir in subdirs:
