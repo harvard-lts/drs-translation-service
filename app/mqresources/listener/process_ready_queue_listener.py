@@ -27,6 +27,7 @@ class ProcessReadyQueueListener(StompListenerBase):
                 message_id
             )
         )
+        self._acknowledge_message(message_id, message_subscription)
         try:
             # This calls a method to handle prepping the batch for distribution to the DRS
             translation_service.prepare_and_send_to_drs(
@@ -42,4 +43,4 @@ class ProcessReadyQueueListener(StompListenerBase):
                 "Could not translate data structure for {}".format(message_body.get("destination_path"))
             )
 
-        self._acknowledge_message(message_id, message_subscription)
+        
