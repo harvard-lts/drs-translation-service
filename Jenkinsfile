@@ -163,7 +163,7 @@ pipeline {
 //     }
     stage('Publish main qa image') {
       when {
-            branch 'main'
+            branch 'hdcfixes'
         }
       steps {
         echo 'Pushing docker image to the registry...'
@@ -186,7 +186,7 @@ pipeline {
     }
     stage('MainQADeploy') {
       when {
-          branch 'main'
+          branch 'hdcfixes'
         }
       steps {
           echo "Deploying to qa"
