@@ -44,20 +44,21 @@ def __handle_content_files(object_dir, extracted_path):
     for item in content_list:
         item_path = os.path.join(extracted_path, item)
     
+        content_path = os.path.join(object_dir, "content")
+            
          #If there is a wildcard, then move all under that item
         if ("*" in item):
             for file in glob.glob(r'{}'.format(item_path)):
-                shutil.copy2(file, os.path.join(doc_path, file)) 
+                shutil.copy2(file, os.path.join(content_path, file)) 
         elif os.path.exists(item_path):
             logging.debug("Moving content for {}".format(item_path))
-            content_path = os.path.join(object_dir, "content")
             if not os.path.exists(content_path):
                 os.mkdir(content_path)
             #If it is a path to a file, move the file
             if (os.path.isfile(item_path)): 
-                print("Moving {} to {}".format(item_path, os.path.join(dest_dir, os.path.basename(item_path))))
+                print("Moving {} to {}".format(item_path, os.path.join(content_path, os.path.basename(item_path))))
                 logging.debug("Moving {} to {}".format(item_path, os.path.basename(item_path)))
-                shutil.copy2(item_path, os.path.join(dest_dir, os.path.basename(item_path)))
+                shutil.copy2(item_path, os.path.join(content_path, os.path.basename(item_path)))
             #If it is a directory, use the recursive call
             else:
                 __move_files(item_path, item_path, content_path)
@@ -89,6 +90,7 @@ def __handle_documentation_files(object_dir, extracted_path):
     documentation_list_string = os.getenv("DOCUMENTATION_FILES_AND_DIRS", "")
     documentation_list = documentation_list_string.split(",")
     
+    doc_path = os.path.join(object_dir, "documentation")
     for item in documentation_list:
         item_path = os.path.join(extracted_path, item)
         #If there is a wildcard, then move all under that item
@@ -99,7 +101,6 @@ def __handle_documentation_files(object_dir, extracted_path):
                 print("file: {}".format(file))
                 shutil.copy2(os.path.join(item_path,file), os.path.join(doc_path, file)) 
         elif os.path.exists(item_path):
-            doc_path = os.path.join(object_dir, "documentation")
             if not os.path.exists(doc_path):
                 os.mkdir(doc_path)
                 
