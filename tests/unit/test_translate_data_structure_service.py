@@ -26,7 +26,6 @@ def test_translate_data_structure():
     assert os.path.exists(os.path.join(obj_dir, "documentation", "datacite.xml"))
     assert os.path.exists(os.path.join(obj_dir, "documentation", "oai-ore.jsonld"))
     assert os.path.exists(os.path.join(obj_dir, "documentation", "pid-mapping.txt"))
-    assert os.path.exists(os.path.join(obj_dir, "documentation", "doi-translation-service-test_datacite.v1.0.xml"))
     cleanup_batch_dirs(batch_dir, os.path.join(loc, "_aux"), os.path.join(loc, "project.conf"))
 
 def test_translate_data_structure_doc_only():
@@ -51,7 +50,6 @@ def test_translate_data_structure_doc_only():
     assert os.path.exists(os.path.join(obj_dir, "documentation", "datacite.xml"))
     assert os.path.exists(os.path.join(obj_dir, "documentation", "oai-ore.jsonld"))
     assert os.path.exists(os.path.join(obj_dir, "documentation", "pid-mapping.txt"))
-    assert os.path.exists(os.path.join(obj_dir, "documentation", "doi-translation-service-test_datacite.v1.0.xml"))
     cleanup_batch_dirs(batch_dir, os.path.join(loc, "_aux"), os.path.join(loc, "project.conf"))   
      
 def cleanup_batch_dirs(batch_path, aux_dir, project_conf):

@@ -7,7 +7,7 @@ LOGLEVEL=DEBUG
 
 PYTHONPATH=/home/appuser/app
 #Default to one hour
-MESSAGE_EXPIRATION_MS=60000
+MESSAGE_EXPIRATION_MS=3600000
 
 NRS_PREFIX=https://nrs-dev.harvard.edu
 
@@ -27,3 +27,20 @@ OBJECT_XML_TEMPLATE=/home/appuser/app/bbtemplates/object.xml.template
 OBJECT_XML_DOC_ONLY_TEMPLATE=/home/appuser/app/bbtemplates/object.xml.documentationonly.template
 BB_SCRIPT_NAME=batchbuildercli.sh
 BB_CLIENT_PATH=/home/batchbuilder
+
+#Right now we are using the opaque content model for ePADD and DVN
+#If another CM is used, then the mapping will need to be mapping will have to be created
+CONTENT_MODEL=opaque
+
+#Opaque setup
+#List the relative paths for the files or directories that should go into the content directory
+#Note, all files under each directory will be flattened into its designated directory.
+#Listing a directory will place all files in that directory into the designated directory.  To select
+#individual files, you will have to list the path for each.
+#For all files of a certain type, you can use the wildcard * such as *.txt.  Please know that the algorithm
+#is not currently setup to retrieve files using regex such as 'abc*.txt'
+
+#Files/dirs to be moved the content directory
+CONTENT_FILES_AND_DIRS=data
+#Files/dirs to be moved to the documentation directory
+DOCUMENTATION_FILES_AND_DIRS=metadata,bag-info.txt,bagit.txt,manifest-md5.txt,*.xml
