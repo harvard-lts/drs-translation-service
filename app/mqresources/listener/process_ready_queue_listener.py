@@ -27,6 +27,7 @@ class ProcessReadyQueueListener(StompListenerBase):
                 message_id
             )
         )
+        self._acknowledge_message(message_id, message_subscription)
         try:
             testing = False
             if "testing" in message_body:
@@ -46,4 +47,4 @@ class ProcessReadyQueueListener(StompListenerBase):
                 "Could not translate data structure for {}".format(message_body.get("destination_path"))
             )
 
-        self._acknowledge_message(message_id, message_subscription)
+        
