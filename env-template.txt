@@ -11,9 +11,6 @@ MESSAGE_EXPIRATION_MS=3600000
 
 NRS_PREFIX=https://nrs-dev.harvard.edu
 
-DROPBOX_PATH=XXX
-LOADREPORT_PATH=XXX
-
 PROCESS_MQ_HOST=b-cfb7f4c2-9140-4b5b-a551-1ccaf8c61d4e-1.mq.us-east-1.amazonaws.com
 PROCESS_MQ_PORT=61614
 PROCESS_MQ_USER=XXX
@@ -30,7 +27,8 @@ BB_CLIENT_PATH=/home/batchbuilder
 
 #Right now we are using the opaque content model for ePADD and DVN
 #If another CM is used, then the mapping will need to be mapping will have to be created
-CONTENT_MODEL=opaque
+DVN_CONTENT_MODEL=opaque
+EPADD_CONTENT_MODEL=opaque
 
 #Opaque setup
 #List the relative paths for the files or directories that should go into the content directory
@@ -44,3 +42,16 @@ CONTENT_MODEL=opaque
 CONTENT_FILES_AND_DIRS=data
 #Files/dirs to be moved to the documentation directory
 DOCUMENTATION_FILES_AND_DIRS=metadata,bag-info.txt,bagit.txt,manifest-md5.txt,*.xml
+
+
+#Dropbox locations
+DVN_DROPBOX_PATH=XXX/dvn
+DVN_LOADREPORT_PATH=XXX/dvn
+EPADD_DROPBOX_PATH=/home/appuser/local/dropbox/epadd
+EPADD_LOADREPORT_PATH=/home/appuser/local/loadreports/epadd
+
+#Was the exported package unzipped by the transfer service?
+#Dataverse = true
+EXTRACTED_PACKAGE_DVN=True
+#ePADD= false
+EXTRACTED_PACKAGE_EPADD=False

@@ -4,7 +4,7 @@ logfile=os.getenv('LOGFILE_PATH', 'drs_translation_service')
 loglevel=os.getenv('LOGLEVEL', 'WARNING')
 logging.basicConfig(filename=logfile, level=loglevel)
 
-def translate_data_structure(package_path):
+def translate_data_structure(package_path, supplemental_deposit_data):
     #Project name is the doi-name
     #Batch name doi-name-batch
     batch_name= os.path.basename(package_path) + "-batch"
@@ -15,26 +15,45 @@ def translate_data_structure(package_path):
     
     aux_object_dir = os.path.join(package_path, "_aux", batch_name, object_name)
     os.makedirs(aux_object_dir, exist_ok=True)
-    
-    #Make batch dir and object dir
     os.makedirs(object_dir, exist_ok=True)
-    #/package_path/extracted
-    extracted_files_dir = os.path.join(package_path, "extracted")
-    #/package_path/extracted/unzippeddir
-    extracted_files = os.listdir(extracted_files_dir)
-    if (len(extracted_files) != 1):
-        raise Exception("{} directory expected 1 item but found {}".format(extracted_files_dir, len(extracted_files)))    
     
-    extracted_path = os.path.join(extracted_files_dir, extracted_files[0])
+    application_name = supplemental_deposit_data["application_name"]
+    if (application_name == "Dataverse"):
+        is_extracted_package = os.getenv("EXTRACTED_PACKAGE_DVN", 'False').lower()
+        content_model = os.getenv("DVN_CONTENT_MODEL", "opaque")
+    elif (application_name == "ePADD"):
+        is_extracted_package = os.getenv("EXTRACTED_PACKAGE_EPADD", 'False').lower()
+        content_model = os.getenv("EPADD_CONTENT_MODEL", "opaque")
+    else:
+        raise Exception("Unexpected application_name {}".format(application_name))    
     
-    hascontent = __handle_content_files(object_dir, extracted_path)
+    if (content_model.lower() == "opaque"):
+        __handle_opaque_directory_mapping(package_path, object_dir, aux_object_dir, is_extracted_package)
+    else:
+        raise Exception("Content model {} is not yet supported".format(content_model))   
+                
+    return batch_dir
+
+def __handle_opaque_directory_mapping(package_path, object_dir, aux_object_dir, is_extracted_package):
+    parent_directory_path = package_path
+    if (is_extracted_package == "true"):    
+        #Make batch dir and object dir
+        os.makedirs(object_dir, exist_ok=True)
+        #/package_path/extracted
+        extracted_files_dir = os.path.join(package_path, "extracted")
+        #/package_path/extracted/unzippeddir
+        extracted_files = os.listdir(extracted_files_dir)
+        if (len(extracted_files) != 1):
+            raise Exception("{} directory expected 1 item but found {}".format(extracted_files_dir, len(extracted_files)))    
+        
+        parent_directory_path = os.path.join(extracted_files_dir, extracted_files[0])
+    
+    hascontent = __handle_content_files(object_dir, parent_directory_path)
     
     __copy_project_conf(package_path)
     __copy_object_xml_and_rename_object(aux_object_dir, hascontent)
     
-    __handle_documentation_files(object_dir, extracted_path)
-                
-    return batch_dir
+    __handle_documentation_files(object_dir, parent_directory_path)
 
 def __handle_content_files(object_dir, extracted_path):
     content_list_string = os.getenv("CONTENT_FILES_AND_DIRS", "")
@@ -42,8 +61,8 @@ def __handle_content_files(object_dir, extracted_path):
     
     hascontent = False
     for item in content_list:
+        item = item.strip()
         item_path = os.path.join(extracted_path, item)
-    
         content_path = os.path.join(object_dir, "content")
             
          #If there is a wildcard, then move all under that item
@@ -62,10 +81,9 @@ def __handle_content_files(object_dir, extracted_path):
             #If it is a directory, use the recursive call
             else:
                 __move_files(item_path, item_path, content_path)
-            hascontent = True
+            hascontent = hascontent or True
         else:
-            hascontent = False
-            logging.debug("No contents exist in {}".format(dir))
+            hascontent = hascontent or False
     
     return hascontent
 
@@ -92,6 +110,7 @@ def __handle_documentation_files(object_dir, extracted_path):
     
     doc_path = os.path.join(object_dir, "documentation")
     for item in documentation_list:
+        item = item.strip()
         item_path = os.path.join(extracted_path, item)
         #If there is a wildcard, then move all under that item
         if ("*" in item):
