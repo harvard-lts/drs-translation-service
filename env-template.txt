@@ -26,11 +26,11 @@ BB_SCRIPT_NAME=batchbuildercli.sh
 BB_CLIENT_PATH=/home/batchbuilder
 
 #Right now we are using the opaque content model for ePADD and DVN
-#If another CM is used, then the mapping will need to be mapping will have to be created
+#If another CM is used, then the mapping will have to be created
 DVN_CONTENT_MODEL=opaque
 EPADD_CONTENT_MODEL=opaque
 
-#Opaque setup
+#Opaque mapping
 #List the relative paths for the files or directories that should go into the content directory
 #Note, all files under each directory will be flattened into its designated directory.
 #Listing a directory will place all files in that directory into the designated directory.  To select
