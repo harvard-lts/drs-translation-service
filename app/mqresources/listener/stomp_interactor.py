@@ -15,7 +15,11 @@ class StompInteractor(ABC):
     __STOMP_CONN_TIMEOUT_MS = 5000
 
     def __init__(self) -> None:
+        logfile=os.getenv('LOGFILE_PATH', 'drs_translation_service')
+        loglevel=os.getenv('LOGLEVEL', 'WARNING')
+        logging.basicConfig(filename=logfile, level=loglevel)
         self._logger = logging.getLogger()
+        
 
     def _create_mq_connection(self) -> stomp.Connection:
         """

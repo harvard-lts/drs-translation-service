@@ -88,6 +88,10 @@ class StompListenerBase(stomp.ConnectionListener, StompInteractor, ABC):
         self._logger.info("Setting message with id {} as unacknowledged...".format(message_id))
         self._connection.nack(id=message_id, subscription=message_subscription)
 
+        logfile=os.getenv('LOGFILE_PATH', 'drs_translation_service')
+        loglevel=os.getenv('LOGLEVEL', 'WARNING')
+        logging.basicConfig(filename=logfile, level=loglevel)
+        
     @retry(
         wait=wait_exponential(
             multiplier=1,
@@ -95,7 +99,7 @@ class StompListenerBase(stomp.ConnectionListener, StompInteractor, ABC):
             max=__STOMP_CONN_MAX_RETRY_WAITING_SECONDS
         ),
         stop=stop_after_attempt(__STOMP_CONN_MAX_ATTEMPTS),
-        before=before_log(logging.getLogger(), logging.INFO)
+        before=before_log(logging.getLogger(), loglevel)
     )
     def __create_subscribed_mq_connection(self) -> stomp.Connection:
         connection = self._create_mq_connection()
