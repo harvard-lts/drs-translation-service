@@ -87,7 +87,6 @@ def __handle_content_files(object_dir, extracted_path):
     
     return hascontent
 
-
 def __move_files(root_dir, source, dest_dir):
     '''This method actually copies the files from source to destination rather than
     moves them to preserve the original structure and to aid in error handling'''
