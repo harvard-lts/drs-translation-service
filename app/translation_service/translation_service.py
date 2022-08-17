@@ -71,6 +71,9 @@ def __update_permissions(batch_dir):
     
     
 def __place_mock_load_report(batch_name, dropbox_name):
+    #Make sure to append incoming if it is a real dropbox
+    if dropbox_name != "":
+        dropbox_name = os.path.join(dropbox_name, "incoming")
     batch_load_report_dir = os.path.join(base_load_report_dir, dropbox_name, batch_name)
     #Create dir in LR dir
     os.mkdir(batch_load_report_dir)

@@ -80,7 +80,11 @@ def cleanup_batch_dirs(batch_path, aux_dir, project_conf):
         shutil.rmtree(aux_dir)
         os.remove(project_conf)
         base_dropbox_dir = os.getenv("BASE_DROPBOX_PATH")
-        test_dropbox_name=os.getenv("TEST_DROPBOX_NAME", "")
-        shutil.rmtree(os.path.join(base_dropbox_dir, test_dropbox_name, os.path.basename(batch_path)))
+        dropbox_name_for_testing=os.getenv("TEST_DROPBOX_NAME", "")
+        #Real dropboxes us the 'incoming' directory
+        if dropbox_name_for_testing != "":
+            dropbox_name_for_testing = os.path.join(dropbox_name_for_testing, "incoming")
+    
+        shutil.rmtree(os.path.join(base_dropbox_dir, dropbox_name_for_testing, os.path.basename(batch_path)))
     except OSError as e:
         print("Error in cleanup: %s" % (e.strerror))
