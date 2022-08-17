@@ -2,7 +2,7 @@ import os, os.path, logging, shutil
 import translation_service.translate_data_structure_service as translate_data_structure_service
 from translation_service.batch_builder_assistant import BatchBuilderAssistant
 
-load_report_dir = os.getenv("LOADREPORT_PATH")
+base_load_report_dir = os.getenv("BASE_LOADREPORT_PATH")
 sample_load_report="/home/appuser/tests/data/sampleloadreport/LOADREPORT_sample.txt"
 logfile=os.getenv('LOGFILE_PATH', 'drs_translation_service')
 loglevel=os.getenv('LOGLEVEL', 'WARNING')
@@ -17,7 +17,7 @@ def prepare_and_send_to_drs(package_dir, supplemental_deposit_data, testing = Fa
     batch_builder_assistant.process_batch(package_dir, os.path.basename(batch_dir), supplemental_deposit_data)
     
     #Move Batch to incoming
-    batch_dir = __move_batch_to_incoming(batch_dir)
+    batch_dir = __move_batch_to_incoming(package_dir, batch_dir)
     
     #Remove old project dir
     __cleanup_project_dir(package_dir)
@@ -30,12 +30,15 @@ def prepare_and_send_to_drs(package_dir, supplemental_deposit_data, testing = Fa
         __create_loading_file(batch_dir)
     #If testing, place a mock load report to allow for the flow to continue
     else:
-        __place_mock_load_report(os.path.basename(batch_dir))
+        if ('dropbox_name' not in supplemental_deposit_data):
+            raise Exception("When testing, dropbox_name must be supplied in the supplemental deposit data")
+        __place_mock_load_report(os.path.basename(batch_dir), supplemental_deposit_data["dropbox_name"])
     
     return batch_dir
 
-def __move_batch_to_incoming(batch_dir):
-    dropbox_path = os.getenv("DROPBOX_PATH")
+def __move_batch_to_incoming(project_dir, batch_dir):
+    #dropbox is the path above the project
+    dropbox_path = os.path.dirname(project_dir)
     shutil.move(batch_dir, dropbox_path)
     return os.path.join(dropbox_path, os.path.basename(batch_dir))   
 
@@ -67,8 +70,8 @@ def __update_permissions(batch_dir):
     os.chmod(batch_dir, 0o775)
     
     
-def __place_mock_load_report(batch_name):
-    batch_load_report_dir = os.path.join(load_report_dir, batch_name)
+def __place_mock_load_report(batch_name, dropbox_name):
+    batch_load_report_dir = os.path.join(base_load_report_dir, dropbox_name, batch_name)
     #Create dir in LR dir
     os.mkdir(batch_load_report_dir)
     

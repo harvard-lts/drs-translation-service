@@ -7,8 +7,9 @@ logfile=os.getenv('LOGFILE_PATH', 'drs_translation_service')
 loglevel=os.getenv('LOGLEVEL', 'WARNING')
 logging.basicConfig(filename=logfile, level=loglevel, format="%(asctime)s:%(levelname)s:%(message)s")
 
-load_report_dir = os.getenv("LOADREPORT_PATH")
-dropbox_dir = os.getenv("DROPBOX_PATH")
+base_load_report_dir = os.getenv("BASE_LOADREPORT_PATH")
+base_dropbox_dir = os.getenv("BASE_DROPBOX_PATH")
+dropbox_names=os.getenv("DROPBOX_NAMES", "")
 
 def handle_load_report(load_report_name, dry_run = False):
     #Strip off the LOADREPORT_ to get the batch name
@@ -16,7 +17,25 @@ def handle_load_report(load_report_name, dry_run = False):
         raise LoadReportException("ERROR Expected load report name, {}, to begin with LOADREPORT_".format(load_report_name))
     
     batch_name = load_report_name[11:-4]
-    load_report_path = os.path.join(load_report_dir, batch_name, load_report_name)
+    dropbox_names_list = dropbox_names.split(",")
+    
+    load_report_path = None
+    dropbox_name = None
+    if len(dropbox_names_list) > 0:
+        #Loop through the dropboxes to determine where the load report lives
+        for dropbox_name in dropbox_names_list:
+            dropbox_name = dropbox_name.strip()
+            batch_path = os.path.join(base_load_report_dir, dropbox_name, batch_name)
+            if (os.path.exists(batch_path)):
+                load_report_path = os.path.join(batch_path, load_report_name)
+                break
+    else:
+        load_report_path = ""
+        dropbox_name = ""
+        
+    if load_report_path is None:
+        raise LoadReportException("Could not fine load report {} in any of these dropboxes {}.".format(load_report_name, dropbox_names))
+        
    
     # Parse the LRs (attempt even if none were brought from the dropbox)
     obj_osn = _parse_load_report(load_report_path)
@@ -25,9 +44,9 @@ def handle_load_report(load_report_name, dry_run = False):
     # and will have to be updated on the DRS side
     # if not dry_run:
     #     #Delete the LR from the dropbox
-    #     _delete_load_report_from_dropbox(os.path.join(load_report_dir, batch_name))
+    #     _delete_load_report_from_dropbox(os.path.dirname(load_report_path))
     #     #Delete the batch
-    #     _delete_batch_from_dropbox(os.path.join(dropbox_dir, batch_name))
+    #     _delete_batch_from_dropbox(os.path.join(base_dropbox_dir, dropbox_name, batch_name))
         
     if (obj_osn is None):
         raise LoadReportException("ERROR Object OSN could not be found in load report, {}.".format(load_report_path))
@@ -50,20 +69,30 @@ def handle_failed_batch(batch_name, dry_run = False):
     # Not deleting for now, the loadreport is written with appadmin permissions
     # and will have to be updated on the DRS side
     # if not dry_run:
-    #     _delete_batch_from_dropbox(os.path.join(dropbox_dir, batch_name))
+#         dropbox_name = None
+#         if len(dropbox_names_list) > 0:
+#             #Loop through the dropboxes to determine where the batch
+#             for dropbox_name in dropbox_names_list:
+#                 dropbox_name = dropbox_name.strip()
+#                 dropbox_path = os.path.join(base_dropbox_dir, dropbox_name, batch_name)
+#                 if (os.path.exists(dropbox_path)):
+#                     break
+#         else:
+#             dropbox_name = ""
+    #     _delete_batch_from_dropbox(os.path.join(base_dropbox_dir, dropbox_name, batch_name))
     return batch_name
     
-def _delete_load_report_from_dropbox(load_report_path):
+def _delete_load_report_from_dropbox(load_report_batch_path):
     '''
     Deletes the load report from the dropbox.
     If an error occurs in the deletion, the error is written to the log but no exception is thrown
     since it will try again next time
     '''
     try:
-        shutil.rmtree(load_report_path)
+        shutil.rmtree(load_report_batch_path)
     except Exception:
-        logging.exception("Error in deleting load report {} from the dropbox.".format(load_report_path))
-        raise LoadReportException("ERROR Deleting Load Report from dropbox", "Error in deleting load report {} from the dropbox.".format(load_report_path)) 
+        logging.exception("Error in deleting load report {} from the dropbox.".format(load_report_batch_path))
+        raise LoadReportException("ERROR Deleting Load Report from dropbox", "Error in deleting load report {} from the dropbox.".format(load_report_batch_path)) 
 
 def _delete_batch_from_dropbox(batch_path):
     '''

@@ -41,14 +41,15 @@ EPADD_CONTENT_MODEL=opaque
 #Files/dirs to be moved the content directory
 CONTENT_FILES_AND_DIRS=data
 #Files/dirs to be moved to the documentation directory
-DOCUMENTATION_FILES_AND_DIRS=metadata,bag-info.txt,bagit.txt,manifest-md5.txt,*.xml
-
+DOCUMENTATION_FILES_AND_DIRS=metadata,bag-info.txt,bagit.txt,manifest-md5.txt
 
 #Dropbox locations
-DVN_DROPBOX_PATH=XXX/dvn
-DVN_LOADREPORT_PATH=XXX/dvn
-EPADD_DROPBOX_PATH=/home/appuser/local/dropbox/epadd
-EPADD_LOADREPORT_PATH=/home/appuser/local/loadreports/epadd
+BASE_DROPBOX_PATH=XXX
+BASE_LOADREPORT_PATH=XXX
+#Comma separated dropbox names to parse (leave blank for local setup)
+DROPBOX_NAMES=XXX
+#Leave blank if using locally, otherwise give one dropbox name that is used for testing
+TEST_DROPBOX_NAME=XXX
 
 #Was the exported package unzipped by the transfer service?
 #Dataverse = true

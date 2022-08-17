@@ -79,6 +79,8 @@ def cleanup_batch_dirs(batch_path, aux_dir, project_conf):
         shutil.rmtree(batch_path)
         shutil.rmtree(aux_dir)
         os.remove(project_conf)
-        shutil.rmtree(os.path.join(os.getenv("DVN_DROPBOX_PATH"), os.path.basename(batch_path)))
+        base_dropbox_dir = os.getenv("BASE_DROPBOX_PATH")
+        test_dropbox_name=os.getenv("TEST_DROPBOX_NAME", "")
+        shutil.rmtree(os.path.join(base_dropbox_dir, test_dropbox_name, os.path.basename(batch_path)))
     except OSError as e:
         print("Error in cleanup: %s" % (e.strerror))
