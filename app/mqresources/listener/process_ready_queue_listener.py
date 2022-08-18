@@ -29,13 +29,17 @@ class ProcessReadyQueueListener(StompListenerBase):
         )
         self._acknowledge_message(message_id, message_subscription)
         try:
+            testing = False
+            if "testing" in message_body:
+                testing = True
             # This calls a method to handle prepping the batch for distribution to the DRS
             translation_service.prepare_and_send_to_drs(
                 os.path.join(
                     message_body["destination_path"],
                     message_body["package_id"]
                 ),
-                message_body['admin_metadata']
+                message_body['admin_metadata'],
+                testing
             )
         except Exception:
             mqutils.notify_ingest_status_process_message(message_body.get("package_id"), "failure")

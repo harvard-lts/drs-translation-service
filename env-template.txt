@@ -7,12 +7,9 @@ LOGLEVEL=DEBUG
 
 PYTHONPATH=/home/appuser/app
 #Default to one hour
-MESSAGE_EXPIRATION_MS=60000
+MESSAGE_EXPIRATION_MS=3600000
 
 NRS_PREFIX=https://nrs-dev.harvard.edu
-
-DROPBOX_PATH=XXX
-LOADREPORT_PATH=XXX
 
 PROCESS_MQ_HOST=b-cfb7f4c2-9140-4b5b-a551-1ccaf8c61d4e-1.mq.us-east-1.amazonaws.com
 PROCESS_MQ_PORT=61614
@@ -27,3 +24,35 @@ OBJECT_XML_TEMPLATE=/home/appuser/app/bbtemplates/object.xml.template
 OBJECT_XML_DOC_ONLY_TEMPLATE=/home/appuser/app/bbtemplates/object.xml.documentationonly.template
 BB_SCRIPT_NAME=batchbuildercli.sh
 BB_CLIENT_PATH=/home/batchbuilder
+
+#Right now we are using the opaque content model for ePADD and DVN
+#If another CM is used, then the mapping will have to be created
+DVN_CONTENT_MODEL=opaque
+EPADD_CONTENT_MODEL=opaque
+
+#Opaque mapping
+#List the relative paths for the files or directories that should go into the content directory
+#Note, all files under each directory will be flattened into its designated directory.
+#Listing a directory will place all files in that directory into the designated directory.  To select
+#individual files, you will have to list the path for each.
+#For all files of a certain type, you can use the wildcard * such as *.txt.  Please know that the algorithm
+#is not currently setup to retrieve files using regex such as 'abc*.txt'
+
+#Files/dirs to be moved the content directory
+CONTENT_FILES_AND_DIRS=data
+#Files/dirs to be moved to the documentation directory
+DOCUMENTATION_FILES_AND_DIRS=metadata,bag-info.txt,bagit.txt,manifest-md5.txt
+
+#Dropbox locations
+BASE_DROPBOX_PATH=XXX
+BASE_LOADREPORT_PATH=XXX
+#Comma separated dropbox names to parse (leave blank for local setup)
+DROPBOX_NAMES=XXX
+#Leave blank if using locally, otherwise give one dropbox name that is used for testing
+TEST_DROPBOX_NAME=XXX
+
+#Was the exported package unzipped by the transfer service?
+#Dataverse = true
+EXTRACTED_PACKAGE_DVN=True
+#ePADD= false
+EXTRACTED_PACKAGE_EPADD=False
