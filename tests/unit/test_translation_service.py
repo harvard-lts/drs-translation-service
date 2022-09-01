@@ -20,7 +20,7 @@ def test_prepare_and_create_mock_lr():
     shutil.copytree(loc, package_dir)
     
     #Run prepare
-    batch_dir = translation_service.prepare_and_send_to_drs(package_dir, {"application_name": "Dataverse", "dropbox_name": dropbox_name_for_testing}, True)
+    batch_dir = translation_service.prepare_and_send_to_drs(package_dir, {"dropbox_name": dropbox_name_for_testing}, "Dataverse", True)
 
     mock_lr_name = "LOADREPORT_{}.txt".format(os.path.basename(batch_dir))
     mock_lr = os.path.join(base_load_report_dir, dropbox_name_for_testing, os.path.basename(batch_dir), mock_lr_name)

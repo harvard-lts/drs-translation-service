@@ -10,9 +10,9 @@ logging.basicConfig(filename=logfile, level=loglevel)
 
 batch_builder_assistant = BatchBuilderAssistant()
 
-def prepare_and_send_to_drs(package_dir, supplemental_deposit_data, testing = False):
+def prepare_and_send_to_drs(package_dir, supplemental_deposit_data, depositing_application, testing = False):
     #Set up directories
-    batch_dir = translate_data_structure_service.translate_data_structure(package_dir, supplemental_deposit_data)
+    batch_dir = translate_data_structure_service.translate_data_structure(package_dir, supplemental_deposit_data, depositing_application)
     #Run BB
     batch_builder_assistant.process_batch(package_dir, os.path.basename(batch_dir), supplemental_deposit_data)
     
