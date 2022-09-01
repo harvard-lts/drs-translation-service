@@ -4,7 +4,7 @@ logfile=os.getenv('LOGFILE_PATH', 'drs_translation_service')
 loglevel=os.getenv('LOGLEVEL', 'WARNING')
 logging.basicConfig(filename=logfile, level=loglevel)
 
-def translate_data_structure(package_path, supplemental_deposit_data):
+def translate_data_structure(package_path, supplemental_deposit_data, depositing_application):
     #Project name is the doi-name
     #Batch name doi-name-batch
     batch_name= os.path.basename(package_path) + "-batch"
@@ -17,7 +17,7 @@ def translate_data_structure(package_path, supplemental_deposit_data):
     os.makedirs(aux_object_dir, exist_ok=True)
     os.makedirs(object_dir, exist_ok=True)
     
-    application_name = supplemental_deposit_data["application_name"]
+    application_name = depositing_application
     if (application_name == "Dataverse"):
         is_extracted_package = os.getenv("EXTRACTED_PACKAGE_DVN", 'False').lower()
         content_model = os.getenv("DVN_CONTENT_MODEL", "opaque")

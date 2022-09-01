@@ -39,6 +39,7 @@ class ProcessReadyQueueListener(StompListenerBase):
                     message_body["package_id"]
                 ),
                 message_body['admin_metadata'],
+                message_body['application_name'],
                 testing
             )
         except Exception:
