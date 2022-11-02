@@ -27,8 +27,8 @@ BB_CLIENT_PATH=/home/batchbuilder
 
 #Right now we are using the opaque content model for ePADD and DVN
 #If another CM is used, then the mapping will have to be created
-DVN_CONTENT_MODEL=opaque
-EPADD_CONTENT_MODEL=opaque
+DVN_CONTENT_MODEL=opaque container
+EPADD_CONTENT_MODEL=opaque container
 
 #Opaque mapping
 #List the relative paths for the files or directories that should go into the content directory
@@ -54,5 +54,3 @@ TEST_DROPBOX_NAME=XXX
 #Was the exported package unzipped by the transfer service?
 #Dataverse = true
 EXTRACTED_PACKAGE_DVN=True
-#ePADD= false
-EXTRACTED_PACKAGE_EPADD=False

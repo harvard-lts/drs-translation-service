@@ -22,13 +22,14 @@ def translate_data_structure(package_path, supplemental_deposit_data, depositing
         is_extracted_package = os.getenv("EXTRACTED_PACKAGE_DVN", 'False').lower()
         content_model = os.getenv("DVN_CONTENT_MODEL", "opaque")
     elif (application_name == "ePADD"):
-        is_extracted_package = os.getenv("EXTRACTED_PACKAGE_EPADD", 'False').lower()
-        content_model = os.getenv("EPADD_CONTENT_MODEL", "opaque")
+        content_model = os.getenv("EPADD_CONTENT_MODEL", "opaque container")
     else:
         raise Exception("Unexpected application_name {}".format(application_name))    
     
     if (content_model.lower() == "opaque"):
         __handle_opaque_directory_mapping(package_path, object_dir, aux_object_dir, is_extracted_package)
+    elif (content_model.lower() == "opaque container"):
+        __handle_opaque_container_directory_mapping(package_path, object_dir, aux_object_dir)
     else:
         raise Exception("Content model {} is not yet supported".format(content_model))   
                 
@@ -54,6 +55,15 @@ def __handle_opaque_directory_mapping(package_path, object_dir, aux_object_dir, 
     __copy_object_xml_and_rename_object(aux_object_dir, hascontent)
     
     __handle_documentation_files(object_dir, parent_directory_path)
+
+
+def __handle_opaque_container_directory_mapping(package_path, object_dir, aux_object_dir):
+    hascontent = __handle_content_files(object_dir, package_path)
+
+    __copy_project_conf(package_path)
+    __copy_object_xml_and_rename_object(aux_object_dir, hascontent)
+
+    __handle_documentation_files(object_dir, package_path)
 
 def __handle_content_files(object_dir, extracted_path):
     content_list_string = os.getenv("CONTENT_FILES_AND_DIRS", "")
