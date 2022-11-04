@@ -39,6 +39,7 @@ def translate_data_structure(package_path, supplemental_deposit_data, depositing
 
 
 def __handle_opaque_directory_mapping(package_path, object_dir, aux_object_dir, is_extracted_package):
+    logging.debug("Formatting for opaque content model")
     parent_directory_path = package_path
     if (is_extracted_package == "true"):
         # Make batch dir and object dir
@@ -62,6 +63,7 @@ def __handle_opaque_directory_mapping(package_path, object_dir, aux_object_dir, 
 
 
 def __handle_opaque_container_directory_mapping(package_path, object_dir, aux_object_dir):
+    logging.debug("Formatting for opaque container content model")
     hascontent = __handle_content_files(object_dir, package_path)
 
     __copy_project_conf_opaque_container(package_path)
