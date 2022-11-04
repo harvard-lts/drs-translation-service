@@ -64,12 +64,25 @@ def __handle_opaque_directory_mapping(package_path, object_dir, aux_object_dir, 
 
 def __handle_opaque_container_directory_mapping(package_path, object_dir, aux_object_dir):
     logging.debug("Formatting for opaque container content model")
-    hascontent = __handle_content_files(object_dir, package_path)
+    # Make object dir
+    os.makedirs(object_dir, exist_ok=True)
+
+    # Make content and documentation dirs
+    content_dir = os.path.join(object_dir, "content")
+    documentation_dir = os.path.join(object_dir, "documentation")
+    os.makedirs(content_dir, exist_ok=True)
+    os.makedirs(documentation_dir, exist_ok=True)
+
+    hascontent = False
+    # Copy zip
+    for file in glob.glob(r'{}'.format(package_path)):
+        filename = os.path.basename(file)
+        if ".zip" in filename:
+            shutil.copy2(file, os.path.join(content_dir, filename))
+            hascontent = True
 
     __copy_project_conf_opaque_container(package_path)
     __copy_object_xml_and_rename_object(aux_object_dir, hascontent, True)
-
-    __handle_documentation_files(object_dir, package_path)
 
 
 def __handle_content_files(object_dir, extracted_path):
