@@ -24,13 +24,13 @@ def translate_data_structure(package_path, supplemental_deposit_data, depositing
         is_extracted_package = os.getenv("EXTRACTED_PACKAGE_DVN", 'False').lower()
         content_model = os.getenv("DVN_CONTENT_MODEL", "opaque")
     elif (application_name == "ePADD"):
-        content_model = os.getenv("EPADD_CONTENT_MODEL", "opaque container")
+        content_model = os.getenv("EPADD_CONTENT_MODEL", "opaque_container")
     else:
         raise Exception("Unexpected application_name {}".format(application_name))
 
     if (content_model.lower() == "opaque"):
         __handle_opaque_directory_mapping(package_path, object_dir, aux_object_dir, is_extracted_package)
-    elif (content_model.lower() == "opaque container"):
+    elif (content_model.lower() == "opaque_container"):
         __handle_opaque_container_directory_mapping(package_path, object_dir, aux_object_dir)
     else:
         raise Exception("Content model {} is not yet supported".format(content_model))
