@@ -19,6 +19,7 @@ def translate_data_structure(package_path, supplemental_deposit_data, depositing
     os.makedirs(object_dir, exist_ok=True)
 
     application_name = depositing_application
+    logging.debug("Depositing application: {}".format(depositing_application))
     if (application_name == "Dataverse"):
         is_extracted_package = os.getenv("EXTRACTED_PACKAGE_DVN", 'False').lower()
         content_model = os.getenv("DVN_CONTENT_MODEL", "opaque")
