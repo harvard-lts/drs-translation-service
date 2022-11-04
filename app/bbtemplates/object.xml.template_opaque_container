@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Objectconfig cm="opaque container">
+    <directory name="sample-email-zip-20221103">
+        <metadataCategory name="objectMetadata">
+            <property name="ownerCode" value="HUL.TEST"/>
+            <property name="billingCode" value="HUL.TEST.BILL_0001"/>
+            <property name="accessFlag" value="N"/>
+        </metadataCategory>
+        <metadataCategory name="nrsMetadata">
+            <property name="resourceNamePattern" value="{n}"/>
+            <property name="urnAuthorityPath" value="HUL.GUEST"/>
+        </metadataCategory>
+        <metadataCategory name="objectRightsSecureStorage">
+            <property name="secureStorage" value="confirmed"/>
+            <property name="secureStorageBasis" value="risk assessment"/>
+        </metadataCategory>
+        <directory name="container">
+            <metadataCategory name="fileMetadata">
+                <property name="usageClass" value="LOWUSE"/>
+                <property name="fileAccessFlag" value="N"/>
+                <property name="isFirstGenerationInDrs" value="yes"/>
+                <property name="fileStorageClass" value="SE"/>
+            </metadataCategory>
+        </directory>
+    </directory>
+</Objectconfig>
