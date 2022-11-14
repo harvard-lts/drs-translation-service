@@ -34,8 +34,8 @@ class BatchBuilderAssistant:
                         
             expected_batch_file = os.path.join(project_path, batch_name, "batch.xml")
             if not os.path.isfile(expected_batch_file):
-                logging.error("Failed to create batch, no batch.xml found: " + command)
-                raise BatchBuilderException("Failed to create batch, no batch.xml found: " + command)  
+                logging.error("Failed to create batch, no batch.xml found: " + command + " at location: " + expected_batch_file)
+                raise BatchBuilderException("Failed to create batch, no batch.xml found: " + command)
                         
             if not self.__validate_descriptors_exist(os.path.join(project_path, batch_name)):
                 logging.error("Failed to create batch, no descriptor found: " + command)

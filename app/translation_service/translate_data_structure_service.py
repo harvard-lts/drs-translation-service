@@ -1,4 +1,5 @@
 import os, os.path, logging, shutil, glob
+from pathlib import Path
 
 logfile = os.getenv('LOGFILE_PATH', 'drs_translation_service')
 loglevel = os.getenv('LOGLEVEL', 'WARNING')
@@ -75,7 +76,9 @@ def __handle_opaque_container_directory_mapping(package_path, object_dir, aux_ob
 
     hascontent = False
     # Copy zip
-    for file in glob.glob(r'{}'.format(package_path)):
+    logging.debug("globbing...")
+    for file in Path(package_path).glob('*.zip'):
+        logging.debug("Found package: %s", file)
         filename = os.path.basename(file)
         if ".zip" in filename:
             shutil.copy2(file, os.path.join(content_dir, filename))
