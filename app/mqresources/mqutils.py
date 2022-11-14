@@ -52,9 +52,15 @@ def notify_ingest_status_process_message(package_id, status, urn=None, queue=Non
         else:
             process_queue = queue
 
+        application_name = ""
+        if "doi" in package_id:
+            application_name = "Dataverse"
+        else:
+            application_name = "ePADD"
+
         msg_json = {
             "package_id": package_id,
-            "application_name": "Dataverse",
+            "application_name": application_name,
             "batch_ingest_status": status,
             "drs_url": urn,
             "admin_metadata": {
