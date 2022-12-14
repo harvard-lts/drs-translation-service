@@ -28,7 +28,7 @@ def translate_data_structure(package_path, supplemental_deposit_data, depositing
         content_model = os.getenv("EPADD_CONTENT_MODEL", "opaque_container")
     else:
         raise Exception("Unexpected application_name {}".format(application_name))
-
+        
     if (content_model.lower() == "opaque"):
         __handle_opaque_directory_mapping(package_path, object_dir, aux_object_dir, is_extracted_package)
     elif (content_model.lower() == "opaque_container"):
@@ -77,7 +77,7 @@ def __handle_opaque_container_directory_mapping(package_path, object_dir, aux_ob
     hascontent = False
     # Copy zip
     logging.debug("globbing...")
-    for file in Path(package_path).glob('*.zip'):
+    for file in Path(package_path + "/..").glob('*.zip'):
         logging.debug("Found package: %s", file)
         filename = os.path.basename(file)
         if ".zip" in filename:
