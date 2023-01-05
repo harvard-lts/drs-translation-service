@@ -69,7 +69,7 @@ def __handle_opaque_container_directory_mapping(package_path, object_dir, aux_ob
     os.makedirs(object_dir, exist_ok=True)
 
     # Make content and documentation dirs
-    content_dir = os.path.join(object_dir, "container")
+    content_dir = os.path.join(object_dir, "content")
     documentation_dir = os.path.join(object_dir, "documentation")
     os.makedirs(content_dir, exist_ok=True)
     os.makedirs(documentation_dir, exist_ok=True)
