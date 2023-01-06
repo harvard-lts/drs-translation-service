@@ -77,7 +77,8 @@ def __handle_opaque_container_directory_mapping(package_path, object_dir, aux_ob
     hascontent = False
     # Copy zip
     logging.debug("globbing...")
-    for file in Path(package_path + "/..").glob('*.zip'):
+
+    for file in Path(package_path).glob('*.zip'):
         logging.debug("Found package: %s", file)
         filename = os.path.basename(file)
         if ".zip" in filename:
