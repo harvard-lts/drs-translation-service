@@ -17,10 +17,10 @@ RUN apt-get update && apt-get install -y curl libpq-dev gcc python-dev superviso
   pip install --upgrade pip && \
   pip install gunicorn && \
   pip install --upgrade --force-reinstall -r /tmp/requirements.txt -i https://pypi.org/simple/ --extra-index-url https://test.pypi.org/simple/ &&\
+  useradd -u 55020 -g 55020 -G 4177 -G 4000 --create-home appuser && \
   groupadd -r -g 55020 appuser && \
   groupadd -r -g 4177 epadd_secure && \
-  groupadd -r -g 4000 guestftp && \
-  useradd -u 55020 -g 55020 -G 4177 -G 4000 --create-home appuser
+  groupadd -r -g 4000 guestftp
 
 # Supervisor to run and manage multiple apps in the same container
 ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
