@@ -20,7 +20,7 @@ RUN apt-get update && apt-get install -y curl libpq-dev gcc python-dev superviso
   groupadd -r -g 55020 appuser && \
   groupadd -r -g 4000 guestftp && \
   groupadd -r -g 4177 epadd_secure && \
-  useradd -u 55020 -g 55020 -G 4000 -G 4177 --create-home appuser
+  useradd -u 55020 -g 55020 -G 4000, 4177 --create-home appuser
 
 # Supervisor to run and manage multiple apps in the same container
 ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
