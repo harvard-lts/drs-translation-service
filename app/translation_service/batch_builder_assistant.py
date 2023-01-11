@@ -27,7 +27,7 @@ class BatchBuilderAssistant:
 
         if os.path.isdir(project_path):
             command = "cd {} && ".format(bb_client_path)
-            command += self.build_command(project_path, batch_name, supplemental_deposit_metadata, depositing_app)
+            command += self.build_command(project_path, batch_name, supplemental_deposit_metadata, depositing_application)
 
             logging.info("batch builder command: " + command)
             os.system(command)
