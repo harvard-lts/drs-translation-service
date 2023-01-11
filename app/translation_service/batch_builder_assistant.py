@@ -63,7 +63,7 @@ class BatchBuilderAssistant:
                 command += " -dirprop \"{}".format(content_file_prop_overrides)
                 hasoverrides=True
                 
-            doc_file_prop_overrides = self.__build_fileprop_override_command(object_name, "documentation", supplemental_deposit_metadata)
+            doc_file_prop_overrides = None #self.__build_fileprop_override_command(object_name, "documentation", supplemental_deposit_metadata)
             if doc_file_prop_overrides is not None:
                 if content_file_prop_overrides is not None:
                     command += ";{}\"".format(doc_file_prop_overrides)
