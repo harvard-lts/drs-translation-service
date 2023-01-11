@@ -21,13 +21,13 @@ class BatchBuilderAssistant:
         )
     
                
-    def process_batch(self, project_path, batch_name, supplemental_deposit_metadata):
+    def process_batch(self, project_path, batch_name, supplemental_deposit_metadata, depositing_application):
         '''Builds the batch.xml and descriptor.xml for the prepared batch'''
         bb_client_path = os.getenv("BB_CLIENT_PATH")
 
         if os.path.isdir(project_path):
             command = "cd {} && ".format(bb_client_path)
-            command += self.build_command(project_path, batch_name, supplemental_deposit_metadata)
+            command += self.build_command(project_path, batch_name, supplemental_deposit_metadata, depositing_app)
 
             logging.info("batch builder command: " + command)
             os.system(command)
@@ -42,7 +42,7 @@ class BatchBuilderAssistant:
                 raise BatchBuilderException("Failed to create batch, no descriptor found: " + command)  
                         
 
-    def build_command(self, project_path, batch_name, supplemental_deposit_metadata):
+    def build_command(self, project_path, batch_name, supplemental_deposit_metadata, depositing_application):
             bb_script_name = os.getenv("BB_SCRIPT_NAME")
             command = "sh " + bb_script_name + " -a build -p " + project_path + " -b " + batch_name
             object_name = os.path.basename(project_path)
@@ -58,12 +58,19 @@ class BatchBuilderAssistant:
                 command += object_prop_overrides
                 hasoverrides=True
 
-            content_file_prop_overrides = self.__build_fileprop_override_command(object_name, "container", supplemental_deposit_metadata)
+            if (depositing_application == "Dataverse"):
+                content_file_prop_overrides = self.__build_fileprop_override_command(object_name, "content", supplemental_deposit_metadata)
+                doc_file_prop_overrides = self.__build_fileprop_override_command(object_name, "documentation", supplemental_deposit_metadata)
+            elif (depositing_application == "ePADD"):
+                content_file_prop_overrides = self.__build_fileprop_override_command(object_name, "container", supplemental_deposit_metadata)        
+                doc_file_prop_overrides = None        
+            else:
+                raise Exception("Unexpected depositing_application {}".format(depositing_application))
+
             if content_file_prop_overrides is not None:
                 command += " -dirprop \"{}".format(content_file_prop_overrides)
                 hasoverrides=True
                 
-            doc_file_prop_overrides = None #self.__build_fileprop_override_command(object_name, "documentation", supplemental_deposit_metadata)
             if doc_file_prop_overrides is not None:
                 if content_file_prop_overrides is not None:
                     command += ";{}\"".format(doc_file_prop_overrides)
