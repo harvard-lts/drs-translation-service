@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Objectconfig cm="opaque container">
-    <directory name="sample-email-zip-20221103">
+    <directory name="OBJECT_NAME">
         <metadataCategory name="objectMetadata">
             <property name="ownerCode" value="HUL.TEST"/>
             <property name="billingCode" value="HUL.TEST.BILL_0001"/>
