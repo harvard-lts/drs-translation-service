@@ -58,12 +58,13 @@ class BatchBuilderAssistant:
                 command += object_prop_overrides
                 hasoverrides=True
 
+            content_file_prop_overrides = None
+            doc_file_prop_overrides = None  
             if (depositing_application == "Dataverse"):
                 content_file_prop_overrides = self.__build_fileprop_override_command(object_name, "content", supplemental_deposit_metadata)
                 doc_file_prop_overrides = self.__build_fileprop_override_command(object_name, "documentation", supplemental_deposit_metadata)
             elif (depositing_application == "ePADD"):
                 content_file_prop_overrides = self.__build_fileprop_override_command(object_name, "container", supplemental_deposit_metadata)        
-                doc_file_prop_overrides = None        
             else:
                 raise Exception("Unexpected depositing_application {}".format(depositing_application))
 
