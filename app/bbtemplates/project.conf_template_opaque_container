@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Projectconfig genre="opaque container">
+    <metadataCategory name="projectMetadata">
+        <property name="batchName" value="{owner}_{batchDir}_{yyyy}{mo}{dd}_{hh24}{mm}{ss}"/>
+        <property name="successMethod" value="email"/>
+        <property name="projectName" value="project-opaqueContainer-epadd"/>
+        <property name="projectDescription" value="Used to generate batch.xml and projec.conf files for Jessie."/>
+        <property name="successEmail" value="julie_wetherill@harvard.edu"/>
+        <property name="successEmail" value="jessica_jassal@harvard.edu"/>
+        <property name="failureEmail" value="jessica_jassal@harvard.edu"/>
+        <property name="failureEmail" value="julie_wetherill@harvard.edu"/>
+        <property name="depositAgent" value="40269940"/>
+        <property name="depositAgentEmail" value="julie_wetherill@harvard.edu"/>
+    </metadataCategory>
+    <directory name="OBJECT TEMPLATE">
+        <metadataCategory name="objectMetadata">
+            <property name="ownerCode" value="HUL.TEST"/>
+            <property name="billingCode" value="HUL.TEST.BILL_0001"/>
+            <property name="accessFlag" value="N"/>
+        </metadataCategory>
+        <metadataCategory name="nrsMetadata">
+            <property name="resourceNamePattern" value="{n}"/>
+            <property name="urnAuthorityPath" value="HUL.GUEST"/>
+        </metadataCategory>
+        <metadataCategory name="objectRightsSecureStorage">
+            <property name="secureStorage" value="confirmed"/>
+            <property name="secureStorageBasis" value="risk assessment"/>
+        </metadataCategory>
+        <directory name="container">
+            <metadataCategory name="fileMetadata">
+                <property name="usageClass" value="LOWUSE"/>
+                <property name="fileAccessFlag" value="N"/>
+                <property name="isFirstGenerationInDrs" value="yes"/>
+                <property name="fileStorageClass" value="SE"/>
+            </metadataCategory>
+        </directory>
+    </directory>
+</Projectconfig>

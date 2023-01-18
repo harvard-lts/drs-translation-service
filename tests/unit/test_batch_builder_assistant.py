@@ -9,7 +9,7 @@ batch_name ="doi-translation-service-test-batch"
 
 def test_build_basic_command():
     '''Verifies that the build command returns properly'''
-    command = batch_builder_assistant.build_command(project_path, batch_name, {})
+    command = batch_builder_assistant.build_command(project_path, batch_name, {}, "Dataverse")
     assert command == "sh {} -a build -p {} -b {}".format(bb_script_name, project_path, batch_name)
  
 def test_build_command_with_overrides():
@@ -36,7 +36,7 @@ def test_build_command_with_overrides():
      
     bb_script_name = os.getenv("BB_SCRIPT_NAME")
          
-    command = batch_builder_assistant.build_command(project_path, batch_name, supplemental_data)
+    command = batch_builder_assistant.build_command(project_path, batch_name, supplemental_data, "Dataverse")
      
     overridestring = "-batchprop \"successEmail=winner@mailinator.com,failureEmail=loser@mailinator.com,successMethod=dropbox,depositAgent=dimsdts1,depositAgentEmail=DTS@HU.onmicrosoft.com\""
     overridestring += " -objectprop \"doi-translation-service-test::ownerCode=HUL.TEST,billingCode=HUL.TEST.BILL_0001,resourceNamePattern={n},urnAuthorityPath=HUL.TEST,accessFlag=N,adminCategory=http://idtest.lib.harvard.edu:10020/wordshack/adminCategory/611,role=CG_DATASET;\"" 
@@ -46,7 +46,7 @@ def test_build_command_with_overrides():
      
  
 def test_run_batch_builder_basic():
-     batch_builder_assistant.process_batch(project_path, batch_name, {})   
+     batch_builder_assistant.process_batch(project_path, batch_name, {}, "Dataverse")   
      expected_batch_file = os.path.join(project_path, batch_name, "batch.xml")
      assert os.path.exists(expected_batch_file)
      expected_descriptor_file = os.path.join(project_path, batch_name, os.path.basename(project_path), "descriptor.xml")
@@ -70,7 +70,7 @@ def test_run_batch_builder_with_overrides():
                "failureEmail": "loser@mailinator.com",
                "successMethod": "dropbox",
                "adminCategory": "http://idtest.lib.harvard.edu:10020/wordshack/adminCategory/611"}
-     batch_builder_assistant.process_batch(project_path, batch_name, supplemental_data)   
+     batch_builder_assistant.process_batch(project_path, batch_name, supplemental_data, "Dataverse")   
      expected_batch_file = os.path.join(project_path, batch_name, "batch.xml")
      assert os.path.exists(expected_batch_file)
      expected_descriptor_file = os.path.join(project_path, batch_name, os.path.basename(project_path), "descriptor.xml")
@@ -79,7 +79,7 @@ def test_run_batch_builder_with_overrides():
      
 def test_run_batch_builder_basic_doc_only():
      project_path_no_content="/home/appuser/tests/data/samplepreparedprojects/doi-translation-service-test-doc-only"
-     batch_builder_assistant.process_batch(project_path_no_content, batch_name, {})   
+     batch_builder_assistant.process_batch(project_path_no_content, batch_name, {}, "Dataverse")   
      expected_batch_file = os.path.join(project_path_no_content, batch_name, "batch.xml")
      assert os.path.exists(expected_batch_file)
      expected_descriptor_file = os.path.join(project_path_no_content, batch_name, os.path.basename(project_path), "descriptor.xml")

@@ -13,11 +13,11 @@ jobs:
       # Checks-out repository under $GITHUB_WORKSPACE
       - uses: actions/checkout@v2
 
-      # Set up Python 3.9.13 environment
-      - name: Set up Python 3.9.13
+      # Set up Python 3.9.16 environment
+      - name: Set up Python 3.9.16
         uses: actions/setup-python@v1
         with:
-          python-version: "3.9.13"
+          python-version: "3.9.16"
 
       # Install dependencies
       - name: Install dependencies
