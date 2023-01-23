@@ -68,7 +68,7 @@ def test_translate_epadd_data_structure():
     assert os.path.exists(obj_aux_dir)
 
     # Check that all files are where they are expected to be
-    assert os.path.exists(os.path.join(obj_dir, "content", "test_export.zip"))
+    assert os.path.exists(os.path.join(obj_dir, "container", "test_export.zip"))
     assert os.path.exists(os.path.join(obj_dir, "documentation"))
     cleanup_batch_dirs(batch_dir, os.path.join(loc, "_aux"), os.path.join(loc, "project.conf"))
 
