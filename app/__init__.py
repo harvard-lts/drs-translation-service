@@ -1,8 +1,9 @@
-import logging
+import logging, traceback, json
 import os
 from logging.handlers import RotatingFileHandler
 
 import load_report_service.load_report_service as load_report_service
+import translation_service.translation_service as translation_service
 import mqresources.mqutils as mqutils
 import werkzeug
 from flask import Flask, request
@@ -80,6 +81,38 @@ def create_app():
             return "Handling of failed batch returned an error: {}".format(str(lre)), 400
         except Exception as e:
             return "Handling of failed batch returned an error: {}".format(str(e)), 500
+        return "ok", 200
+    
+    @app.route('/reprocess_batch', endpoint="reprocess_batch")
+    @app.errorhandler(werkzeug.exceptions.BadRequest)
+    def reprocess_batch():
+        args = request.args
+        logging.debug("Reprocess args")
+        logging.debug(args)
+        
+        if ("unprocessed_data_path" not in args):
+            return 'Missing unprocessed_data_path argument in data!', 400
+        if ("admin_metadata" not in args):
+            return 'Missing admin_metadata argument in data!', 400
+        if ("application_name" not in args):
+            return 'Missing application_name argument in data!', 400
+        
+        testing = False
+        if ("testing" in args):
+            testing = True
+            
+        try:   
+            # This calls a method to handle prepping the batch for distribution to the DRS
+            translation_service.prepare_and_send_to_drs(
+                args["unprocessed_data_path"],
+                json.loads(args['admin_metadata']),
+                args['application_name'],
+                testing
+            )
+        except Exception as e:
+            logging.error("Reprocessing of data failed: {}".format(str(e)))
+            logging.error(traceback.format_exc())
+            return "Reprocessing of data failed: {}".format(str(e)), 500
         return "ok", 200
 
     disable_cached_responses(app)

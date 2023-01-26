@@ -13,15 +13,15 @@ batch_builder_assistant = BatchBuilderAssistant()
 def prepare_and_send_to_drs(package_dir, supplemental_deposit_data, depositing_application, testing = False):
     #Set up directories
     batch_dir = translate_data_structure_service.translate_data_structure(package_dir, supplemental_deposit_data, depositing_application)
-    breakpoint()
     #Run BB
     batch_builder_assistant.process_batch(package_dir, os.path.basename(batch_dir), supplemental_deposit_data, depositing_application)
     
     #Move Batch to incoming
     batch_dir = __move_batch_to_incoming(package_dir, batch_dir)
     
+    if not testing:
     #Remove old project dir
-    __cleanup_project_dir(package_dir)
+        __cleanup_project_dir(package_dir)
     
     #Update batch_dir permissions
     __update_permissions(batch_dir)
