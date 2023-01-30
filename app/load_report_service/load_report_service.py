@@ -47,13 +47,13 @@ def handle_load_report(load_report_name, dry_run = False):
     # TODO: Fix delete
     # Not deleting for now, the loadreport is written with appadmin permissions
     # and will have to be updated on the DRS side
-    # if not dry_run:
+    if not dry_run:
     #     #Delete the LR from the dropbox
     #     _delete_load_report_from_dropbox(os.path.dirname(load_report_path))
     #     #Delete the batch
-    #     if dropbox_name != "":
-    #         dropbox_name = os.path.join(dropbox_name, "incoming")
-    #     _delete_batch_from_dropbox(os.path.join(base_dropbox_dir, dropbox_name, batch_name))
+        if dropbox_name != "":
+            dropbox_name = os.path.join(dropbox_name, "incoming")
+            _delete_batch_from_dropbox(os.path.join(base_dropbox_dir, dropbox_name, batch_name))
         
     if (obj_osn is None):
         raise LoadReportException("ERROR Object OSN could not be found in load report, {}.".format(load_report_path))
