@@ -9,6 +9,7 @@ logging.basicConfig(filename=logfile, level=loglevel)
 def translate_data_structure(package_path, supplemental_deposit_data, depositing_application):
     # Project name is the doi-name
     # Batch name doi-name-batch
+    breakpoint()
     batch_name = os.path.basename(package_path) + "-batch"
     batch_dir = os.path.join(package_path, batch_name)
     # Object name is the doi-name
