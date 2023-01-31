@@ -150,8 +150,6 @@ def initialize_listeners():
 def reprocess_batch(batch_path):
     
     logging.debug("Reprocessing: " + batch_path)
-    destination_path = batch_path
-    package_id = os.path.basename(batch_path)
     admin_metadata = {}
     batch_as_array = batch_path.split("/")
     dropbox_name = batch_as_array[-3]
