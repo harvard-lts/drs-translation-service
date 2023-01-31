@@ -1,5 +1,5 @@
-import logging, traceback, json
-import os
+import logging, traceback, json, re
+import os, os.path
 from logging.handlers import RotatingFileHandler
 
 import load_report_service.load_report_service as load_report_service
@@ -83,37 +83,31 @@ def create_app():
             return "Handling of failed batch returned an error: {}".format(str(e)), 500
         return "ok", 200
     
-    @app.route('/reprocess_batch', endpoint="reprocess_batch")
+    @app.route('/reprocess_batches', endpoint="reprocess_batches")
     @app.errorhandler(werkzeug.exceptions.BadRequest)
-    def reprocess_batch():
+    def reprocess_batches():
         args = request.args
         logging.debug("Reprocess args")
         logging.debug(args)
         
-        if ("unprocessed_data_path" not in args):
-            return 'Missing unprocessed_data_path argument in data!', 400
-        if ("admin_metadata" not in args):
-            return 'Missing admin_metadata argument in data!', 400
-        if ("application_name" not in args):
-            return 'Missing application_name argument in data!', 400
+        if ("unprocessed_exports" not in args):
+            return 'Missing unprocessed_exports argument in data!', 400
         
-        testing = False
-        if ("testing" in args):
-            testing = True
-            
-        try:   
-            # This calls a method to handle prepping the batch for distribution to the DRS
-            translation_service.prepare_and_send_to_drs(
-                args["unprocessed_data_path"],
-                json.loads(args['admin_metadata']),
-                args['application_name'],
-                testing
-            )
-        except Exception as e:
-            logging.error("Reprocessing of data failed: {}".format(str(e)))
-            logging.error(traceback.format_exc())
-            return "Reprocessing of data failed: {}".format(str(e)), 500
+        #Don't actually reprocess if it is a dryrun
+        if ("dryrun" not in args):
+            try: 
+                unprocessed_batches_list = json.loads(args['unprocessed_exports'])
+              
+                for batch_path in unprocessed_batches_list:
+                    logging.debug("Reprocessing {}".format(batch_path))
+                    reprocess_batch(batch_path)
+                
+            except Exception as e:
+                logging.error("Reprocessing of data failed: {}".format(str(e)))
+                logging.error(traceback.format_exc())
+                return "Reprocessing of data failed: {}".format(str(e)), 500
         return "ok", 200
+
 
     disable_cached_responses(app)
 
@@ -121,6 +115,7 @@ def create_app():
     initialize_listeners()
 
     return app
+
 
 
 def configure_logger():
@@ -151,3 +146,34 @@ def disable_cached_responses(app: Flask) -> None:
 def initialize_listeners():
     logging.debug("Creating Process Ready queue listener...")
     ProcessReadyQueueListener()
+
+def reprocess_batch(batch_path):
+    
+    logging.debug("Reprocessing: " + batch_path)
+    destination_path = batch_path
+    package_id = os.path.basename(batch_path)
+    admin_metadata = {}
+    batch_as_array = batch_path.split("/")
+    dropbox_name = batch_as_array[-3]
+    if re.match("dvn", dropbox_name):
+        application_name = "Dataverse"
+        admin_metadata = {"dropbox_name": dropbox_name}
+    else:
+        application_name = "ePADD"
+        drs_config_path = os.path.join(batch_path, "drsConfig.txt")
+        admin_metadata = translation_service.parse_drsconfig_metadata(drs_config_path)
+        #If errors were caught while trying to parse the drsConfig file
+        #then move exit
+        if not admin_metadata:
+            return
+        admin_metadata["dropbox_name"] = dropbox_name
+                
+    # This calls a method to handle prepping the batch for distribution to the DRS
+    translation_service.prepare_and_send_to_drs(
+        batch_path,
+        admin_metadata,
+        application_name,
+        False
+    )
+
+
