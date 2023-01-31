@@ -74,7 +74,7 @@ def parse_drsconfig_metadata(drs_config_path):
             except KeyError as err:
                 logging.error("Missing a key in " + drs_config_path +" file: " + str(err))
 
-    except FileNotFoundError as err:
+    except FileNotFoundError:
         logging.error("drsConfig.txt does not exist for path: "+ drs_config_path)
     
     return admin_metadata
