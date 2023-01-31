@@ -39,37 +39,13 @@ def test_valid_reprocess_call():
     #Real dropboxes us the 'incoming' directory
     if dropbox_name_for_testing != "":
         dropbox_name_for_testing = os.path.join(dropbox_name_for_testing, "incoming")
-    admin_metadata_json = json.dumps({"dropbox_name": dropbox_name_for_testing})
-    payload = {"unprocessed_data_path": "/home/appuser/tests/data/doi-translation-service-test", "application_name": "Dataverse", "admin_metadata": admin_metadata_json, "testing": True}
+    
+    unprocessed = ["/home/appuser/tests/data/unprocessed"]
+    exports = json.dumps(unprocessed)
+    payload = {"unprocessed_exports": exports, "dryrun": True}
         
-    response = requests.get("https://localhost:8443/reprocess_batch", params=payload, verify=False)
-    print(response.text)
-    cleanup_batch()
-    cleanup_batch_builder_files()
-    cleanup_mock_loadreport()
+    response = requests.get("https://localhost:8443/reprocess_batches", params=payload, verify=False)
     assert response.status_code == 200
     
     
-def cleanup_batch():
-    '''Removes the batch from the test data'''
-    try:
-        shutil.rmtree("/home/appuser/tests/data/doi-translation-service-test-batch")
-    except OSError as e:
-        print("Error in cleanup: %s" % (e.strerror))
-
-def cleanup_batch_builder_files():
-    '''Removes the batch builder files from the project'''
-    try:
-        shutil.rmtree("/home/appuser/tests/data/doi-translation-service-test/_aux")
-        os.remove("/home/appuser/tests/data/doi-translation-service-test/project.conf")
-    except OSError as e:
-        print("Error in cleanup: %s" % (e.strerror))
-
-def cleanup_mock_loadreport():
-    '''Removes the batch from the dropbox'''
-    try:
-        mock_lr_dir = os.path.join(base_load_report_dir, "doi-translation-service-test-batch")
-        shutil.rmtree(mock_lr_dir)
-    except OSError as e:
-        print("Error in cleanup: %s" % (e.strerror))
         

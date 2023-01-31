@@ -47,3 +47,19 @@ def cleanup_mock_loadreport(mock_lr):
         os.rmdir(os.path.dirname(mock_lr))
     except OSError as e:
         print("Error in cleanup: %s" % (e.strerror))
+        
+    
+def test_parse_drsconfig_metadata():
+    admin_md = translation_service.parse_drsconfig_metadata('//home/appuser/tests/data/unprocessed/drsConfig.txt')
+    print(admin_md)
+    assert admin_md
+
+def test_failed_parse_drsconfig_metadata_nodrsconfig():
+    admin_md = translation_service.parse_drsconfig_metadata('/home/appuser/tests/data/unprocessed-nodrsconfig/drsConfig.txt')
+    print(admin_md)
+    assert not admin_md
+
+def test_failed_parse_drsconfig_metadata_missingadminmd():
+    admin_md = translation_service.parse_drsconfig_metadata('/home/appuser/tests/data/unprocessed-missingadminmd/drsConfig.txt')
+    print(admin_md)
+    assert not admin_md
