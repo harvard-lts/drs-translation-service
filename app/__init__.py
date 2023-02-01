@@ -1,4 +1,4 @@
-import logging, traceback, json, re
+import logging, traceback, re
 import os, os.path
 from logging.handlers import RotatingFileHandler
 
@@ -96,9 +96,8 @@ def create_app():
         #Don't actually reprocess if it is a dryrun
         if ("dryrun" not in args):
             try: 
-                unprocessed_batches_list = json.loads(args['unprocessed_exports'])
-              
-                for batch_path in unprocessed_batches_list:
+                unprocessed_exports = args.getlist('unprocessed_exports')
+                for batch_path in unprocessed_exports:
                     logging.debug("Reprocessing {}".format(batch_path))
                     reprocess_batch(batch_path)
                 
