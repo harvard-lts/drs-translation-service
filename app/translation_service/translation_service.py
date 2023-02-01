@@ -19,8 +19,9 @@ def prepare_and_send_to_drs(package_dir, supplemental_deposit_data, depositing_a
     #Move Batch to incoming
     batch_dir = __move_batch_to_incoming(package_dir, batch_dir)
     
+    if not testing:
     #Remove old project dir
-    __cleanup_project_dir(package_dir)
+        __cleanup_project_dir(package_dir)
     
     #Update batch_dir permissions
     __update_permissions(batch_dir)
@@ -35,6 +36,47 @@ def prepare_and_send_to_drs(package_dir, supplemental_deposit_data, depositing_a
         __place_mock_load_report(os.path.basename(batch_dir), supplemental_deposit_data["dropbox_name"])
     
     return batch_dir
+
+def parse_drsconfig_metadata(drs_config_path):
+    admin_metadata = {}
+    try:
+        #This will throw an error if the file is missing which is handled in the try-except
+        with open(drs_config_path, 'r', encoding='UTF-8') as file:
+            metadata = file.read().splitlines()
+            metadata_dict = {}
+            for val in metadata:
+                if len(val) > 0:
+                    split_val = val.split('=')
+                    metadata_dict[split_val[0]] = split_val[1]
+            
+            try:
+                #This will throw an error if any key is missing and is handled in the try-except
+                admin_metadata = {        
+                    "accessFlag": metadata_dict["accessFlag"],
+                    "contentModel": metadata_dict["contentModel"],
+                    "depositingSystem": metadata_dict["depositingSystem"],
+                    "firstGenerationInDrs": metadata_dict["firstGenerationInDrs"],
+                    "objectRole": metadata_dict["objectRole"],
+                    "usageClass": metadata_dict["usageClass"],
+                    "storageClass": metadata_dict["storageClass"],
+                    "ownerCode": metadata_dict["ownerCode"],
+                    "billingCode": metadata_dict["billingCode"],
+                    "resourceNamePattern": metadata_dict["resourceNamePattern"],
+                    "urnAuthorityPath": metadata_dict["urnAuthorityPath"],
+                    "depositAgent": metadata_dict["depositAgent"],
+                    "depositAgentEmail": metadata_dict["depositAgentEmail"],
+                    "successEmail": metadata_dict["successEmail"],
+                    "failureEmail": metadata_dict["failureEmail"],
+                    "successMethod": metadata_dict["successMethod"],
+                    "adminCategory": metadata_dict["adminCategory"]
+                }
+            except KeyError as err:
+                logging.error("Missing a key in " + drs_config_path +" file: " + str(err))
+
+    except FileNotFoundError:
+        logging.error("drsConfig.txt does not exist for path: "+ drs_config_path)
+    
+    return admin_metadata
 
 def __move_batch_to_incoming(project_dir, batch_dir):
     #dropbox is the path above the project
