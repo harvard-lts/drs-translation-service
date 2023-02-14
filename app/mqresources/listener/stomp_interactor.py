@@ -11,7 +11,7 @@ from mqresources.listener.mq_connection_params import MqConnectionParams
 
 
 class StompInteractor(ABC):
-    __STOMP_CONN_HEARTBEATS_MS = 40000
+    __STOMP_CONN_HEARTBEATS_MS = 120000
     __STOMP_CONN_TIMEOUT_MS = 5000
 
     def __init__(self) -> None:
