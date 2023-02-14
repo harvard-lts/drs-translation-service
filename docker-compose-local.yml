@@ -16,9 +16,9 @@ services:
       # Logs
       - './logs:/home/appuser/logs'
       #BB
-      - './batch_builder_client/BatchBuilder-2.3.0-SNAPSHOT:/home/batchbuilder'
+      - './batch_builder_client/BatchBuilder-2.3.2:/home/batchbuilder'
       #BB config
-      - './batch_builder_client/BatchBuilder-2.3.0-SNAPSHOT/conf/bb.properties.dev:/home/batchbuilder/conf/bb.properties'
+      - './batch_builder_client/BatchBuilder-2.3.2/conf/bb.properties.dev:/home/batchbuilder/conf/bb.properties'
     env_file:
       - '.env'
     ports:
