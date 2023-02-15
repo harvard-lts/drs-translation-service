@@ -76,7 +76,7 @@ def __handle_opaque_container_directory_mapping(package_path, object_dir, aux_ob
     os.makedirs(documentation_dir, exist_ok=True)
 
     hascontent = False
-    # Copy zip
+    # Copy zip/gz/7z
     logging.debug("globbing...")
 
     for file in Path(package_path).glob('*.zip'):
@@ -86,6 +86,20 @@ def __handle_opaque_container_directory_mapping(package_path, object_dir, aux_ob
             shutil.copy2(file, os.path.join(content_dir, filename))
             hascontent = True
 
+    for file in Path(package_path).glob('*.7z'):
+        logging.debug("Found package: %s", file)
+        filename = os.path.basename(file)
+        if ".7z" in filename:
+            shutil.copy2(file, os.path.join(content_dir, filename))
+            hascontent = True
+            
+    for file in Path(package_path).glob('*.gz'):
+        logging.debug("Found package: %s", file)
+        filename = os.path.basename(file)
+        if ".gz" in filename:
+            shutil.copy2(file, os.path.join(content_dir, filename))
+            hascontent = True
+            
     __copy_project_conf_opaque_container(package_path)
     __copy_object_xml_and_rename_object(aux_object_dir, hascontent, True)
 

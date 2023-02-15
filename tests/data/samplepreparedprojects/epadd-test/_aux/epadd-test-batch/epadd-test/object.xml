@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Objectconfig cm="OPAQUE CONTAINER">
+    <directory name="epadd-test">
+        <metadataCategory name="objectMetadata">
+            <property name="ownerCode" value="HUL.TEST"/>
+            <property name="billingCode" value="BILL.001"/>
+            <property name="accessFlag" value="P"/>
+        </metadataCategory>
+        <metadataCategory name="nrsMetadata">
+            <property name="resourceNamePattern" value="{n}"/>
+            <property name="urnAuthorityPath" value="HUL.TEST"/>
+        </metadataCategory>
+        <directory name="container">
+            <metadataCategory name="fileMetadata">
+                <property name="usageClass" value="LOWUSE"/>
+                <property name="fileAccessFlag" value="P"/>
+                <property name="isFirstGenerationInDrs" value="no"/>
+            </metadataCategory>
+        </directory>
+    </directory>
+</Objectconfig>
