@@ -72,6 +72,7 @@ def test_dvn_run_batch_builder_with_overrides():
                "failureEmail": "loser@mailinator.com",
                "successMethod": "dropbox",
                "adminCategory": "http://idtest.lib.harvard.edu:10020/wordshack/adminCategory/611"}
+
      batch_builder_assistant.process_batch(dvn_project_path, dvn_batch_name, supplemental_data, "Dataverse")   
      expected_batch_file = os.path.join(dvn_project_path, dvn_batch_name, "batch.xml")
      assert os.path.exists(expected_batch_file)
