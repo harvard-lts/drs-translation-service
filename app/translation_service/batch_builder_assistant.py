@@ -92,23 +92,23 @@ class BatchBuilderAssistant:
         overrides = ""   
         delimiter = ""
         if "successEmail" in supplemental_deposit_metadata:
-            overrides += "successEmail={}".format(supplemental_deposit_metadata["successEmail"])
+            overrides += "successEmail={}".format(supplemental_deposit_metadata["successEmail"].rstrip())
         if "failureEmail" in supplemental_deposit_metadata:
             if overrides:
                 delimiter = ","
-            overrides += "{}failureEmail={}".format(delimiter,supplemental_deposit_metadata["failureEmail"])
+            overrides += "{}failureEmail={}".format(delimiter,supplemental_deposit_metadata["failureEmail"].rstrip())
         if "successMethod" in supplemental_deposit_metadata:
             if overrides:
                 delimiter = ","
-            overrides += "{}successMethod={}".format(delimiter,supplemental_deposit_metadata["successMethod"])
+            overrides += "{}successMethod={}".format(delimiter,supplemental_deposit_metadata["successMethod"].rstrip())
         if "depositAgent" in supplemental_deposit_metadata:
             if overrides:
                 delimiter = ","
-            overrides += "{}depositAgent={}".format(delimiter,supplemental_deposit_metadata["depositAgent"])
+            overrides += "{}depositAgent={}".format(delimiter,supplemental_deposit_metadata["depositAgent"].rstrip())
         if "depositAgentEmail" in supplemental_deposit_metadata:
             if overrides:
                 delimiter = ","
-            overrides += "{}depositAgentEmail={}".format(delimiter,supplemental_deposit_metadata["depositAgentEmail"])
+            overrides += "{}depositAgentEmail={}".format(delimiter,supplemental_deposit_metadata["depositAgentEmail"].rstrip())
         command = None
         if overrides:
             command = " -batchprop \"{}\"".format(overrides);
@@ -121,31 +121,31 @@ class BatchBuilderAssistant:
         overrides = ""  
         delimiter = "" 
         if "ownerCode" in supplemental_deposit_metadata:
-            overrides += "ownerCode={}".format(supplemental_deposit_metadata["ownerCode"])
+            overrides += "ownerCode={}".format(supplemental_deposit_metadata["ownerCode"].rstrip())
         if "billingCode" in supplemental_deposit_metadata:
             if overrides:
                 delimiter = ","
-            overrides += "{}billingCode={}".format(delimiter,supplemental_deposit_metadata["billingCode"])
+            overrides += "{}billingCode={}".format(delimiter,supplemental_deposit_metadata["billingCode"].rstrip())
         if "resourceNamePattern" in supplemental_deposit_metadata:
             if overrides:
                 delimiter = ","
-            overrides += "{}resourceNamePattern={}".format(delimiter,supplemental_deposit_metadata["resourceNamePattern"])
+            overrides += "{}resourceNamePattern={}".format(delimiter,supplemental_deposit_metadata["resourceNamePattern"].rstrip())
         if "urnAuthorityPath" in supplemental_deposit_metadata:
             if overrides:
                 delimiter = ","
-            overrides += "{}urnAuthorityPath={}".format(delimiter,supplemental_deposit_metadata["urnAuthorityPath"])
+            overrides += "{}urnAuthorityPath={}".format(delimiter,supplemental_deposit_metadata["urnAuthorityPath"].rstrip())
         if "accessFlag" in supplemental_deposit_metadata:
             if overrides:
                 delimiter = ","
-            overrides += "{}accessFlag={}".format(delimiter,supplemental_deposit_metadata["accessFlag"])
+            overrides += "{}accessFlag={}".format(delimiter,supplemental_deposit_metadata["accessFlag"].rstrip())
         if "adminCategory" in supplemental_deposit_metadata:
             if overrides:
                 delimiter = ","
-            overrides += "{}adminCategory={}".format(delimiter,supplemental_deposit_metadata["adminCategory"])
+            overrides += "{}adminCategory={}".format(delimiter,supplemental_deposit_metadata["adminCategory"].rstrip())
         if "objectRole" in supplemental_deposit_metadata:
             if overrides:
                 delimiter = ","
-            objectRole = supplemental_deposit_metadata["objectRole"]
+            objectRole = supplemental_deposit_metadata["objectRole"].rstrip()
             objectRole = objectRole.replace(":", "_")
             overrides += "{}role={};".format(delimiter,objectRole)
         command = None
@@ -161,15 +161,15 @@ class BatchBuilderAssistant:
         if "firstGenerationInDrs" in supplemental_deposit_metadata:
             if overrides:
                 delimiter = ","
-            overrides += "isFirstGenerationInDrs={}".format(supplemental_deposit_metadata["firstGenerationInDrs"])
+            overrides += "isFirstGenerationInDrs={}".format(supplemental_deposit_metadata["firstGenerationInDrs"].rstrip())
         if "usageClass" in supplemental_deposit_metadata:
             if overrides:
                 delimiter = ","
-            overrides += "{}usageClass={}".format(delimiter,supplemental_deposit_metadata["usageClass"])
+            overrides += "{}usageClass={}".format(delimiter,supplemental_deposit_metadata["usageClass"].rstrip())
         if "storageClass" in supplemental_deposit_metadata:
             if overrides:
                 delimiter = ","
-            overrides += "{}fileStorageClass={}".format(delimiter,supplemental_deposit_metadata["storageClass"])
+            overrides += "{}fileStorageClass={}".format(delimiter,supplemental_deposit_metadata["storageClass"].rstrip())
         command = None
         if overrides:
             command = "{}::{}::{}".format(object_name, directory_name, overrides);
