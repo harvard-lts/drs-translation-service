@@ -1,0 +1,15 @@
+collection-metadata:
+  collectionID:
+    bb_field: "identifier"
+  collectionTitle:
+    bb_field: "titleInfoTitle"
+  scopeAndContent:
+    bb_field: "abstract"
+    label: "scope"
+epaddPremis:
+  path: "significantProperties\significantProperties[\significantPropertiesType="overall unique attachment count"]/significantPropertiesValue" 
+  significantProperties:
+    
+    bb_field: "abstract"
+    label: "Overall unique attachment count"
+    

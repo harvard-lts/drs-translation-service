@@ -1,0 +1,8 @@
+{"collection-metadata":
+    {"epadd_field": "collectionID", "bb_field": "identifier"},
+    {"epadd_field": "collectionTitle", "bb_field": "titleInfoTitle"},
+    {"epadd_field": "scopeAndContent","bb_field": "abstract", "label": "scope"}
+},
+{"epaddPremis":
+    {"epadd_field": "significantProperties", "bb_field": "abstract", "label": "Overall unique attachment count", "conditional": "significantPropertiesType=overall unique attachment count"}
+}

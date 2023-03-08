@@ -3,3 +3,6 @@ class TranslationException(Exception):
 
 class BatchBuilderException(Exception):
     pass
+
+class EpaddModsHandlingException(Exception):
+    pass
