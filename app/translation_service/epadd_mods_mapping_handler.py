@@ -1,5 +1,10 @@
-import os, os.path, logging
+import os, os.path, logging, json, jsonschema
+import collections.abc
+import xml.etree.ElementTree as ET
+from pyunpack import Archive
+from pathlib import Path
 from translation_service.translation_exceptions import EpaddModsHandlingException
+from datetime import date
 
 '''
 Parses and assigns values using the associated mapping file
@@ -9,7 +14,7 @@ class EpaddModsMappingHandler:
     def __init__(self):
         
         log_file = os.getenv("LOGFILE_PATH")
-        loglevel=os.getenv('LOGLEVEL', 'WARNING')
+        loglevel=os.getenv('LOGLEVEL', 'DEBUG')
         
         # Configure logging module
         logging.basicConfig(
@@ -18,6 +23,286 @@ class EpaddModsMappingHandler:
           format="%(asctime)s:%(levelname)s:%(message)s",
           filemode='a'
         )
+        self.mapping_file_validated = False
         
-    def parse_mapping_file(self):
-        pass
+        
+        
+    def build_object_overrides(self, project_path, object_name):
+        #validate if it hasn't been  validated yet
+        if not self.mapping_file_validated:
+            self.validate_json_schema()
+            
+        #Unzip the zip file
+        extracted_path = self.__unzip_object(project_path)
+        if extracted_path is None:
+            logging.error("Could not find a compressed file to extract for MODS data in {}.".format(project_path))
+            raise EpaddModsHandlingException("Could not find a compressed file to extract for MODS data in {}.".format(project_path))
+        
+        cm_file_path = self.__find_collection_metadata_file(extracted_path, object_name)     
+        if cm_file_path is None:
+            logging.error("Could not find a collection_metadata.json file in {}.".format(extracted_path))
+            raise EpaddModsHandlingException("Could not find a collection_metadata.json file in {}.".format(extracted_path))
+        
+        premis_file_path = self.__find_premis_file(extracted_path, object_name)     
+        if premis_file_path is None:
+            logging.error("Could not find a epaddPremis.json file in {}.".format(extracted_path))
+            raise EpaddModsHandlingException("Could not find a epaddPremis.json file in {}.".format(extracted_path))
+        
+        cm_overrides = {}
+        premis_overrides = {} 
+        for mapping in self.mapping_data["mapping"]:
+            if (mapping['property-type'] == "object"):
+                #Loop through the mapping details array and collect the overrides from each filetype
+                for mapping_details in mapping['mapping-details']:
+                    if mapping_details['epadd-file'] == 'collection-metadata':
+                        cm_overrides = self.__build_collection_metadata_overrides(mapping_details['mapping-values'], cm_file_path)
+                    elif mapping_details['epadd-file'] == 'epaddPremis':
+                        premis_overrides = self.__build_epadd_premis_overrides(mapping_details['mapping-values'], premis_file_path)
+                    else: 
+                        logging.error("Data from {} is not implemented.".format(mapping_details['epadd-file']))
+                        raise EpaddModsHandlingException("Data from {} is not implemented.".format(mapping_details['epadd-file']))
+        override_dict = cm_overrides
+        #Both cm and premis overrides
+        if override_dict and premis_overrides:
+            for premis_override_key in premis_overrides:
+                if premis_override_key in override_dict:
+                    override = override_dict[premis_override_key]
+                    override += "," + premis_overrides[premis_override_key]
+                    override_dict[premis_override_key] = override
+                else:
+                    override_dict[premis_override_key] = premis_overrides[premis_override_key]
+        #only premis
+        elif premis_overrides:
+            override_dict = premis_overrides
+        
+        overrides = ""
+        delimiter = "" 
+        
+        for val in override_dict:  
+            overrides += "{}{}={}".format(delimiter, val, override_dict[val])
+            delimiter = ","    
+        return overrides
+            
+                
+    def __build_collection_metadata_overrides(self, mapping_values_array, cm_file_path):
+        with open(cm_file_path, 'r') as f:
+            cm_json = json.load(f)
+        
+        override_dict = {}
+        for mapping_values in mapping_values_array:
+            epadd_value = mapping_values["epadd-field"]
+            if epadd_value not in cm_json:
+                continue
+            
+            #get the collection metadata value from the cm json
+            cm_value = cm_json[epadd_value]
+            
+            if "date-format-field" in mapping_values:
+                format = mapping_values["date-format-field"]
+                    
+                #Convert from ms to s 
+                cm_value = int(cm_value)/1000
+                cm_value = date.fromtimestamp(cm_value).isoformat()
+            
+            #Set the final value for now        
+            final_val =  cm_value
+            
+            if "epadd-field-2" in mapping_values:
+                epadd_value_2 = mapping_values["epadd-field-2"]
+                cm_value2 = cm_json[epadd_value_2]
+                if "date-format-field-2" in mapping_values:
+                    format = mapping_values["date-format-field-2"]
+                    
+                    #Convert from ms to s 
+                    cm_value2 = int(cm_value2)/1000
+                    cm_value2 = date.fromtimestamp(cm_value2).isoformat()
+
+                if "concatenation-delimiter" in mapping_values:
+                    delimiter = mapping_values["concatenation-delimiter"]
+                    final_val = "{}{}{}".format(cm_value, delimiter, cm_value2)
+                else:
+                    final_val = "{}{}".format(cm_value, cm_value2)
+                
+            if "conditional" in mapping_values:
+                cond_array = mapping_values["conditional"].split("=")
+                if len(cond_array) != 2:
+                    logging.error("Conditional must be of format key=value.  Conditional supplied is {}.".format(mapping_values["conditional"]))
+                    raise EpaddModsHandlingException("Conditional must be of format key=value.  Conditional supplied is {}.".format(mapping_values["conditional"]))
+                cond_key = cond_array[0]
+                cond_val = cond_array[1]
+                for val in epadd_value:
+                    if cond_key in cm_value and cm_value[cond_key] == cond_val:
+                        if "value_field" in mapping_values:
+                            final_val = cm_value[mapping_values["value_field"]]
+                        else:
+                            logging.error("Value must be supplied if Collection Metadata conditional is set.  CM value: {} .".format(cm_value))
+                            raise EpaddModsHandlingException("Value must be supplied if Collection Metadata conditional is set.  CM value: {} .".format(cm_value))             
+
+            if "label" in mapping_values and final_val:
+                final_val = mapping_values['label'] + ": " + final_val + "."
+           
+            #Embargo has to be parsed to two different BB fields and mapping wasn't straight forward.
+            if epadd_value == "embargoDuration":
+                retval_dict = self.__format_embargo(cm_value)
+                if len(retval_dict) == 2:
+                    override_dict.update(retval_dict)
+            else:
+                bb_field = mapping_values["bb-field"]
+                if bb_field in override_dict:
+                    final_val = final_val + override_dict[bb_field] 
+                
+                #As long as it isn't empty    
+                if final_val:    
+                    override_dict[bb_field] = final_val
+            
+        return override_dict
+    
+    def __format_embargo(self, embargoDuration):
+        override_dict = {}
+        embargo_array = embargoDuration.split()
+        permitted_durations = ["day", "days", "month", "months", "year", "years"]
+        if len(embargo_array) == 2:
+            try:
+                int(embargo_array[0])
+                override_dict["embargoDuration"] = embargo_array[0]
+                if embargo_array[1] in permitted_durations:
+                    override_dict["embargoDurationUnit"] = embargo_array[1]
+                else:
+                    logging.error("Embargo duration unit {} must be one of {}".format(embargo_array[1], permitted_durations))
+                    return {}
+            except Exception:
+                logging.error("Embargo duration {} must be an int".format(embargo_array[0]))
+        else:
+            logging.error("Embargo duration {} was not mapped because it does not meet the format of '# days|months|years'".format(embargoDuration))
+        return override_dict 
+    
+    def __build_epadd_premis_overrides(self, mapping_values_array, premis_file_path):
+        with open(premis_file_path, 'r') as f:
+            tree = ET.parse(f)
+            epaddpremisroot = tree.getroot()
+        
+        premis_ns = {"premis": os.getenv("PREMIS_NS", "http://www.loc.gov/premis/v3")}
+        override_dict = {}
+        for mapping_values in mapping_values_array:
+            epadd_value = mapping_values["epadd-field"]
+            search_field = ".//premis:{}".format(epadd_value)
+            premis_value = epaddpremisroot.findall(search_field, premis_ns)
+            final_val = ""
+            for value in premis_value:
+                if "conditional" in mapping_values:
+                    value_field = ""
+                    if "value_field" in mapping_values:
+                        value_field = mapping_values["value_field"]
+                    else:
+                        logging.error("Value must be supplied if Premis element has children.  Premis value: {} .".format(premis_value.tag))
+                        raise EpaddModsHandlingException("Value must be supplied if Premis element has children.  Premis value: {} .".format(premis_value.tag)) 
+                    
+                    cond_array = mapping_values["conditional"].split("=")
+                    if len(cond_array) != 2:
+                        logging.error("Conditional must be of format key=value.  Conditional supplied is {}.".format(mapping_values["conditional"]))
+                        raise EpaddModsHandlingException("Conditional must be of format key=value.  Conditional supplied is {}.".format(mapping_values["conditional"]))
+                    
+                    cond_key = cond_array[0]
+                    cond_val = cond_array[1]
+                    
+                    cond_search_field = ".//premis:{}".format(cond_key)
+                    child_cond_elt = value.find(cond_search_field, premis_ns)
+                    if child_cond_elt is not None and cond_val == child_cond_elt.text:
+                        value_search_field = ".//premis:{}".format(value_field)
+                        value_elt = value.find(value_search_field, premis_ns)
+                        if value_elt is not None:
+                            final_val = value_elt.text
+                else:
+                    if "value_field" in mapping_values:
+                        value_field = mapping_values["value_field"]
+                        value_search_field = ".//premis:{}".format(value_field)
+                        value_elt = value.find(value_search_field, premis_ns)
+                        if value_elt is not None:
+                            final_val = value_elt.text
+                    else:
+                        final_val = value.text       
+                            
+
+            if "label" in mapping_values and final_val:
+                final_val = mapping_values['label'] + ": " + final_val + "."
+           
+            bb_field = mapping_values["bb-field"]
+            if bb_field in override_dict:
+                final_val = final_val + override_dict[bb_field] 
+            
+            #As long as it isn't empty    
+            if final_val:    
+                override_dict[bb_field] = final_val
+            
+        return override_dict
+    
+    
+    def __find_collection_metadata_file(self, extracted_path, object_name):
+        for root, dirs, files in os.walk(extracted_path):
+            if object_name in dirs:
+                cm_rel_path = os.getenv("EPADD_COLLECTION_METADATA_RELATIVE_FILE_PATH")
+                cm_path = os.path.join(root, object_name, cm_rel_path)
+                return cm_path
+        return None
+                
+    def __find_premis_file(self, extracted_path, object_name):
+        for root, dirs, files in os.walk(extracted_path):
+            if object_name in dirs:
+                premis_rel_path = os.getenv("EPADD_PREMIS_RELATIVE_FILE_PATH")
+                premis_path = os.path.join(root, object_name, premis_rel_path)
+                return premis_path
+        return None
+    
+    def __unzip_object(self, project_path):
+        for file in Path(project_path).glob('*.7z'):
+            logging.debug("Found file: %s", file)
+            extracted_path = os.path.join(project_path, "extracted")
+            Archive(file).extractall(extracted_path, True)
+            return extracted_path
+
+        for file in Path(project_path).glob('*.zip'):
+            logging.debug("Found file: %s", file)
+            extracted_path = os.path.join(packageproject_path_path, "extracted")
+            Archive(file).extractall(extracted_path, True)
+            return extracted_path
+        
+        for file in Path(project_path).glob('*.gz'):
+            logging.debug("Found file: %s", file)
+            extracted_path = os.path.join(project_path, "extracted")
+            Archive(file).extractall(extracted_path, True)
+            return extracted_path
+        return None
+    
+    def validate_json_schema(self):
+
+        mapping_file = os.getenv("EPADD_MODS_MAPPING_FILE")
+        with open(mapping_file) as user_file:
+            file_contents = user_file.read()
+  
+        self.mapping_data = json.loads(file_contents)
+        schema = os.getenv("MODS_MAPPING_SCHEMA")
+        
+        if not schema:
+            logging.error("Missing env definition: MODS_MAPPING_SCHEMA.")
+            raise Exception("Missing env definition: MODS_MAPPING_SCHEMA")
+            
+        try:
+            with open(schema) as json_file:
+                json_model = json.load(json_file)
+        except Exception as e:
+            logging.exception("Unable to get json schema model.")
+            raise e
+            
+        try:
+            jsonschema.validate(self.mapping_data, json_model)
+        except json.decoder.JSONDecodeError as e:
+            logging.exception("Invalid JSON format")
+            raise e
+        except jsonschema.exceptions.ValidationError as e:
+            logging.exception("Invalid JSON schema:")
+            raise e
+        except Exception as e:
+            logging.exception("Unable to validate json model.")
+            raise e
+        
+        self.mapping_file_validated = True

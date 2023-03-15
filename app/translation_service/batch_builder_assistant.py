@@ -1,5 +1,6 @@
 import os, os.path, logging
 from translation_service.translation_exceptions import BatchBuilderException
+from translation_service.epadd_mods_mapping_handler import EpaddModsMappingHandler
 
 '''
 The assistant processes the batches using 
@@ -19,6 +20,8 @@ class BatchBuilderAssistant:
           format="%(asctime)s:%(levelname)s:%(message)s",
           filemode='a'
         )
+        
+        epadd_mods_mapping_handler = EpaddModsMappingHandler()
     
                
     def process_batch(self, project_path, batch_name, supplemental_deposit_metadata, depositing_application):
@@ -53,7 +56,7 @@ class BatchBuilderAssistant:
                 command += batch_prop_overrides
                 hasoverrides=True
 
-            object_prop_overrides = self.__build_objprop_override_command(object_name, supplemental_deposit_metadata)
+            object_prop_overrides = self.__build_objprop_override_command(project_path, object_name, supplemental_deposit_metadata, depositing_application)
             if object_prop_overrides is not None:
                 command += object_prop_overrides
                 hasoverrides=True
@@ -116,7 +119,7 @@ class BatchBuilderAssistant:
         return command                           
 
 
-    def __build_objprop_override_command(self, object_name, supplemental_deposit_metadata):  
+    def __build_objprop_override_command(self, project_path, object_name, supplemental_deposit_metadata, depositing_application):  
         '''-objectprop object_name::property=value,property=value;'''  
         overrides = ""  
         delimiter = "" 
@@ -148,6 +151,10 @@ class BatchBuilderAssistant:
             objectRole = supplemental_deposit_metadata["objectRole"].rstrip()
             objectRole = objectRole.replace(":", "_")
             overrides += "{}role={};".format(delimiter,objectRole)
+            
+        if (depositing_application == "ePADD"):    
+            overrides += delimiter + epadd_mods_mapping_handler.build_object_overrides(project_path, object_name)
+            
         command = None
         if overrides:
             command = " -objectprop \"{}::{}\"".format(object_name, overrides);

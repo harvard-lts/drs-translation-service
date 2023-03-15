@@ -56,3 +56,10 @@ TEST_DROPBOX_NAME=XXX
 #Was the exported package unzipped by the transfer service?
 #Dataverse = true
 EXTRACTED_PACKAGE_DVN=True
+
+MODS_MAPPING_SCHEMA=/home/appuser/conf/mapping_schema.json
+EPADD_MODS_MAPPING_FILE=/home/appuser/conf/epadd_mapping.json
+
+EPADD_COLLECTION_METADATA_RELATIVE_FILE_PATH=data/sessions/collection-metadata.json
+EPADD_PREMIS_RELATIVE_FILE_PATH=data/epaddPremis.json
+PREMIS_NS=http://www.loc.gov/premis/v3
