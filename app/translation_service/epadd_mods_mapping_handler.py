@@ -19,6 +19,7 @@ class EpaddModsMappingHandler:
         logging.basicConfig(
           filename=log_file,
           level=loglevel,
+          format="%(asctime)s:%(levelname)s:%(message)s",
           filemode='a'
         )
         self.mapping_file_validated = False
@@ -98,8 +99,6 @@ class EpaddModsMappingHandler:
             cm_value = cm_json[epadd_value]
             
             if "date-format-field" in mapping_values:
-                format = mapping_values["date-format-field"]
-                    
                 #Convert from ms to s 
                 cm_value = int(cm_value)/1000
                 cm_value = date.fromtimestamp(cm_value).isoformat()
@@ -111,8 +110,6 @@ class EpaddModsMappingHandler:
                 epadd_value_2 = mapping_values["epadd-field-2"]
                 cm_value2 = cm_json[epadd_value_2]
                 if "date-format-field-2" in mapping_values:
-                    format = mapping_values["date-format-field-2"]
-                    
                     #Convert from ms to s 
                     cm_value2 = int(cm_value2)/1000
                     cm_value2 = date.fromtimestamp(cm_value2).isoformat()
