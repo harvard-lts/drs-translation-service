@@ -1,4 +1,4 @@
-import os, os.path, logging, json, jsonschema
+import os, os.path, logging, json, jsonschema, shutil
 import collections.abc
 import xml.etree.ElementTree as ET
 from pyunpack import Archive
@@ -35,18 +35,19 @@ class EpaddModsMappingHandler:
         #Unzip the zip file
         extracted_path = self.__unzip_object(project_path)
         if extracted_path is None:
-            logging.error("Could not find a compressed file to extract for MODS data in {}.".format(project_path))
-            raise EpaddModsHandlingException("Could not find a compressed file to extract for MODS data in {}.".format(project_path))
+            logging.warning("Could not find a compressed file to extract for MODS data in {}.".format(project_path))
+            return ""
         
-        cm_file_path = self.__find_collection_metadata_file(extracted_path, object_name)     
+        cm_file_path = self.__find_collection_metadata_file(extracted_path)     
         if cm_file_path is None:
-            logging.error("Could not find a collection_metadata.json file in {}.".format(extracted_path))
-            raise EpaddModsHandlingException("Could not find a collection_metadata.json file in {}.".format(extracted_path))
-        
-        premis_file_path = self.__find_premis_file(extracted_path, object_name)     
+            logging.warning("Could not find a collection_metadata.json file in {}.".format(extracted_path))
+            
+        premis_file_path = self.__find_premis_file(extracted_path)     
         if premis_file_path is None:
-            logging.error("Could not find a epaddPremis.json file in {}.".format(extracted_path))
-            raise EpaddModsHandlingException("Could not find a epaddPremis.json file in {}.".format(extracted_path))
+            logging.warning("Could not find a epaddPremis.json file in {}.".format(extracted_path))
+        
+        if cm_file_path is None and premis_file_path is None:
+            return ""
         
         cm_overrides = {}
         premis_overrides = {} 
@@ -75,6 +76,7 @@ class EpaddModsMappingHandler:
         elif premis_overrides:
             override_dict = premis_overrides
         
+        shutil.rmtree(extracted_path)
         overrides = ""
         delimiter = "" 
         
@@ -237,36 +239,35 @@ class EpaddModsMappingHandler:
         return override_dict
     
     
-    def __find_collection_metadata_file(self, extracted_path, object_name):
-        for root, dirs, files in os.walk(extracted_path):
-            if object_name in dirs:
-                cm_rel_path = os.getenv("EPADD_COLLECTION_METADATA_RELATIVE_FILE_PATH")
-                cm_path = os.path.join(root, object_name, cm_rel_path)
-                return cm_path
+    def __find_collection_metadata_file(self, extracted_path):
+        cm_file_name = os.getenv("EPADD_COLLECTION_METADATA_FILE_NAME")
+        if cm_file_name is not None:
+            for file in Path(extracted_path).rglob(cm_file_name):
+                return file
         return None
                 
-    def __find_premis_file(self, extracted_path, object_name):
-        for root, dirs, files in os.walk(extracted_path):
-            if object_name in dirs:
-                premis_rel_path = os.getenv("EPADD_PREMIS_RELATIVE_FILE_PATH")
-                premis_path = os.path.join(root, object_name, premis_rel_path)
-                return premis_path
+    def __find_premis_file(self, extracted_path):
+        premis_file_name = os.getenv("EPADD_PREMIS_FILE_NAME")
+        if premis_file_name is not None:
+            for file in Path(extracted_path).rglob(premis_file_name):
+                return file
         return None
     
     def __unzip_object(self, project_path):
-        for file in Path(project_path).glob('*.7z'):
+        for file in Path(project_path).rglob('*.7z'):
             logging.debug("Found file: %s", file)
+            print("found {}".format(file))
             extracted_path = os.path.join(project_path, "extracted")
             Archive(file).extractall(extracted_path, True)
             return extracted_path
 
-        for file in Path(project_path).glob('*.zip'):
+        for file in Path(project_path).rglob('*.zip'):
             logging.debug("Found file: %s", file)
-            extracted_path = os.path.join(packageproject_path_path, "extracted")
+            extracted_path = os.path.join(project_path, "extracted")
             Archive(file).extractall(extracted_path, True)
             return extracted_path
         
-        for file in Path(project_path).glob('*.gz'):
+        for file in Path(project_path).rglob('*.gz'):
             logging.debug("Found file: %s", file)
             extracted_path = os.path.join(project_path, "extracted")
             Archive(file).extractall(extracted_path, True)

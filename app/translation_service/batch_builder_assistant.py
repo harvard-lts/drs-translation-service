@@ -21,7 +21,7 @@ class BatchBuilderAssistant:
           filemode='a'
         )
         
-        epadd_mods_mapping_handler = EpaddModsMappingHandler()
+        self.epadd_mods_mapping_handler = EpaddModsMappingHandler()
     
                
     def process_batch(self, project_path, batch_name, supplemental_deposit_metadata, depositing_application):
@@ -150,14 +150,16 @@ class BatchBuilderAssistant:
                 delimiter = ","
             objectRole = supplemental_deposit_metadata["objectRole"].rstrip()
             objectRole = objectRole.replace(":", "_")
-            overrides += "{}role={};".format(delimiter,objectRole)
+            overrides += "{}role={}".format(delimiter,objectRole)
             
-        if (depositing_application == "ePADD"):    
-            overrides += delimiter + epadd_mods_mapping_handler.build_object_overrides(project_path, object_name)
+        if (depositing_application == "ePADD"):  
+            epadd_overrides =  self.epadd_mods_mapping_handler.build_object_overrides(project_path, object_name)
+            if epadd_overrides:
+                overrides += delimiter + epadd_overrides
             
         command = None
         if overrides:
-            command = " -objectprop \"{}::{}\"".format(object_name, overrides);
+            command = " -objectprop \"{}::{};\"".format(object_name, overrides);
             
         return command 
 
