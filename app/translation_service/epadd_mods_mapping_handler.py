@@ -1,5 +1,4 @@
 import os, os.path, logging, json, jsonschema, shutil
-import collections.abc
 import xml.etree.ElementTree as ET
 from pyunpack import Archive
 from pathlib import Path
@@ -20,7 +19,6 @@ class EpaddModsMappingHandler:
         logging.basicConfig(
           filename=log_file,
           level=loglevel,
-          format="%(asctime)s:%(levelname)s:%(message)s",
           filemode='a'
         )
         self.mapping_file_validated = False
