@@ -142,15 +142,16 @@ def test_epadd_build_command_with_overrides():
               "successEmail": "winner@mailinator.com",
               "failureEmail": "loser@mailinator.com",
               "successMethod": "dropbox",
-              "adminCategory": "http://idtest.lib.harvard.edu:10020/wordshack/adminCategory/27186"}
+              "adminCategory": "http://idtest.lib.harvard.edu:10020/wordshack/adminCategory/27186",
+              "embargoBasis": "Harvard policy"}
      
      
     bb_script_name = os.getenv("BB_SCRIPT_NAME")
          
     command = batch_builder_assistant.build_command(epadd_with_mods_project_path, epadd_with_mods_batch_name, supplemental_data, "ePADD")
-     
+    print(command)
     overridestring = "-batchprop \"successEmail=winner@mailinator.com,failureEmail=loser@mailinator.com,successMethod=dropbox,depositAgent=dimsdts1,depositAgentEmail=DTS@HU.onmicrosoft.com\""
-    overridestring += " -objectprop \"epadd-test-with-mods::ownerCode=HUL.TEST,billingCode=HUL.TEST.BILL_0001,resourceNamePattern={n},urnAuthorityPath=HUL.TEST,accessFlag=N,adminCategory=http://idtest.lib.harvard.edu:10020/wordshack/adminCategory/27186,role=CG_EMAIL," 
+    overridestring += " -objectprop \"epadd-test-with-mods::ownerCode=HUL.TEST,billingCode=HUL.TEST.BILL_0001,resourceNamePattern={n},urnAuthorityPath=HUL.TEST,accessFlag=N,adminCategory=http://idtest.lib.harvard.edu:10020/wordshack/adminCategory/27186,embargoBasis=Harvard policy,role=CG_EMAIL," 
     overridestring += "identifier=eas-0001,titleInfoTitle=EAS Project Email Collection,abstract=Scope and content: EAS Test Scope and Content.Description: EAS Test Email Description.,Format version: MBOX version 1.2.13.Format name: MBOX.Overall unique attachment count: 2.,originInfoDateCreated=2012-05-16/2020-12-07,embargoGrantStart=2023-03-15,embargoDuration=2,embargoDurationUnit=years;\""
     overridestring += " -dirprop \"epadd-test-with-mods::container::isFirstGenerationInDrs=yes,usageClass=LOWUSE,fileStorageClass=AR\""
     assert command == "sh {} -a build -p {} -b {} {}".format(bb_script_name, epadd_with_mods_project_path, epadd_with_mods_batch_name, overridestring)
@@ -172,7 +173,8 @@ def test_epadd_with_mods_run_batch_builder_with_overrides():
                "successEmail": "winner@mailinator.com",
                "failureEmail": "loser@mailinator.com",
                "successMethod": "dropbox",
-               "adminCategory": "http://idtest.lib.harvard.edu:10020/wordshack/adminCategory/27186"}
+               "adminCategory": "http://idtest.lib.harvard.edu:10020/wordshack/adminCategory/27186",
+               "embargoBasis": "Harvard policy"}
      batch_builder_assistant.process_batch(epadd_with_mods_project_path, epadd_with_mods_batch_name, supplemental_data, "ePADD")   
      expected_batch_file = os.path.join(epadd_with_mods_project_path, epadd_with_mods_batch_name, "batch.xml")
      assert os.path.exists(expected_batch_file)

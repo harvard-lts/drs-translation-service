@@ -145,6 +145,10 @@ class BatchBuilderAssistant:
             if overrides:
                 delimiter = ","
             overrides += "{}adminCategory={}".format(delimiter,supplemental_deposit_metadata["adminCategory"].rstrip())
+        if "embargoBasis" in supplemental_deposit_metadata:
+            if overrides:
+                delimiter = ","
+            overrides += "{}embargoBasis={}".format(delimiter,supplemental_deposit_metadata["embargoBasis"].rstrip())
         if "objectRole" in supplemental_deposit_metadata:
             if overrides:
                 delimiter = ","
