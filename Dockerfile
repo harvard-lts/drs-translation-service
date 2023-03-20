@@ -2,7 +2,7 @@ FROM python:3.8-slim-buster
 
 COPY requirements.txt /tmp/
 
-RUN apt-get update && apt-get install -y curl libpq-dev gcc python-dev supervisor nginx openjdk-11-jdk && \
+RUN apt-get update && apt-get install -y curl libpq-dev gcc python-dev supervisor nginx openjdk-11-jdk p7zip && \
   mkdir -p /etc/nginx/ssl/ && \
   openssl req \
           -x509 \

@@ -2,7 +2,7 @@ import os, os.path, json, jsonschema, logging
 
 logfile=os.getenv('LOGFILE_PATH', 'drs_translation_service')
 loglevel=os.getenv('LOGLEVEL', 'WARNING')
-logging.basicConfig(filename=logfile, level=loglevel)
+logging.basicConfig(filename=logfile, level=loglevel, format="%(asctime)s:%(levelname)s:%(message)s")
 
 def validate_json_schema(json_data):
 

@@ -6,7 +6,7 @@ base_load_report_dir = os.getenv("BASE_LOADREPORT_PATH")
 sample_load_report="/home/appuser/tests/data/sampleloadreport/LOADREPORT_sample.txt"
 logfile=os.getenv('LOGFILE_PATH', 'drs_translation_service')
 loglevel=os.getenv('LOGLEVEL', 'WARNING')
-logging.basicConfig(filename=logfile, level=loglevel)
+logging.basicConfig(filename=logfile, level=loglevel, format="%(asctime)s:%(levelname)s:%(message)s")
 
 batch_builder_assistant = BatchBuilderAssistant()
 

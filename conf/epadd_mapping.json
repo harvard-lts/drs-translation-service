@@ -1,0 +1,27 @@
+{"mapping": [
+    {"property-type": "object",
+      "mapping-details": [
+        {
+        "epadd-file": "collection-metadata",
+        "mapping-values": [
+            {"epadd-field": "collectionID", "bb-field": "identifier"},
+            {"epadd-field": "collectionTitle", "bb-field": "titleInfoTitle"},
+            {"epadd-field": "description","bb-field": "abstract", "label": "Description"},
+            {"epadd-field": "scopeAndContent","bb-field": "abstract", "label": "Scope and content"},
+            {"epadd-field": "access", "bb-field": "accessCondition"},
+            {"epadd-field": "firstDateTS", "epadd-field-2": "lastDateTS", "bb-field": "originInfoDateCreated", "date-format-field": "YYYY-MM-DD", "date-format-field-2": "YYYY-MM-DD", "concatenation-delimiter": "/"},
+            {"epadd-field": "embargoStartDate", "bb-field": "embargoGrantStart"},
+            {"epadd-field": "embargoDuration", "bb-field": ""}
+        ]
+        },
+        {
+        "epadd-file": "epaddPremis",
+        "mapping-values":[
+            {"epadd-field": "significantProperties", "bb-field": "abstract", "label": "Overall unique attachment count", "value_field": "significantPropertiesValue", "conditional": "significantPropertiesType=application/pdf"},
+            {"epadd-field": "format", "bb-field": "abstract", "label": "Format name", "value_field": "formatName"},
+            {"epadd-field": "format", "bb-field": "abstract", "label": "Format version", "value_field": "formatVersion"}
+        ]
+        }
+      ]
+    }]
+}
