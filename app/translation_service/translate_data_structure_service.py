@@ -3,6 +3,7 @@ from pathlib import Path
 
 logger = logging.getLogger('dts')
 
+
 def translate_data_structure(package_path, supplemental_deposit_data, depositing_application):
     # Project name is the doi-name
     # Batch name doi-name-batch

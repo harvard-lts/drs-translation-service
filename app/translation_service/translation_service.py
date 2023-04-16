@@ -66,7 +66,8 @@ def parse_drsconfig_metadata(drs_config_path):
                     "successEmail": metadata_dict["successEmail"],
                     "failureEmail": metadata_dict["failureEmail"],
                     "successMethod": metadata_dict["successMethod"],
-                    "adminCategory": metadata_dict.get("adminCategory")
+                    "adminCategory": metadata_dict.get("adminCategory"),
+                    "embargoBasis": metadata_dict.get("embargoBasis")
                 }
             except KeyError as err:
                 logger.error("Missing a key in " + drs_config_path +" file: " + str(err))

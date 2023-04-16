@@ -2,6 +2,7 @@ import logging, traceback, re
 import os, os.path
 from logging.handlers import TimedRotatingFileHandler
 
+
 import load_report_service.load_report_service as load_report_service
 import translation_service.translation_service as translation_service
 import mqresources.mqutils as mqutils
@@ -136,7 +137,6 @@ def create_app():
     return app
 
 
-
 def configure_logger():
     log_level = os.getenv("LOGLEVEL", "WARNING")
     log_file_path = os.getenv("LOGFILE_PATH", "/home/appuser/epadd-curator-app/logs/dts.log")
@@ -171,7 +171,6 @@ def initialize_listeners():
     ProcessReadyQueueListener()
 
 def reprocess_batch(batch_path):
-    
     logging.getLogger('dts').debug("Reprocessing: " + batch_path)
     admin_metadata = {}
     batch_as_array = batch_path.split("/")
