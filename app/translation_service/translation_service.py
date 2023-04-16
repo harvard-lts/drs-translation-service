@@ -2,11 +2,9 @@ import os, os.path, logging, shutil
 import translation_service.translate_data_structure_service as translate_data_structure_service
 from translation_service.batch_builder_assistant import BatchBuilderAssistant
 
+logger = logging.getLogger('dts')
 base_load_report_dir = os.getenv("BASE_LOADREPORT_PATH")
 sample_load_report="/home/appuser/tests/data/sampleloadreport/LOADREPORT_sample.txt"
-logfile=os.getenv('LOGFILE_PATH', 'drs_translation_service')
-loglevel=os.getenv('LOGLEVEL', 'WARNING')
-logging.basicConfig(filename=logfile, level=loglevel, format="%(asctime)s:%(levelname)s:%(message)s")
 
 batch_builder_assistant = BatchBuilderAssistant()
 
@@ -68,13 +66,13 @@ def parse_drsconfig_metadata(drs_config_path):
                     "successEmail": metadata_dict["successEmail"],
                     "failureEmail": metadata_dict["failureEmail"],
                     "successMethod": metadata_dict["successMethod"],
-                    "adminCategory": metadata_dict["adminCategory"]
+                    "adminCategory": metadata_dict.get("adminCategory")
                 }
             except KeyError as err:
-                logging.error("Missing a key in " + drs_config_path +" file: " + str(err))
+                logger.error("Missing a key in " + drs_config_path +" file: " + str(err))
 
     except FileNotFoundError:
-        logging.error("drsConfig.txt does not exist for path: "+ drs_config_path)
+        logger.error("drsConfig.txt does not exist for path: "+ drs_config_path)
     
     return admin_metadata
 

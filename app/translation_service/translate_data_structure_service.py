@@ -1,10 +1,7 @@
 import os, os.path, logging, shutil, glob
 from pathlib import Path
 
-logfile = os.getenv('LOGFILE_PATH', 'drs_translation_service')
-loglevel = os.getenv('LOGLEVEL', 'WARNING')
-logging.basicConfig(filename=logfile, level=loglevel, format="%(asctime)s:%(levelname)s:%(message)s")
-
+logger = logging.getLogger('dts')
 
 def translate_data_structure(package_path, supplemental_deposit_data, depositing_application):
     # Project name is the doi-name
@@ -21,7 +18,7 @@ def translate_data_structure(package_path, supplemental_deposit_data, depositing
 
     application_name = depositing_application
     is_extracted_package = "false"
-    logging.debug("Depositing application: {}".format(depositing_application))
+    logger.debug("Depositing application: {}".format(depositing_application))
     if (application_name == "Dataverse"):
         is_extracted_package = os.getenv("EXTRACTED_PACKAGE_DVN", 'False').lower()
         content_model = os.getenv("DVN_CONTENT_MODEL", "opaque")
@@ -41,7 +38,7 @@ def translate_data_structure(package_path, supplemental_deposit_data, depositing
 
 
 def __handle_opaque_directory_mapping(package_path, object_dir, aux_object_dir, is_extracted_package):
-    logging.debug("Formatting for opaque content model")
+    logger.debug("Formatting for opaque content model")
     parent_directory_path = package_path
     if (is_extracted_package == "true"):
         # Make batch dir and object dir
@@ -65,7 +62,7 @@ def __handle_opaque_directory_mapping(package_path, object_dir, aux_object_dir, 
 
 
 def __handle_opaque_container_directory_mapping(package_path, object_dir, aux_object_dir):
-    logging.debug("Formatting for opaque container content model")
+    logger.debug("Formatting for opaque container content model")
     # Make object dir
     os.makedirs(object_dir, exist_ok=True)
 
@@ -77,7 +74,7 @@ def __handle_opaque_container_directory_mapping(package_path, object_dir, aux_ob
 
     hascontent = False
     # Copy zip/gz/7z
-    logging.debug("globbing...")
+    logger.debug("globbing...")
 
     for file in Path(package_path).glob('*.zip'):
         logging.debug("Found package: %s", file)
@@ -124,8 +121,7 @@ def __handle_content_files(object_dir, extracted_path):
                 os.mkdir(content_path)
             # If it is a path to a file, move the file
             if (os.path.isfile(item_path)):
-                print("Moving {} to {}".format(item_path, os.path.join(content_path, os.path.basename(item_path))))
-                logging.debug("Moving {} to {}".format(item_path, os.path.basename(item_path)))
+                logger.debug("Moving {} to {}".format(item_path, os.path.basename(item_path)))
                 shutil.copy2(item_path, os.path.join(content_path, os.path.basename(item_path)))
             # If it is a directory, use the recursive call
             else:
@@ -141,16 +137,13 @@ def __move_files(root_dir, source, dest_dir):
     '''This method actually copies the files from source to destination rather than
     moves them to preserve the original structure and to aid in error handling'''
     if (os.path.isfile(source)):
-        print("Moving {} to {}".format(os.path.join(root_dir, source), os.path.join(dest_dir, source)))
-        logging.debug("Moving {} to {}".format(os.path.join(root_dir, source), os.path.join(dest_dir, source)))
+        logger.debug("Moving {} to {}".format(os.path.join(root_dir, source), os.path.join(dest_dir, source)))
         shutil.copy2(os.path.join(root_dir, source), os.path.join(dest_dir, os.path.basename(source)))
     else:
         for root, subdirs, files in os.walk(source):
             for subdir in subdirs:
-                print("Subdir {} to {}".format(os.path.join(root, subdir), dest_dir))
                 __move_files(os.path.join(root, subdir), os.path.join(root, subdir), dest_dir)
             for filename in files:
-                print("File {} to {}".format(os.path.join(root, filename), os.path.join(dest_dir, filename)))
                 shutil.copy2(os.path.join(root, filename), os.path.join(dest_dir, filename))
 
 
@@ -164,10 +157,7 @@ def __handle_documentation_files(object_dir, extracted_path):
         item_path = os.path.join(extracted_path, item)
         # If there is a wildcard, then move all under that item
         if ("*" in item):
-            print("Wildcard {} ".format(item_path))
-            print(glob.glob('{}'.format(item_path)))
             for file in glob.glob('{}'.format(item_path)):
-                print("file: {}".format(file))
                 shutil.copy2(os.path.join(item_path, file), os.path.join(doc_path, file))
         elif os.path.exists(item_path):
             if not os.path.exists(doc_path):
@@ -175,8 +165,7 @@ def __handle_documentation_files(object_dir, extracted_path):
 
             # If it is a path to a file, move the file
             if (os.path.isfile(item_path)):
-                print("Moving {} to {}".format(item_path, os.path.join(doc_path, os.path.basename(item_path))))
-                logging.debug("Moving {} to {}".format(item_path, os.path.basename(item_path)))
+                logger.debug("Moving {} to {}".format(item_path, os.path.basename(item_path)))
                 shutil.copy2(item_path, os.path.join(doc_path, os.path.basename(item_path)))
             # If it is a directory, use the recursive call
             else:

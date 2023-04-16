@@ -10,6 +10,7 @@ import stomp
 from mqresources.listener.stomp_interactor import StompInteractor
 from stomp.utils import Frame
 from tenacity import retry, before_log, wait_exponential, stop_after_attempt
+import notifier.notifier as notifier
 
 
 class StompListenerBase(stomp.ConnectionListener, StompInteractor, ABC):
@@ -31,8 +32,12 @@ class StompListenerBase(stomp.ConnectionListener, StompInteractor, ABC):
             message_body = json.loads(frame.body)
             self._handle_received_message(message_body, message_id, message_subscription)
         except json.decoder.JSONDecodeError as e:
-            self._logger.error(str(e))
             self._unacknowledge_message(message_id, message_subscription)
+            msg = "JSON Decoding failed: {}".format(str(e))
+            exception_msg = traceback.format_exc()
+            body = msg + "\n" + exception_msg
+            notifier.send_error_notification(str(e), body)
+                
 
     def on_error(self, frame: Frame) -> None:
         self._logger.info("MQ error received: " + frame.body)

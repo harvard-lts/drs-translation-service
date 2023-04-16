@@ -1,6 +1,6 @@
 import logging, traceback, re
 import os, os.path
-from logging.handlers import RotatingFileHandler
+from logging.handlers import TimedRotatingFileHandler
 
 import load_report_service.load_report_service as load_report_service
 import translation_service.translation_service as translation_service
@@ -11,6 +11,8 @@ from healthcheck import HealthCheck, EnvironmentDump
 from load_report_service.load_report_exception import LoadReportException
 from mqresources.listener.process_ready_queue_listener import ProcessReadyQueueListener
 from requests import Response
+
+import notifier.notifier as notifier
 
 LOG_FILE_DEFAULT_PATH = os.getenv('LOGFILE_PATH', 'drs_translation_service')
 LOG_FILE_DEFAULT_LEVEL = os.getenv('LOGLEVEL', 'WARNING')
@@ -60,9 +62,17 @@ def create_app():
         try:
             load_report_service.handle_load_report(args['filename'], dryrun)
         except LoadReportException as lre:
-            return "Handling of load report failed: {}".format(str(lre)), 400
+            msg = "Handling of load report failed: {}".format(str(lre))
+            exception_msg = traceback.format_exc()
+            body = msg + "\n" + exception_msg
+            notifier.send_error_notification(str(lre), body)
+            return msg, 400
         except Exception as e:
-            return "Handling of load report failed: {}".format(str(e)), 500
+            msg = "Handling of load report failed: {}".format(str(e))
+            exception_msg = traceback.format_exc()
+            body = msg + "\n" + exception_msg
+            notifier.send_error_notification(str(e), body)
+            return msg, 500
         return "ok", 200
 
     @app.route('/failedBatch', endpoint="failedBatch")
@@ -78,17 +88,25 @@ def create_app():
         try:
             load_report_service.handle_failed_batch(args['batchName'], dryrun)
         except LoadReportException as lre:
-            return "Handling of failed batch returned an error: {}".format(str(lre)), 400
+            msg = "Handling of failed batch returned an error: {}".format(str(lre))
+            exception_msg = traceback.format_exc()
+            body = msg + "\n" + exception_msg
+            notifier.send_error_notification(str(lre), body)
+            return msg, 400
         except Exception as e:
-            return "Handling of failed batch returned an error: {}".format(str(e)), 500
+            msg = "Handling of failed batch returned an error: {}".format(str(e))
+            exception_msg = traceback.format_exc()
+            body = msg + "\n" + exception_msg
+            notifier.send_error_notification(str(e), body)
+            return msg, 500
         return "ok", 200
     
     @app.route('/reprocess_batches', endpoint="reprocess_batches")
     @app.errorhandler(werkzeug.exceptions.BadRequest)
     def reprocess_batches():
         args = request.args
-        logging.debug("Reprocess args")
-        logging.debug(args)
+        logging.getLogger('dts').debug("Reprocess args")
+        logging.getLogger('dts').debug(args)
         
         if ("unprocessed_exports" not in args):
             return 'Missing unprocessed_exports argument in data!', 400
@@ -98,13 +116,15 @@ def create_app():
             try: 
                 unprocessed_exports = args.getlist('unprocessed_exports')
                 for batch_path in unprocessed_exports:
-                    logging.debug("Reprocessing {}".format(batch_path))
+                    logging.getLogger('dts').debug("Reprocessing {}".format(batch_path))
                     reprocess_batch(batch_path)
                 
             except Exception as e:
-                logging.error("Reprocessing of data failed: {}".format(str(e)))
-                logging.error(traceback.format_exc())
-                return "Reprocessing of data failed: {}".format(str(e)), 500
+                msg = "Reprocessing of data failed: {}".format(str(e))
+                exception_msg = traceback.format_exc()
+                body = msg + "\n" + exception_msg
+                notifier.send_error_notification(str(e), body)
+                return msg, 500
         return "ok", 200
 
 
@@ -118,18 +138,22 @@ def create_app():
 
 
 def configure_logger():
-    log_file_path = os.getenv('LOGFILE_PATH', LOG_FILE_DEFAULT_PATH)
-    logger = logging.getLogger()
-
-    file_handler = RotatingFileHandler(
+    log_level = os.getenv("LOGLEVEL", "WARNING")
+    log_file_path = os.getenv("LOGFILE_PATH", "/home/appuser/epadd-curator-app/logs/dts.log")
+    log_file_path = os.path.join(log_dir, "monitor_epadd_exports.log")
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    
+    file_handler = TimedRotatingFileHandler(
         filename=log_file_path,
-        maxBytes=LOG_FILE_MAX_SIZE_BYTES,
+        when=LOG_ROTATION,
         backupCount=LOG_FILE_BACKUP_COUNT
     )
+    logger = logging.getLogger('dts')
+        
     logger.addHandler(file_handler)
-
-    log_level = os.getenv('LOGLEVEL', LOG_FILE_DEFAULT_LEVEL)
+    file_handler.setFormatter(formatter)
     logger.setLevel(log_level)
+        
 
 
 def disable_cached_responses(app: Flask) -> None:
@@ -143,12 +167,12 @@ def disable_cached_responses(app: Flask) -> None:
 
 
 def initialize_listeners():
-    logging.debug("Creating Process Ready queue listener...")
+    logging.getLogger('dts').debug("Creating Process Ready queue listener...")
     ProcessReadyQueueListener()
 
 def reprocess_batch(batch_path):
     
-    logging.debug("Reprocessing: " + batch_path)
+    logging.getLogger('dts').debug("Reprocessing: " + batch_path)
     admin_metadata = {}
     batch_as_array = batch_path.split("/")
     dropbox_name = batch_as_array[-3]

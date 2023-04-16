@@ -2,6 +2,8 @@ import os, os.path, logging
 from translation_service.translation_exceptions import BatchBuilderException
 from translation_service.epadd_mods_mapping_handler import EpaddModsMappingHandler
 
+logger = logging.getLogger('dts')
+
 '''
 The assistant processes the batches using 
 the Batch Builder client
@@ -9,18 +11,6 @@ the Batch Builder client
 class BatchBuilderAssistant:
     
     def __init__(self):
-        
-        log_file = os.getenv("LOGFILE_PATH")
-        loglevel=os.getenv('LOGLEVEL', 'WARNING')
-        
-        # Configure logging module
-        logging.basicConfig(
-          filename=log_file,
-          level=loglevel,
-          format="%(asctime)s:%(levelname)s:%(message)s",
-          filemode='a'
-        )
-        
         self.epadd_mods_mapping_handler = EpaddModsMappingHandler()
     
                
@@ -32,16 +22,14 @@ class BatchBuilderAssistant:
             command = "cd {} && ".format(bb_client_path)
             command += self.build_command(project_path, batch_name, supplemental_deposit_metadata, depositing_application)
 
-            logging.info("batch builder command: " + command)
+            logger.info("batch builder command: " + command)
             os.system(command)
                         
             expected_batch_file = os.path.join(project_path, batch_name, "batch.xml")
             if not os.path.isfile(expected_batch_file):
-                logging.error("Failed to create batch, no batch.xml found: " + command + " at location: " + expected_batch_file)
                 raise BatchBuilderException("Failed to create batch, no batch.xml found: " + command)
                         
             if not self.__validate_descriptors_exist(os.path.join(project_path, batch_name)):
-                logging.error("Failed to create batch, no descriptor found: " + command)
                 raise BatchBuilderException("Failed to create batch, no descriptor found: " + command)  
                         
 

@@ -1,8 +1,11 @@
 class TranslationException(Exception):
+    
+    def __init__(self, message, emailaddress):
+        super().__init__(message)
+        self.emailaddress = emailaddress
+
+class BatchBuilderException(TranslationException):
     pass
 
-class BatchBuilderException(Exception):
-    pass
-
-class EpaddModsHandlingException(Exception):
+class EpaddModsHandlingException(TranslationException):
     pass
