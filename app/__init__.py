@@ -5,20 +5,18 @@ from logging.handlers import TimedRotatingFileHandler
 
 import load_report_service.load_report_service as load_report_service
 import translation_service.translation_service as translation_service
-import mqresources.mqutils as mqutils
+import dts_mqresources.mqutils as mqutils
 import werkzeug
 from flask import Flask, request
 from healthcheck import HealthCheck, EnvironmentDump
 from load_report_service.load_report_exception import LoadReportException
-from mqresources.listener.process_ready_queue_listener import ProcessReadyQueueListener
+from dts_mqresources.listener.process_ready_queue_listener import ProcessReadyQueueListener
 from requests import Response
 
 import notifier.notifier as notifier
 
-LOG_FILE_DEFAULT_PATH = os.getenv('LOGFILE_PATH', 'drs_translation_service')
-LOG_FILE_DEFAULT_LEVEL = os.getenv('LOGLEVEL', 'WARNING')
-LOG_FILE_MAX_SIZE_BYTES = 2 * 1024 * 1024
 LOG_FILE_BACKUP_COUNT = 1
+LOG_ROTATION = "midnight"
 
 
 # App factory
@@ -140,7 +138,6 @@ def create_app():
 def configure_logger():
     log_level = os.getenv("LOGLEVEL", "WARNING")
     log_file_path = os.getenv("LOGFILE_PATH", "/home/appuser/epadd-curator-app/logs/dts.log")
-    log_file_path = os.path.join(log_dir, "monitor_epadd_exports.log")
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
     
     file_handler = TimedRotatingFileHandler(

@@ -129,11 +129,11 @@ class BatchBuilderAssistant:
             if overrides:
                 delimiter = ","
             overrides += "{}accessFlag={}".format(delimiter,supplemental_deposit_metadata["accessFlag"].rstrip())
-        if "adminCategory" in supplemental_deposit_metadata:
+        if "adminCategory" in supplemental_deposit_metadata and supplemental_deposit_metadata["adminCategory"] is not None:
             if overrides:
                 delimiter = ","
             overrides += "{}adminCategory={}".format(delimiter,supplemental_deposit_metadata["adminCategory"].rstrip())
-        if "embargoBasis" in supplemental_deposit_metadata:
+        if "embargoBasis" in supplemental_deposit_metadata and supplemental_deposit_metadata["embargoBasis"] is not None:
             if overrides:
                 delimiter = ","
             overrides += "{}embargoBasis={}".format(delimiter,supplemental_deposit_metadata["embargoBasis"].rstrip())

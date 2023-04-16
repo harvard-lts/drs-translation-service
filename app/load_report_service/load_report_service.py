@@ -1,7 +1,7 @@
 import os, os.path, shutil
 from load_report_service.load_report import LoadReport
 from load_report_service.load_report_exception import LoadReportException
-import mqresources.mqutils as mqutils
+import dts_mqresources.mqutils as mqutils
 
 base_load_report_dir = os.getenv("BASE_LOADREPORT_PATH")
 base_dropbox_dir = os.getenv("BASE_DROPBOX_PATH")

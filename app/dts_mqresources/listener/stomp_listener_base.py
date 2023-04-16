@@ -7,7 +7,7 @@ import logging
 from abc import abstractmethod, ABC
 
 import stomp
-from mqresources.listener.stomp_interactor import StompInteractor
+from dts_mqresources.listener.stomp_interactor import StompInteractor
 from stomp.utils import Frame
 from tenacity import retry, before_log, wait_exponential, stop_after_attempt
 import notifier.notifier as notifier

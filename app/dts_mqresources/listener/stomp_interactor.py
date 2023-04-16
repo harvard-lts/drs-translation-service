@@ -6,8 +6,8 @@ import logging
 from abc import ABC, abstractmethod
 
 import stomp
-from mqresources.listener.mq_connection_exception import MqConnectionException
-from mqresources.listener.mq_connection_params import MqConnectionParams
+from dts_mqresources.listener.mq_connection_exception import MqConnectionException
+from dts_mqresources.listener.mq_connection_params import MqConnectionParams
 
 
 class StompInteractor(ABC):

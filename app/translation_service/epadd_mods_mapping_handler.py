@@ -12,7 +12,7 @@ class EpaddModsMappingHandler:
         
     def __init__(self):
         
-        self.logger = Logging.getLogger('dts')
+        self.logger = logging.getLogger('dts')
         self.mapping_file_validated = False
         
         

@@ -6,7 +6,7 @@ import time
 from collections import OrderedDict
 from unittest.mock import patch
 
-sys.path.append('app/mqresources')
+sys.path.append('app/dts_mqresources')
 sys.path.append('app/translation_service')
 import mqutils
 from listener.process_ready_queue_listener import ProcessReadyQueueListener

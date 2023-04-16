@@ -1,13 +1,11 @@
 import mqresources.mqutils as mqutils
-
-default_email_recipient = os.getenv("DEFAULT_EMAIL_RECIPIENT")
-
-logger = logging.getLogger('dts')
+import os, logging
 
 def send_error_notification(subject, body, recipients=None):
-    logger.error(body)
+    logging.getLogger('dts').error(body)
     queue = os.getenv("EMAIL_QUEUE_NAME")
     subject = "DTS: " + subject   
+    default_email_recipient = os.getenv("DEFAULT_EMAIL_RECIPIENT")
     if recipients is None:
         recipients = default_email_recipient
     else:
