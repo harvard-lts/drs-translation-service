@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 
-import logging
 from load_report_service.load_report_exception import LoadReportException
 
-logger = logging.getLogger('dts')
+
 '''
 Parses a load report and manipulates some of the contents
 '''
