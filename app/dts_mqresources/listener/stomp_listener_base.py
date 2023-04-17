@@ -3,7 +3,7 @@ This module defines a StompListenerBase, which is an abstract class intended
 to define common behavior for stomp-implemented MQ listener components.
 """
 import json
-import logging
+import logging, traceback
 from abc import abstractmethod, ABC
 
 import stomp
