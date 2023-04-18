@@ -6,8 +6,8 @@ import logging
 from abc import ABC, abstractmethod
 
 import stomp
-from mqresources.listener.mq_connection_exception import MqConnectionException
-from mqresources.listener.mq_connection_params import MqConnectionParams
+from dts_mqresources.listener.mq_connection_exception import MqConnectionException
+from dts_mqresources.listener.mq_connection_params import MqConnectionParams
 
 
 class StompInteractor(ABC):
@@ -15,7 +15,7 @@ class StompInteractor(ABC):
     __STOMP_CONN_TIMEOUT_MS = 5000
 
     def __init__(self) -> None:
-        self._logger = logging.getLogger()
+        self._logger = logging.getLogger('dts')
 
     def _create_mq_connection(self) -> stomp.Connection:
         """

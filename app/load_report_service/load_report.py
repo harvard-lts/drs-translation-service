@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
-import logging
 from load_report_service.load_report_exception import LoadReportException
+
 
 '''
 Parses a load report and manipulates some of the contents
@@ -52,8 +52,7 @@ class LoadReport:
         try: 
             file = open(self.load_report_path, "r")
         except FileNotFoundError:
-            logging.warning('Load Report Filepath does not exist: {}'.format(self.load_report_path))
-            raise LoadReportException("ERROR OPENING LOAD REPORT", 'Load Report Filepath does not exist: {}'.format(self.load_report_path))
+            raise LoadReportException("ERROR OPENING LOAD REPORT", 'Load Report Filepath does not exist: {}'.format(self.load_report_path), None)
 
         if file is not None:
             

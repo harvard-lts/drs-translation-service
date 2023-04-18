@@ -12,16 +12,7 @@ class EpaddModsMappingHandler:
         
     def __init__(self):
         
-        log_file = os.getenv("LOGFILE_PATH")
-        loglevel=os.getenv('LOGLEVEL', 'DEBUG')
-        
-        # Configure logging module
-        logging.basicConfig(
-          filename=log_file,
-          level=loglevel,
-          format="%(asctime)s:%(levelname)s:%(message)s",
-          filemode='a'
-        )
+        self.logger = logging.getLogger('dts')
         self.mapping_file_validated = False
         
         
@@ -34,16 +25,16 @@ class EpaddModsMappingHandler:
         #Unzip the zip file
         extracted_path = self.__unzip_object(project_path)
         if extracted_path is None:
-            logging.warning("Could not find a compressed file to extract for MODS data in {}.".format(project_path))
+            self.logger.warning("Could not find a compressed file to extract for MODS data in {}.".format(project_path))
             return ""
         
         cm_file_path = self.__find_collection_metadata_file(extracted_path)     
         if cm_file_path is None:
-            logging.warning("Could not find a collection_metadata.json file in {}.".format(extracted_path))
+            self.logger.warning("Could not find a collection_metadata.json file in {}.".format(extracted_path))
             
         premis_file_path = self.__find_premis_file(extracted_path)     
         if premis_file_path is None:
-            logging.warning("Could not find a epaddPremis.json file in {}.".format(extracted_path))
+            self.logger.warning("Could not find a epaddPremis.json file in {}.".format(extracted_path))
         
         if cm_file_path is None and premis_file_path is None:
             return ""
@@ -59,7 +50,6 @@ class EpaddModsMappingHandler:
                     elif mapping_details['epadd-file'] == 'epaddPremis':
                         premis_overrides = self.__build_epadd_premis_overrides(mapping_details['mapping-values'], premis_file_path)
                     else: 
-                        logging.error("Data from {} is not implemented.".format(mapping_details['epadd-file']))
                         raise EpaddModsHandlingException("Data from {} is not implemented.".format(mapping_details['epadd-file']))
         override_dict = cm_overrides
         #Both cm and premis overrides
@@ -123,7 +113,6 @@ class EpaddModsMappingHandler:
             if "conditional" in mapping_values:
                 cond_array = mapping_values["conditional"].split("=")
                 if len(cond_array) != 2:
-                    logging.error("Conditional must be of format key=value.  Conditional supplied is {}.".format(mapping_values["conditional"]))
                     raise EpaddModsHandlingException("Conditional must be of format key=value.  Conditional supplied is {}.".format(mapping_values["conditional"]))
                 cond_key = cond_array[0]
                 cond_val = cond_array[1]
@@ -132,7 +121,6 @@ class EpaddModsMappingHandler:
                         if "value_field" in mapping_values:
                             final_val = cm_value[mapping_values["value_field"]]
                         else:
-                            logging.error("Value must be supplied if Collection Metadata conditional is set.  CM value: {} .".format(cm_value))
                             raise EpaddModsHandlingException("Value must be supplied if Collection Metadata conditional is set.  CM value: {} .".format(cm_value))             
 
             if "label" in mapping_values and final_val:
@@ -165,12 +153,12 @@ class EpaddModsMappingHandler:
                 if embargo_array[1] in permitted_durations:
                     override_dict["embargoDurationUnit"] = embargo_array[1]
                 else:
-                    logging.error("Embargo duration unit {} must be one of {}".format(embargo_array[1], permitted_durations))
+                    self.logger.error("Embargo duration unit {} must be one of {}".format(embargo_array[1], permitted_durations))
                     return {}
             except Exception:
-                logging.error("Embargo duration {} must be an int".format(embargo_array[0]))
+                self.logger.error("Embargo duration {} must be an int".format(embargo_array[0]))
         else:
-            logging.error("Embargo duration {} was not mapped because it does not meet the format of '# days|months|years'".format(embargoDuration))
+            self.logger.error("Embargo duration {} was not mapped because it does not meet the format of '# days|months|years'".format(embargoDuration))
         return override_dict 
     
     def __build_epadd_premis_overrides(self, mapping_values_array, premis_file_path):
@@ -191,12 +179,10 @@ class EpaddModsMappingHandler:
                     if "value_field" in mapping_values:
                         value_field = mapping_values["value_field"]
                     else:
-                        logging.error("Value must be supplied if Premis element has children.  Premis value: {} .".format(premis_value.tag))
                         raise EpaddModsHandlingException("Value must be supplied if Premis element has children.  Premis value: {} .".format(premis_value.tag)) 
                     
                     cond_array = mapping_values["conditional"].split("=")
                     if len(cond_array) != 2:
-                        logging.error("Conditional must be of format key=value.  Conditional supplied is {}.".format(mapping_values["conditional"]))
                         raise EpaddModsHandlingException("Conditional must be of format key=value.  Conditional supplied is {}.".format(mapping_values["conditional"]))
                     
                     cond_key = cond_array[0]
@@ -279,26 +265,21 @@ class EpaddModsMappingHandler:
         schema = os.getenv("MODS_MAPPING_SCHEMA")
         
         if not schema:
-            logging.error("Missing env definition: MODS_MAPPING_SCHEMA.")
             raise Exception("Missing env definition: MODS_MAPPING_SCHEMA")
             
         try:
             with open(schema) as json_file:
                 json_model = json.load(json_file)
         except Exception as e:
-            logging.exception("Unable to get json schema model.")
             raise e
             
         try:
             jsonschema.validate(self.mapping_data, json_model)
         except json.decoder.JSONDecodeError as e:
-            logging.exception("Invalid JSON format")
             raise e
         except jsonschema.exceptions.ValidationError as e:
-            logging.exception("Invalid JSON schema:")
             raise e
         except Exception as e:
-            logging.exception("Unable to validate json model.")
             raise e
         
         self.mapping_file_validated = True

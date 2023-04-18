@@ -1,11 +1,7 @@
-import os, os.path, logging, shutil
+import os, os.path, shutil
 from load_report_service.load_report import LoadReport
 from load_report_service.load_report_exception import LoadReportException
-import mqresources.mqutils as mqutils
-
-logfile=os.getenv('LOGFILE_PATH', 'drs_translation_service')
-loglevel=os.getenv('LOGLEVEL', 'WARNING')
-logging.basicConfig(filename=logfile, level=loglevel, format="%(asctime)s:%(levelname)s:%(message)s")
+import dts_mqresources.mqutils as mqutils
 
 base_load_report_dir = os.getenv("BASE_LOADREPORT_PATH")
 base_dropbox_dir = os.getenv("BASE_DROPBOX_PATH")
@@ -96,7 +92,6 @@ def _delete_load_report_from_dropbox(load_report_batch_path):
     try:
         shutil.rmtree(load_report_batch_path)
     except Exception:
-        logging.exception("Error in deleting load report {} from the dropbox.".format(load_report_batch_path))
         raise LoadReportException("ERROR Deleting Load Report from dropbox", "Error in deleting load report {} from the dropbox.".format(load_report_batch_path)) 
 
 def _delete_batch_from_dropbox(batch_path):
@@ -107,7 +102,6 @@ def _delete_batch_from_dropbox(batch_path):
     try:
         shutil.rmtree(batch_path)
     except Exception:
-        logging.exception("Error in deleting batch {} from the dropbox".format(batch_path))
         raise LoadReportException("ERROR Deleting Batch from Dropbox", "Error in deleting batch {} from the dropbox".format(batch_path)) 
       
 

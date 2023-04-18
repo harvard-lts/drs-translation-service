@@ -1,9 +1,9 @@
 import os
 
 import translation_service.translation_service as translation_service
-from mqresources import mqutils
-from mqresources.listener.mq_connection_params import MqConnectionParams
-from mqresources.listener.stomp_listener_base import StompListenerBase
+from dts_mqresources import mqutils
+from dts_mqresources.listener.mq_connection_params import MqConnectionParams
+from dts_mqresources.listener.stomp_listener_base import StompListenerBase
 
 
 class ProcessReadyQueueListener(StompListenerBase):

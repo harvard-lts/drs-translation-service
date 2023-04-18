@@ -63,3 +63,11 @@ EPADD_MODS_MAPPING_FILE=/home/appuser/conf/epadd_mapping.json
 EPADD_COLLECTION_METADATA_FILE_NAME=collection-metadata.json
 EPADD_PREMIS_FILE_NAME=epaddPremis.xml
 PREMIS_NS=http://www.loc.gov/premis/v3
+
+#Notify queuing
+MQ_HOST=b-cfb7f4c2-9140-4b5b-a551-1ccaf8c61d4e-1.mq.us-east-1.amazonaws.com
+MQ_PORT=61614
+MQ_USER=ims
+MQ_PASSWORD=XXX
+QUEUE_NAME=/queue/dais-notify
+DEFAULT_EMAIL_RECIPIENT=dts@hu.onmicrosoft.com
