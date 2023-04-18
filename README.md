@@ -6,7 +6,9 @@
     
 1. Make a copy of the env-template.txt to .env and modify the user and password variables.
 
-2. Start the container
+2. Put a copy of the necessary version of Batch Builder under the batch_builder_client directory.
+
+3. Start the container
     
 ```
 docker-compose -f docker-compose-local.yml up -d --build --force-recreate
