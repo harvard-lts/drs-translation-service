@@ -46,9 +46,11 @@ class EpaddModsMappingHandler:
                 #Loop through the mapping details array and collect the overrides from each filetype
                 for mapping_details in mapping['mapping-details']:
                     if mapping_details['epadd-file'] == 'collection-metadata':
-                        cm_overrides = self.__build_collection_metadata_overrides(mapping_details['mapping-values'], cm_file_path)
+                        if cm_file_path:
+                            cm_overrides = self.__build_collection_metadata_overrides(mapping_details['mapping-values'], cm_file_path)
                     elif mapping_details['epadd-file'] == 'epaddPremis':
-                        premis_overrides = self.__build_epadd_premis_overrides(mapping_details['mapping-values'], premis_file_path)
+                        if premis_file_path:
+                            premis_overrides = self.__build_epadd_premis_overrides(mapping_details['mapping-values'], premis_file_path)
                     else: 
                         raise EpaddModsHandlingException("Data from {} is not implemented.".format(mapping_details['epadd-file']))
         override_dict = cm_overrides
