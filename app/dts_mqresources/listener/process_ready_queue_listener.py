@@ -44,8 +44,8 @@ class ProcessReadyQueueListener(StompListenerBase):
             )
         except Exception:
             mqutils.notify_ingest_status_process_message(message_body.get("package_id"), "failure")
-            self._logger.exception(
-                "Could not translate data structure for {}".format(message_body.get("destination_path"))
-            )
-
+            msg = "Could not translate data structure for {}.  Error {}.".format(message_body.get("destination_path"), str(e))
+            exception_msg = traceback.format_exc()
+            body = msg + "\n" + exception_msg
+            notifier.send_error_notification(str(e), body)
         
