@@ -136,7 +136,10 @@ class EpaddModsMappingHandler:
             else:
                 bb_field = mapping_values["bb-field"]
                 if bb_field in override_dict:
-                    final_val = final_val + override_dict[bb_field] 
+                    if final_val:
+                        final_val = final_val + override_dict[bb_field] 
+                    else:
+                        final_val = override_dict[bb_field] 
                 
                 #As long as it isn't empty    
                 if final_val:    
