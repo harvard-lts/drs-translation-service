@@ -12,3 +12,7 @@ class BatchBuilderException(TranslationException):
 class EpaddModsHandlingException(TranslationException):
     def __init__(self, message, emailaddress=None):
         super().__init__(message, emailaddress)
+        
+class MissingEmbargoBasisException(EpaddModsHandlingException):
+    def __init__(self, message, emailaddress=None):
+        super().__init__(message, emailaddress)

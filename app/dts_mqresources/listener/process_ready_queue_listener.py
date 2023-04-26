@@ -4,6 +4,7 @@ import translation_service.translation_service as translation_service
 from dts_mqresources import mqutils
 from dts_mqresources.listener.mq_connection_params import MqConnectionParams
 from dts_mqresources.listener.stomp_listener_base import StompListenerBase
+from translation_service.translation_exceptions import TranslationException
 
 import notifier.notifier as notifier
 
@@ -44,10 +45,20 @@ class ProcessReadyQueueListener(StompListenerBase):
                 message_body['application_name'],
                 testing
             )
-        except Exception as e:
-            mqutils.notify_ingest_status_process_message(message_body.get("package_id"), "failure")
-            msg = "Could not translate data structure for {}.  Error {}.".format(message_body.get("destination_path"), str(e))
+        except TranslationException as te:
+            emails = message_body["admin_metadata"]["failureEmail"]
+            if te.emailaddress:
+                emails += "," + te.emailaddress
             exception_msg = traceback.format_exc()
-            body = msg + "\n" + exception_msg
-            notifier.send_error_notification(str(e), body)
+            self.send_error_notifications(message_body, te, exception_msg, emails)
+        except Exception as e:
+            failureEmail = message_body["admin_metadata"]["failureEmail"]
+            exception_msg = traceback.format_exc()
+            self.send_error_notifications(message_body, e, exception_msg, failureEmail)
+            
+    def send_error_notifications(self, message_body, exception, exception_msg, emails):
+        mqutils.notify_ingest_status_process_message(message_body.get("package_id"), "failure")
+        msg = "Could not process export for DRSIngest for {}.  Error {}.".format(message_body.get("destination_path"), str(exception))
+        failureEmail = message_body["admin_metadata"]["failureEmail"]
+        notifier.send_error_notification(str(e), body, emails)
         
