@@ -58,7 +58,7 @@ class ProcessReadyQueueListener(StompListenerBase):
             
     def send_error_notifications(self, message_body, exception, exception_msg, emails):
         mqutils.notify_ingest_status_process_message(message_body.get("package_id"), "failure")
-        msg = "Could not process export for DRSIngest for {}.  Error {}.".format(message_body.get("destination_path"), str(exception))
+        msg = "Could not process export for DRSIngest for {}.  Error {}.".format(message_body.get("package_id"), str(exception))
         body = msg + "\n" + exception_msg
         notifier.send_error_notification(str(exception), body, emails)
         

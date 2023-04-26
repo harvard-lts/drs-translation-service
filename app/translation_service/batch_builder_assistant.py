@@ -150,8 +150,8 @@ class BatchBuilderAssistant:
             objectRole = objectRole.replace(":", "_")
             overrides += "{}role={}".format(delimiter,objectRole)
         embargoBasis = None
-        if "embargoBasis" in supplemental_deposit_metadata and supplemental_deposit_metadata["embargoBasis"].rstrip():
-            embargoBasis = supplemental_deposit_metadata["embargoBasis"].rstrip()
+        if "embargoBasis" in supplemental_deposit_metadata and supplemental_deposit_metadata["embargoBasis"]:
+            embargoBasis = supplemental_deposit_metadata["embargoBasis"]
             
         if (depositing_application == "ePADD"):  
             emailaddress = None
