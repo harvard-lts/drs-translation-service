@@ -1,5 +1,6 @@
 import os, os.path, logging
 from translation_service.translation_exceptions import BatchBuilderException
+from translation_service.translation_exceptions import TranslationException
 from translation_service.epadd_mods_mapping_handler import EpaddModsMappingHandler
 
 logger = logging.getLogger('dts')
@@ -27,10 +28,16 @@ class BatchBuilderAssistant:
                         
             expected_batch_file = os.path.join(project_path, batch_name, "batch.xml")
             if not os.path.isfile(expected_batch_file):
-                raise BatchBuilderException("Failed to create batch, no batch.xml found: " + command)
+                emailaddress = None
+                if "failureEmail" in supplemental_deposit_metadata and supplemental_deposit_metadata["failureEmail"]:
+                    emailaddress = supplemental_deposit_metadata["failureEmail"]
+                raise BatchBuilderException("Failed to create batch, no batch.xml found: " + command, emailaddress)
                         
             if not self.__validate_descriptors_exist(os.path.join(project_path, batch_name)):
-                raise BatchBuilderException("Failed to create batch, no descriptor found: " + command)  
+                emailaddress = None
+                if "failureEmail" in supplemental_deposit_metadata and supplemental_deposit_metadata["failureEmail"]:
+                    emailaddress = supplemental_deposit_metadata["failureEmail"]
+                raise BatchBuilderException("Failed to create batch, no descriptor found: " + command, emailaddress)  
                         
 
     def build_command(self, project_path, batch_name, supplemental_deposit_metadata, depositing_application):
@@ -57,7 +64,10 @@ class BatchBuilderAssistant:
             elif (depositing_application == "ePADD"):
                 content_file_prop_overrides = self.__build_fileprop_override_command(object_name, "container", supplemental_deposit_metadata)        
             else:
-                raise Exception("Unexpected depositing_application {}".format(depositing_application))
+                emailaddress = None
+                if "failureEmail" in supplemental_deposit_metadata and supplemental_deposit_metadata["failureEmail"]:
+                    emailaddress = supplemental_deposit_metadata["failureEmail"]
+                raise TranslationException("Unexpected depositing_application {}".format(depositing_application), emailaddress)
 
             if content_file_prop_overrides is not None:
                 command += " -dirprop \"{}".format(content_file_prop_overrides)
@@ -129,23 +139,25 @@ class BatchBuilderAssistant:
             if overrides:
                 delimiter = ","
             overrides += "{}accessFlag={}".format(delimiter,supplemental_deposit_metadata["accessFlag"].rstrip())
-        if "adminCategory" in supplemental_deposit_metadata and supplemental_deposit_metadata["adminCategory"] is not None:
+        if "adminCategory" in supplemental_deposit_metadata and supplemental_deposit_metadata["adminCategory"].rstrip():
             if overrides:
                 delimiter = ","
             overrides += "{}adminCategory={}".format(delimiter,supplemental_deposit_metadata["adminCategory"].rstrip())
-        if "embargoBasis" in supplemental_deposit_metadata and supplemental_deposit_metadata["embargoBasis"] is not None:
-            if overrides:
-                delimiter = ","
-            overrides += "{}embargoBasis={}".format(delimiter,supplemental_deposit_metadata["embargoBasis"].rstrip())
         if "objectRole" in supplemental_deposit_metadata:
             if overrides:
                 delimiter = ","
             objectRole = supplemental_deposit_metadata["objectRole"].rstrip()
             objectRole = objectRole.replace(":", "_")
             overrides += "{}role={}".format(delimiter,objectRole)
+        embargoBasis = None
+        if "embargoBasis" in supplemental_deposit_metadata and supplemental_deposit_metadata["embargoBasis"]:
+            embargoBasis = supplemental_deposit_metadata["embargoBasis"]
             
         if (depositing_application == "ePADD"):  
-            epadd_overrides =  self.epadd_mods_mapping_handler.build_object_overrides(project_path, object_name)
+            emailaddress = None
+            if "failureEmail" in supplemental_deposit_metadata and supplemental_deposit_metadata["failureEmail"]:
+                emailaddress = supplemental_deposit_metadata["failureEmail"]
+            epadd_overrides =  self.epadd_mods_mapping_handler.build_object_overrides(project_path, object_name, embargoBasis, emailaddress)
             if epadd_overrides:
                 overrides += delimiter + epadd_overrides
             

@@ -3,6 +3,7 @@ import xml.etree.ElementTree as ET
 from pyunpack import Archive
 from pathlib import Path
 from translation_service.translation_exceptions import EpaddModsHandlingException
+from translation_service.translation_exceptions import MissingEmbargoBasisException
 from datetime import date
 
 '''
@@ -17,7 +18,7 @@ class EpaddModsMappingHandler:
         
         
         
-    def build_object_overrides(self, project_path, object_name):
+    def build_object_overrides(self, project_path, object_name, embargoBasis, emailAddress=None):
         #validate if it hasn't been  validated yet
         if not self.mapping_file_validated:
             self.validate_json_schema()
@@ -46,11 +47,13 @@ class EpaddModsMappingHandler:
                 #Loop through the mapping details array and collect the overrides from each filetype
                 for mapping_details in mapping['mapping-details']:
                     if mapping_details['epadd-file'] == 'collection-metadata':
-                        cm_overrides = self.__build_collection_metadata_overrides(mapping_details['mapping-values'], cm_file_path)
+                        if cm_file_path:
+                            cm_overrides = self.__build_collection_metadata_overrides(mapping_details['mapping-values'], cm_file_path, embargoBasis, emailAddress)
                     elif mapping_details['epadd-file'] == 'epaddPremis':
-                        premis_overrides = self.__build_epadd_premis_overrides(mapping_details['mapping-values'], premis_file_path)
+                        if premis_file_path:
+                            premis_overrides = self.__build_epadd_premis_overrides(mapping_details['mapping-values'], premis_file_path, emailAddress)
                     else: 
-                        raise EpaddModsHandlingException("Data from {} is not implemented.".format(mapping_details['epadd-file']))
+                        raise EpaddModsHandlingException("Data from {} is not implemented.".format(mapping_details['epadd-file']), emailAddress)
         override_dict = cm_overrides
         #Both cm and premis overrides
         if override_dict and premis_overrides:
@@ -75,7 +78,7 @@ class EpaddModsMappingHandler:
         return overrides
             
                 
-    def __build_collection_metadata_overrides(self, mapping_values_array, cm_file_path):
+    def __build_collection_metadata_overrides(self, mapping_values_array, cm_file_path, embargoBasis, emailAddress):
         with open(cm_file_path, 'r') as f:
             cm_json = json.load(f)
         
@@ -113,7 +116,7 @@ class EpaddModsMappingHandler:
             if "conditional" in mapping_values:
                 cond_array = mapping_values["conditional"].split("=")
                 if len(cond_array) != 2:
-                    raise EpaddModsHandlingException("Conditional must be of format key=value.  Conditional supplied is {}.".format(mapping_values["conditional"]))
+                    raise EpaddModsHandlingException("Conditional must be of format key=value.  Conditional supplied is {}.".format(mapping_values["conditional"]), emailAddress)
                 cond_key = cond_array[0]
                 cond_val = cond_array[1]
                 for val in epadd_value:
@@ -121,20 +124,35 @@ class EpaddModsMappingHandler:
                         if "value_field" in mapping_values:
                             final_val = cm_value[mapping_values["value_field"]]
                         else:
-                            raise EpaddModsHandlingException("Value must be supplied if Collection Metadata conditional is set.  CM value: {} .".format(cm_value))             
+                            raise EpaddModsHandlingException("Value must be supplied if Collection Metadata conditional is set.  CM value: {} .".format(cm_value), emailAddress)             
 
             if "label" in mapping_values and final_val:
                 final_val = mapping_values['label'] + ": " + final_val + "."
            
+            
             #Embargo has to be parsed to two different BB fields and mapping wasn't straight forward.
             if epadd_value == "embargoDuration":
+                #If not embargoBasis is supplied, fail the batch
+                if not embargoBasis:
+                    raise MissingEmbargoBasisException("embargoBasis was not set in drsConfig.txt but embargoDuration of {} is present in the collection-metadata.json file .".format(cm_value), emailAddress)  
                 retval_dict = self.__format_embargo(cm_value)
                 if len(retval_dict) == 2:
                     override_dict.update(retval_dict)
             else:
+                if epadd_value == "embargoStartDate":
+                    #If embargoBasis is not supplied, fail the batch
+                    if not embargoBasis:
+                        raise MissingEmbargoBasisException("embargoBasis was not set in drsConfig.txt but embargoStartDate of {} is present in the collection-metadata.json file .".format(cm_value), emailAddress)  
+                    #Account for embargoBasis if it is supplied and there is a start date
+                    else:
+                        override_dict["embargoBasis"] = embargoBasis
+                        
                 bb_field = mapping_values["bb-field"]
                 if bb_field in override_dict:
-                    final_val = final_val + override_dict[bb_field] 
+                    if final_val:
+                        final_val = final_val + override_dict[bb_field] 
+                    else:
+                        final_val = override_dict[bb_field] 
                 
                 #As long as it isn't empty    
                 if final_val:    
@@ -161,7 +179,7 @@ class EpaddModsMappingHandler:
             self.logger.error("Embargo duration {} was not mapped because it does not meet the format of '# days|months|years'".format(embargoDuration))
         return override_dict 
     
-    def __build_epadd_premis_overrides(self, mapping_values_array, premis_file_path):
+    def __build_epadd_premis_overrides(self, mapping_values_array, premis_file_path, emailAddress):
         with open(premis_file_path, 'r') as f:
             tree = ET.parse(f)
             epaddpremisroot = tree.getroot()
@@ -179,11 +197,11 @@ class EpaddModsMappingHandler:
                     if "value_field" in mapping_values:
                         value_field = mapping_values["value_field"]
                     else:
-                        raise EpaddModsHandlingException("Value must be supplied if Premis element has children.  Premis value: {} .".format(premis_value.tag)) 
+                        raise EpaddModsHandlingException("Value must be supplied if Premis element has children.  Premis value: {} .".format(premis_value.tag), emailAddress) 
                     
                     cond_array = mapping_values["conditional"].split("=")
                     if len(cond_array) != 2:
-                        raise EpaddModsHandlingException("Conditional must be of format key=value.  Conditional supplied is {}.".format(mapping_values["conditional"]))
+                        raise EpaddModsHandlingException("Conditional must be of format key=value.  Conditional supplied is {}.".format(mapping_values["conditional"]), emailAddress)
                     
                     cond_key = cond_array[0]
                     cond_val = cond_array[1]

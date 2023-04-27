@@ -26,15 +26,17 @@ def test_prepare_and_create_mock_lr():
     mock_lr = os.path.join(base_load_report_dir, dropbox_name_for_testing, os.path.basename(batch_dir), mock_lr_name)
     #Check that the loading file exists
     assert os.path.exists(mock_lr)
-    
+    print("cleaning " + package_dir)
     #Remove the files
-    cleanup_batch(batch_dir)
+    cleanup_dropbox(batch_dir)
+    #Remove the files
+    cleanup_dropbox(package_dir)
     #Remove the files
     cleanup_mock_loadreport(mock_lr)
 
 
-def cleanup_batch(batch_dir):
-    '''Removes the batch from the dropbox'''
+def cleanup_dropbox(batch_dir):
+    '''Removes the batch or package from the dropbox'''
     try:
         shutil.rmtree(batch_dir)
     except OSError as e:
