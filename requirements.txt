@@ -19,7 +19,7 @@ pyparsing==3.0.7
 pytest==6.2.5
 pyunpack==0.3
 remote-pdb==2.1.0
-requests==2.27.1
+requests==2.31.0
 six==1.16.0
 stomp.py==8.0.1
 structlog==20.1.0
