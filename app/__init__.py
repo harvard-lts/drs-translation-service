@@ -9,7 +9,6 @@ import werkzeug
 from flask import Flask, request
 from healthcheck import HealthCheck, EnvironmentDump
 from load_report_service.load_report_exception import LoadReportException
-from dts_mqresources.listener.process_ready_queue_listener import ProcessReadyQueueListener
 from requests import Response
 
 import notifier.notifier as notifier
