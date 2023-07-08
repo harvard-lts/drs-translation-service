@@ -5,7 +5,6 @@ from logging.handlers import TimedRotatingFileHandler
 
 import load_report_service.load_report_service as load_report_service
 import translation_service.translation_service as translation_service
-import dts_mqresources.mqutils as mqutils
 import werkzeug
 from flask import Flask, request
 from healthcheck import HealthCheck, EnvironmentDump
@@ -27,16 +26,6 @@ def create_app():
 
     health = HealthCheck()
     envdump = EnvironmentDump()
-
-    # add a check for the process mq connection
-    def checkprocessmqconnection():
-        connection_params = mqutils.get_process_mq_connection()
-        if connection_params.conn is None:
-            return False, "process mq connection failed"
-        connection_params.conn.disconnect()
-        return True, "process mq connection ok"
-    
-    health.add_check(checkprocessmqconnection)
 
     # add your own data to the environment dump
     def application_data():
@@ -130,7 +119,7 @@ def create_app():
     disable_cached_responses(app)
 
     # Initializing queue listeners
-    initialize_listeners()
+    #initialize_listeners()
 
     return app
 
