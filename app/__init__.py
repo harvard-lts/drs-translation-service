@@ -117,9 +117,6 @@ def create_app():
 
     disable_cached_responses(app)
 
-    # Initializing queue listeners
-    #initialize_listeners()
-
     return app
 
 
@@ -149,11 +146,6 @@ def disable_cached_responses(app: Flask) -> None:
         response.headers["Expires"] = "0"
         response.headers['Cache-Control'] = 'public, max-age=0'
         return response
-
-
-def initialize_listeners():
-    logging.getLogger('dts').debug("Creating Process Ready queue listener...")
-    ProcessReadyQueueListener()
 
 def reprocess_batch(batch_path):
     logging.getLogger('dts').debug("Reprocessing: " + batch_path)
