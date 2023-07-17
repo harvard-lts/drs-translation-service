@@ -30,14 +30,13 @@ def prepare_and_send_to_drs(message):
         if te.emailaddress:
             emails += "," + te.emailaddress
         exception_msg = traceback.format_exc()
-        self.send_error_notifications(message, te, exception_msg, emails)
+        send_error_notifications(message, te, exception_msg, emails)
     except Exception as e:
         failureEmail = message["admin_metadata"]["failureEmail"]
         exception_msg = traceback.format_exc()
-        self.send_error_notifications(message, e, exception_msg, failureEmail)
-    return response.json()
+        send_error_notifications(message, e, exception_msg, failureEmail)
 
-def send_error_notifications(self, message_body, exception, exception_msg, emails):
+def send_error_notifications(message_body, exception, exception_msg, emails):
     package_id = message_body.get("package_id")
     if "doi" in package_id:
         application_name = "Dataverse"
@@ -48,7 +47,6 @@ def send_error_notifications(self, message_body, exception, exception_msg, email
         "package_id": package_id,
         "application_name": application_name,
         "batch_ingest_status": "failed",
-        "drs_url": urn,
         "admin_metadata": {
             "original_queue": os.getenv("PROCESS_PUBLISH_QUEUE_NAME"),
             "retry_count": 0
