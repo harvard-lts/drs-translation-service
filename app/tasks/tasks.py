@@ -38,8 +38,6 @@ def prepare_and_send_to_drs(message):
     return response.json()
 
 def send_error_notifications(self, message_body, exception, exception_msg, emails):
-    app.send_task("tasks.tasks.do_task", args=[msg_json], kwargs={},
-            queue=os.getenv("PROCESS_PUBLISH_QUEUE_NAME"))
     package_id = message_body.get("package_id")
     if "doi" in package_id:
         application_name = "Dataverse"
@@ -56,6 +54,9 @@ def send_error_notifications(self, message_body, exception, exception_msg, email
             "retry_count": 0
         }
     }
+    app.send_task("tasks.tasks.do_task", args=[msg_json], kwargs={},
+            queue=os.getenv("PROCESS_PUBLISH_QUEUE_NAME"))
+    
     msg = "Could not process export for DRSIngest for {}.  Error {}.".format(message_body.get("package_id"), str(exception))
     body = msg + "\n" + exception_msg
     notifier.send_error_notification(str(exception), body, emails)
