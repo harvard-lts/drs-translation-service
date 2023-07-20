@@ -22,14 +22,19 @@ def test_send_to_drs_task():
     # Copy the data from the loc to the dropbox
     shutil.copytree(loc, package_dir)
     
+    process_task = os.getenv('PROCESS_TASK_NAME', 'dts.tasks.prepare_and_send_to_drs')
+
     arguments = {"package_id": "doi-translation-service-test",
                  "application_name": "Dataverse",
                  "destination_path": base_dropbox_dir,
                  "admin_metadata":
-                 {"dropbox_name": "", "original_queue": "myqueue", "retry_count":0},
+                    {"dropbox_name": "", 
+                     "original_queue": "myqueue",
+                     "task_name": process_task,
+                     "retry_count":0},
                  "testing":"yes"}    
         
-    res = app1.send_task('dts.tasks.prepare_and_send_to_drs',
+    res = app1.send_task(process_task,
                          args=[arguments], kwargs={},
                          queue=os.getenv("PROCESS_CONSUME_QUEUE_NAME"))
     

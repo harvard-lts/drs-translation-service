@@ -8,8 +8,12 @@ LOGLEVEL=DEBUG
 PYTHONPATH=/home/appuser/app
 #Default to one hour
 MESSAGE_EXPIRATION_MS=3600000
+MESSAGE_MAX_RETRIES=3
 
 NRS_PREFIX=https://nrs-dev.harvard.edu
+
+PROCESS_TASK_NAME=dts.tasks.prepare_and_send_to_drs
+PROCESS_STATUS_TASK_NAME=dims.tasks.handle_process_status
 
 PROCESS_CONSUME_QUEUE_NAME=dims-data-ready
 PROCESS_PUBLISH_QUEUE_NAME=drs-ingest-status

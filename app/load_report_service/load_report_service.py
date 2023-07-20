@@ -9,6 +9,8 @@ base_dropbox_dir = os.getenv("BASE_DROPBOX_PATH")
 app = Celery()
 app.config_from_object('celeryconfig')
 
+process_status_task = os.getenv('PROCESS_STATUS_TASK_NAME', 'dims.tasks.handle_process_status')
+
 def handle_load_report(load_report_name, dry_run = False):
     #Strip off the LOADREPORT_ to get the batch name
     if (not load_report_name.startswith("LOADREPORT_")):
@@ -69,10 +71,11 @@ def handle_load_report(load_report_name, dry_run = False):
         "drs_url": urn,
         "admin_metadata": {
             "original_queue": os.getenv("PROCESS_PUBLISH_QUEUE_NAME"),
+            "task_name": process_status_task,
             "retry_count": 0
         }
     }
-    app.send_task("tasks.tasks.do_task", args=[msg_json], kwargs={},
+    app.send_task(process_status_task, args=[msg_json], kwargs={},
                   queue=os.getenv("PROCESS_PUBLISH_QUEUE_NAME"))
     return urn
     
@@ -92,10 +95,11 @@ def handle_failed_batch(batch_name, dry_run = False):
         "batch_ingest_status": "failed",
         "admin_metadata": {
             "original_queue": os.getenv("PROCESS_PUBLISH_QUEUE_NAME"),
+            "task_name": process_status_task,
             "retry_count": 0
         }
     }
-    app.send_task("tasks.tasks.do_task", args=[msg_json], kwargs={},
+    app.send_task(process_status_task, args=[msg_json], kwargs={},
                   queue=os.getenv("PROCESS_PUBLISH_QUEUE_NAME"))
 
     #Delete batch from dropbox

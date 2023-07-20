@@ -8,8 +8,11 @@ import notifier.notifier as notifier
 app = Celery()
 app.config_from_object('celeryconfig')
 
+process_task = os.getenv('PROCESS_TASK_NAME', 'dts.tasks.prepare_and_send_to_drs')
+process_status_task = os.getenv('PROCESS_STATUS_TASK_NAME', 'dims.tasks.handle_process_status')
+retries = os.getenv('MESSAGE_MAX_RETRIES', 3)
 
-@app.task(serializer='json', name='dts.tasks.prepare_and_send_to_drs')
+@app.task(serializer='json', name=process_task, max_retries=retries)
 def prepare_and_send_to_drs(message):
     try:
         testing = False
@@ -49,10 +52,11 @@ def send_error_notifications(message_body, exception, exception_msg, emails):
         "batch_ingest_status": "failed",
         "admin_metadata": {
             "original_queue": os.getenv("PROCESS_PUBLISH_QUEUE_NAME"),
+            "task_name": process_status_task,
             "retry_count": 0
         }
     }
-    app.send_task("tasks.tasks.do_task", args=[msg_json], kwargs={},
+    app.send_task(process_status_task, args=[msg_json], kwargs={},
             queue=os.getenv("PROCESS_PUBLISH_QUEUE_NAME"))
     
     msg = "Could not process export for DRSIngest for {}.  Error {}.".format(message_body.get("package_id"), str(exception))
