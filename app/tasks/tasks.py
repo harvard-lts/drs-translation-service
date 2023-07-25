@@ -27,9 +27,7 @@ def prepare_and_send_to_drs(self, message):
             logger.debug("Sending to DLQ")
             send_max_retry_notifications(message)
             raise Reject("reject", requeue=False)
-    #If too many retries happened
-    if self.request.retries == retries: 
-        send_max_retry_notifications(message)   
+        
     try:
         testing = False
         if "testing" in message:
@@ -49,13 +47,14 @@ def prepare_and_send_to_drs(self, message):
         if te.emailaddress:
             emails += "," + te.emailaddress
         exception_msg = traceback.format_exc()
-        send_error_notifications(message, te, exception_msg, emails)
+        send_error_notifications(message, te, exception_msg, emails, self.request.retries)
     except Exception as e:
         failureEmail = message["admin_metadata"]["failureEmail"]
         exception_msg = traceback.format_exc()
-        send_error_notifications(message, e, exception_msg, failureEmail)
+        send_error_notifications(message, e, exception_msg, failureEmail, self.request.retries)   
+    
 
-def send_error_notifications(message_body, exception, exception_msg, emails):
+def send_error_notifications(message_body, exception, exception_msg, emails, num_retries):
     package_id = message_body.get("package_id")
     if "doi" in package_id:
         application_name = "Dataverse"
@@ -78,6 +77,10 @@ def send_error_notifications(message_body, exception, exception_msg, emails):
     msg = "Could not process export for DRSIngest for {}.  Error {}.".format(message_body.get("package_id"), str(exception))
     body = msg + "\n" + exception_msg
     notifier.send_error_notification(str(exception), body, emails)
+    
+    #If too many retries happened
+    if num_retries == retries: 
+        send_max_retry_notifications(message_body)
 
 def send_max_retry_notifications(message_body):
     subject = "Maximum resubmitting retries reached for message with id {}.".format(message_body.get("package_id"))
