@@ -80,7 +80,6 @@ def send_error_notifications(message_body, exception, exception_msg, emails):
     notifier.send_error_notification(str(exception), body, emails)
 
 def send_max_retry_notifications(message_body):
-    package_id = message_body.get("package_id")
     subject = "Maximum resubmitting retries reached for message with id {}.".format(message_body.get("package_id"))
     body = "Maximum resubmitting retries reached for message with id {}.\n\n" \
         "The message has been consumed and will not be resubmitted again.".format(message_body.get("package_id"))
