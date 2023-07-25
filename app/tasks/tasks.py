@@ -81,22 +81,6 @@ def send_error_notifications(message_body, exception, exception_msg, emails):
 
 def send_max_retry_notifications(message_body):
     package_id = message_body.get("package_id")
-    if "doi" in package_id:
-        application_name = "Dataverse"
-    else:
-        application_name = "ePADD"
-
-    msg_json = {
-        "package_id": package_id,
-        "application_name": application_name,
-        "batch_ingest_status": "failed",
-        "admin_metadata": {
-            "original_queue": os.getenv("PROCESS_PUBLISH_QUEUE_NAME"),
-            "task_name": process_status_task,
-            "retry_count": 0
-        }
-    }
-    
     subject = "Maximum resubmitting retries reached for message with id {}.".format(message_body.get("package_id"))
     body = "Maximum resubmitting retries reached for message with id {}.\n\n" \
         "The message has been consumed and will not be resubmitted again.".format(message_body.get("package_id"))
