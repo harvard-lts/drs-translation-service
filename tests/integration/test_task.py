@@ -48,7 +48,13 @@ def test_send_to_drs_task():
         time.sleep(2)
         counter = counter + 2
         if counter >= 60:
-            assert False, "test_notification: could not find anything on the {} after 30 seconds".format(drs_queue)
+            #Remove the files
+            cleanup_dropbox(batch_dir)
+            #Remove the files
+            cleanup_dropbox(package_dir)
+            #Remove the files
+            cleanup_mock_loadreport(mock_lr)
+            assert False, "test_notification: could not find anything on the {} after 30 seconds".format(os.getenv("PROCESS_CONSUME_QUEUE_NAME"))
     
     #Check that the loading file exists and the batch exists
     assert os.path.exists(batch_dir)
