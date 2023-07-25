@@ -19,6 +19,8 @@ PROCESS_CONSUME_QUEUE_NAME=dims-data-ready
 PROCESS_PUBLISH_QUEUE_NAME=drs-ingest-status
 BROKER_URL=XXX
 
+DLQ_EXCHANGE_NAME=dais-dead-letter-exchange
+DLQ_QUEUE_NAME=dais-dead-letter-queue
 
 #Batch builder files
 OPAQUE_PROJECT_CONF_TEMPLATE=/home/appuser/app/bbtemplates/project.conf_template_opaque
