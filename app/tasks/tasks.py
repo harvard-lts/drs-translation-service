@@ -16,7 +16,7 @@ retries = int(os.getenv('MESSAGE_MAX_RETRIES', 3))
 
 logger = logging.getLogger('dts')
 
-@app.task(bind=True, serializer='json', name=process_task, max_retries=retries, acks_late=True)
+@app.task(bind=True, serializer='json', name=process_task, max_retries=retries, acks_late=True, autoretry_for=(Exception,))
 def prepare_and_send_to_drs(self, message):
     logger.debug("retries {}".format(self.request.retries))
     if "dlq_testing" in message:
