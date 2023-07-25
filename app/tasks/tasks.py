@@ -1,6 +1,7 @@
 from celery import Celery
 import os
 import traceback
+import logging
 import translation_service.translation_service as translation_service
 from translation_service.translation_exceptions import TranslationException
 import notifier.notifier as notifier
@@ -11,12 +12,20 @@ app.config_from_object('celeryconfig')
 
 process_task = os.getenv('PROCESS_TASK_NAME', 'dts.tasks.prepare_and_send_to_drs')
 process_status_task = os.getenv('PROCESS_STATUS_TASK_NAME', 'dims.tasks.handle_process_status')
-retries = os.getenv('MESSAGE_MAX_RETRIES', 3)
+retries = int(os.getenv('MESSAGE_MAX_RETRIES', 3))
+
+logger = logging.getLogger('dts')
 
 @app.task(bind=True, serializer='json', name=process_task, max_retries=retries, acks_late=True)
 def prepare_and_send_to_drs(self, message):
+    logger.debug("retries {}".format(self.request.retries))
     if "dlq_testing" in message:
-        raise Reject("reject", requeue=False)
+        if self.request.retries < retries:
+            logger.debug("retrying DTS")
+            self.retry(countdown=3)
+        else:
+            logger.debug("Sending to DLQ")
+            raise Reject("reject", requeue=False)
     try:
         testing = False
         if "testing" in message:
