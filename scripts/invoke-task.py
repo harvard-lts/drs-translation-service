@@ -6,7 +6,8 @@ app1.config_from_object('celeryconfig')
 
 process_task = os.getenv('PROCESS_TASK_NAME', 'dts.tasks.prepare_and_send_to_drs')
 
-arguments = {"dlq_testing":"yes"}    
+arguments = {"dlq_testing":"yes",
+             "package_id": "doi-testing"}    
         
 res = app1.send_task(process_task,
                     args=[arguments], kwargs={},
