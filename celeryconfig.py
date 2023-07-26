@@ -13,8 +13,8 @@ worker_enable_remote_control = False
 #DLQ Routing
 dead_letter_queue_option = {
     'x-dead-letter-exchange': os.getenv("DLQ_EXCHANGE_NAME"),
-    'x-dead-letter-routing-key': os.getenv("DLQ_QUEUE_NAME"),
-    'x-message-ttl': int(os.getenv('MESSAGE_EXPIRATION_MS', 3600000))
+    'x-dead-letter-routing-key': os.getenv("DLQ_QUEUE_NAME")
+#    'x-message-ttl': int(os.getenv('MESSAGE_EXPIRATION_MS', 3600000))
 }
 
 default_exchange = Exchange(os.getenv("PROCESS_CONSUME_QUEUE_NAME"), type='direct')
