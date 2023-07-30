@@ -32,28 +32,3 @@ docker exec -it dts bash
 ```
 pytest
 ```
-
-## Invoking the task manually
-
-### invoke-task.py (add message that will be rejected to the queue)
-
-- Clone this repo from github 
-
-- Create the .env from the env-template.txt and replace with proper values (use LPE Shared-DAIS for passwords)
-
-- Start up docker  
-
-`docker-compose -f docker-compose-local.yml up --build -d --force-recreate`
-
-- Exec into the docker container
-
-`docker exec -it dts bash`
-
-- Run invoke task python script
-
-`python3 scripts/invoke-task.py`
-
-- Bring up [DEV DAIS Rabbit UI](https://b-e9f45d5f-039d-4226-b5df-1a776c736346.mq.us-east-1.amazonaws.com/)  - credentials in LPE Shared-DAIS
-
-- Look for the DLQ queue that you named in your .env (eg `dais-dead-letter-queue-dd`) verify the message lands here
-
