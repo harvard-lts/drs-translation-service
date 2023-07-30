@@ -97,7 +97,9 @@ def test_epadd_run_batch_builder_basic():
      assert os.path.exists(expected_batch_file)
      expected_descriptor_file = os.path.join(epadd_project_path, epadd_batch_name, os.path.basename(epadd_project_path), "descriptor.xml")
      assert os.path.exists(expected_descriptor_file)  
-     cleanup_created_files(expected_batch_file, expected_descriptor_file)   
+     cleanup_created_files(expected_batch_file, expected_descriptor_file) 
+     extracted_dir = os.path.join(epadd_project_path, "extracted")  
+     shutil.rmtree(extracted_dir)
       
 def test_epadd_run_batch_builder_with_overrides():
      supplemental_data = {"accessFlag": "N",
@@ -122,6 +124,8 @@ def test_epadd_run_batch_builder_with_overrides():
      expected_descriptor_file = os.path.join(epadd_project_path, epadd_batch_name, os.path.basename(epadd_project_path), "descriptor.xml")
      assert os.path.exists(expected_descriptor_file)     
      cleanup_created_files(expected_batch_file, expected_descriptor_file) 
+     extracted_dir = os.path.join(epadd_project_path, "extracted")  
+     shutil.rmtree(extracted_dir)
 
 def test_epadd_build_command_with_overrides():
     '''Verifies that the build command returns properly'''
