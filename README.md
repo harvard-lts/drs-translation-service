@@ -32,6 +32,3 @@ docker exec -it dts bash
 ```
 pytest
 ```
-
-
-

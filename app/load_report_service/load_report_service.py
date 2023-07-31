@@ -1,11 +1,15 @@
 import os, os.path, shutil
 from load_report_service.load_report import LoadReport
 from load_report_service.load_report_exception import LoadReportException
-import dts_mqresources.mqutils as mqutils
+from celery import Celery
 
 base_load_report_dir = os.getenv("BASE_LOADREPORT_PATH")
 base_dropbox_dir = os.getenv("BASE_DROPBOX_PATH")
 
+app = Celery()
+app.config_from_object('celeryconfig')
+
+process_status_task = os.getenv('PROCESS_STATUS_TASK_NAME', 'dims.tasks.handle_process_status')
 
 def handle_load_report(load_report_name, dry_run = False):
     #Strip off the LOADREPORT_ to get the batch name
@@ -54,7 +58,25 @@ def handle_load_report(load_report_name, dry_run = False):
     urn = os.path.join(nrs_prefix, obj_osn)
     # remove trailing "-batch"
     package_id = batch_name[0:-6]
-    mqutils.notify_ingest_status_process_message(package_id, "success", urn)
+    
+    if "doi" in package_id:
+        application_name = "Dataverse"
+    else:
+        application_name = "ePADD"
+
+    msg_json = {
+        "package_id": package_id,
+        "application_name": application_name,
+        "batch_ingest_status": "success",
+        "drs_url": urn,
+        "admin_metadata": {
+            "original_queue": os.getenv("PROCESS_PUBLISH_QUEUE_NAME"),
+            "task_name": process_status_task,
+            "retry_count": 0
+        }
+    }
+    app.send_task(process_status_task, args=[msg_json], kwargs={},
+                  queue=os.getenv("PROCESS_PUBLISH_QUEUE_NAME"))
     return urn
     
 
@@ -62,7 +84,24 @@ def handle_failed_batch(batch_name, dry_run = False):
     #Send failed notification
     # remove trailing "-batch"
     package_id = batch_name[0:-6]
-    mqutils.notify_ingest_status_process_message(package_id, "failed")
+    if "doi" in package_id:
+        application_name = "Dataverse"
+    else:
+        application_name = "ePADD"
+
+    msg_json = {
+        "package_id": package_id,
+        "application_name": application_name,
+        "batch_ingest_status": "failed",
+        "admin_metadata": {
+            "original_queue": os.getenv("PROCESS_PUBLISH_QUEUE_NAME"),
+            "task_name": process_status_task,
+            "retry_count": 0
+        }
+    }
+    app.send_task(process_status_task, args=[msg_json], kwargs={},
+                  queue=os.getenv("PROCESS_PUBLISH_QUEUE_NAME"))
+
     #Delete batch from dropbox
     # TODO: Fix delete
     # Not deleting for now, the loadreport is written with appadmin permissions

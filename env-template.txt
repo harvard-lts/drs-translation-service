@@ -8,15 +8,19 @@ LOGLEVEL=DEBUG
 PYTHONPATH=/home/appuser/app
 #Default to one hour
 MESSAGE_EXPIRATION_MS=3600000
+MESSAGE_MAX_RETRIES=3
 
 NRS_PREFIX=https://nrs-dev.harvard.edu
 
-PROCESS_MQ_HOST=b-cfb7f4c2-9140-4b5b-a551-1ccaf8c61d4e-1.mq.us-east-1.amazonaws.com
-PROCESS_MQ_PORT=61614
-PROCESS_MQ_USER=XXX
-PROCESS_MQ_PASSWORD=XXX
-PROCESS_QUEUE_CONSUME_NAME=/queue/dims-data-ready
-PROCESS_QUEUE_PUBLISH_NAME=/queue/drs-ingest-status
+PROCESS_TASK_NAME=dts.tasks.prepare_and_send_to_drs
+PROCESS_STATUS_TASK_NAME=dims.tasks.handle_process_status
+
+PROCESS_CONSUME_QUEUE_NAME=dims-data-ready
+PROCESS_PUBLISH_QUEUE_NAME=drs-ingest-status
+BROKER_URL=XXX
+
+DLQ_EXCHANGE_NAME=dais-dead-letter-exchange
+DLQ_QUEUE_NAME=dais-dead-letter-queue
 
 #Batch builder files
 OPAQUE_PROJECT_CONF_TEMPLATE=/home/appuser/app/bbtemplates/project.conf_template_opaque

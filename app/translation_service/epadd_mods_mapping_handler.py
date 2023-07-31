@@ -228,6 +228,8 @@ class EpaddModsMappingHandler:
                 final_val = mapping_values['label'] + ": " + final_val + "."
            
             bb_field = mapping_values["bb-field"]
+            if final_val is None:
+                final_val = ""
             if bb_field in override_dict:
                 final_val = final_val + override_dict[bb_field] 
             
