@@ -1,4 +1,5 @@
 from celery import Celery
+from kombu import Queue
 import os
 import shutil
 import os.path
@@ -80,3 +81,29 @@ def cleanup_mock_loadreport(mock_lr):
         os.rmdir(os.path.dirname(mock_lr))
     except OSError as e:
         print("Error in cleanup: %s" % (e.strerror))
+        
+def test_publish_queue_task():
+    '''Verifies that tasks can be published to a queue
+    that this celery worker does not consume'''
+    package_id = "12345"
+    process_status_task = os.getenv('PROCESS_STATUS_TASK_NAME', 'dims.tasks.handle_process_status')
+    msg_json = {
+        "dlq_testing": True, # So it doesn't get consumed by the external service
+        "package_id": package_id,
+        "application_name": "ePADD",
+        "batch_ingest_status": "success",
+        "drs_url": "urn",
+        "admin_metadata": {
+            "original_queue": os.getenv("PROCESS_PUBLISH_QUEUE_NAME"),
+            "task_name": process_status_task,
+            "retry_count": 0
+        }
+    }
+    myqueue = Queue(
+        os.getenv("PROCESS_PUBLISH_QUEUE_NAME"), no_declare=True)
+    try:
+        app1.send_task(process_status_task, args=[msg_json], kwargs={},
+            queue=myqueue)
+        assert True
+    except:
+        assert False

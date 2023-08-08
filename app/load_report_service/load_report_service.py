@@ -2,6 +2,7 @@ import os, os.path, shutil
 from load_report_service.load_report import LoadReport
 from load_report_service.load_report_exception import LoadReportException
 from celery import Celery
+from kombu import Queue
 
 base_load_report_dir = os.getenv("BASE_LOADREPORT_PATH")
 base_dropbox_dir = os.getenv("BASE_DROPBOX_PATH")
@@ -75,8 +76,10 @@ def handle_load_report(load_report_name, dry_run = False):
             "retry_count": 0
         }
     }
+    publish_queue = Queue(
+        os.getenv("PROCESS_PUBLISH_QUEUE_NAME"), no_declare=True)
     app.send_task(process_status_task, args=[msg_json], kwargs={},
-                  queue=os.getenv("PROCESS_PUBLISH_QUEUE_NAME"))
+                  queue=publish_queue)
     return urn
     
 
@@ -99,8 +102,10 @@ def handle_failed_batch(batch_name, dry_run = False):
             "retry_count": 0
         }
     }
+    publish_queue = Queue(
+        os.getenv("PROCESS_PUBLISH_QUEUE_NAME"), no_declare=True)
     app.send_task(process_status_task, args=[msg_json], kwargs={},
-                  queue=os.getenv("PROCESS_PUBLISH_QUEUE_NAME"))
+                  queue=publish_queue)
 
     #Delete batch from dropbox
     # TODO: Fix delete
