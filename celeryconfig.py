@@ -1,5 +1,4 @@
 import os
-from kombu import Exchange, Queue
 
 broker_url = os.getenv('BROKER_URL')
 broker_connection_retry_on_startup=True
@@ -29,6 +28,7 @@ default_queue = Queue(
     queue_arguments=dead_letter_queue_option)
  
 task_queues = [default_queue]
+
 task_routes = {
     'dts.tasks.prepare_and_send_to_drs':
         {'queue': os.getenv("PROCESS_CONSUME_QUEUE_NAME")}

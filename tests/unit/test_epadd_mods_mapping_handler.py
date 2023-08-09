@@ -1,4 +1,4 @@
-import jsonschema, json, pytest, sys
+import jsonschema, json, pytest, sys, shutil
 sys.path.append('app')
 from translation_service.epadd_mods_mapping_handler import EpaddModsMappingHandler
 from translation_service.translation_exceptions import MissingEmbargoBasisException
@@ -38,3 +38,5 @@ def test_build_object_overrides_without_embargo_basis_with_embargo_data():
             assert overrides == expected
     except Exception:
         assert False
+    extracted_dir = "/home/appuser/tests/data/samplemods/epaddobject/extracted"  
+    shutil.rmtree(extracted_dir)
