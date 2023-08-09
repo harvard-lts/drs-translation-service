@@ -55,7 +55,7 @@ pytest
 
 - Bring up [DEV DAIS Rabbit UI](https://b-e9f45d5f-039d-4226-b5df-1a776c736346.mq.us-east-1.amazonaws.com/)  - credentials in LPE Shared-DAIS
 
-- Look for the DLQ queue that you named in your .env (eg `dais-dead-letter-queue-dd`) verify the message lands here
+- Look for the DLQ queue (`dais-dead-letter-queue`) verify the message lands here
 
 ## DLX/DLQ
 
