@@ -57,3 +57,6 @@ pytest
 
 - Look for the DLQ queue that you named in your .env (eg `dais-dead-letter-queue-dd`) verify the message lands here
 
+## DLX/DLQ
+
+The DAIS services use a dead letter queue to collect messages that were rejected after a configurable amount of retries.  Information on the DLX/DLQ setup and use can be found on this [LTS internal wiki](https://wiki.harvard.edu/confluence/pages/viewpage.action?pageId=337150659).
