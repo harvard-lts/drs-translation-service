@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Projectconfig genre="audio">
+    <metadataCategory name="projectMetadata">
+        <property name="batchName" value="{owner}_{batchDir}_{yyyy}{mo}{dd}_{hh24}{mm}{ss}"/>
+        <property name="successMethod" value="all"/>
+        <property name="projectName" value="audio"/>
+        <property name="projectDescription" value=""/>
+        <property name="successEmail" value="DTS@HU.onmicrosoft.com"/>
+        <property name="failureEmail" value="DTS@HU.onmicrosoft.com"/>
+        <property name="depositAgentEmail" value="DTS@HU.onmicrosoft.com"/>
+        <property name="depositAgent" value="dimsdts1"/>
+    </metadataCategory>
+    <directory name="OBJECT TEMPLATE">
+        <metadataCategory name="objectMetadata">
+            <property name="accessFlag" value="N"/>
+            <property name="billingCode" value="HUL.TEST.BILL.0001"/>
+            <property name="ownerCode" value="HUL.TEST"/>
+        </metadataCategory>
+        <metadataCategory name="nrsMetadata">
+            <property name="resourceNamePattern" value="{n}"/>
+            <property name="urnAuthorityPath" value="HUL.GUEST"/>
+        </metadataCategory>
+    </directory>
+</Projectconfig>
