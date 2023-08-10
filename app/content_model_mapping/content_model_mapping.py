@@ -1,27 +1,70 @@
 from abc import ABC, abstractmethod
+import shutil
+import os
+import os.path
+import logging
+
+OPAQUE_CONTENT_MODEL = 'opaque'
 
 class ContentModelMapping(ABC):
     '''Abstract class that defines how to map the data for the 
     inheriting content models.  Inheriting classes will perform
     the actual mapping'''
-        
+    
+    def __init__(self):
+        self.logger = logging.getLogger('dts')
+    
     @abstractmethod
-    def handle_directory_mapping(self):
+    def _handle_directory_mapping(self, package_path, object_dir, aux_object_dir):
         pass
+        
+    def translate_data_structure(self, package_path):
+        batch_name = os.path.basename(package_path) + "-batch"
+        batch_dir = os.path.join(package_path, batch_name)
+        # Object name is the same as the package name
+        object_name = os.path.basename(package_path)
+        object_dir = os.path.join(batch_dir, object_name)
     
-    def _move_files(self):
-        '''Moves files to their proper content model directories
-        '''
-        pass
+        aux_object_dir = os.path.join(package_path, "_aux", batch_name, object_name)
+        os.makedirs(aux_object_dir, exist_ok=True)
+        os.makedirs(object_dir, exist_ok=True)
+        self._handle_directory_mapping(package_path, object_dir, aux_object_dir)
+        
+        return batch_dir
+                                
+    def _move_files(self, root_dir, source, dest_dir):
+        '''This method actually copies the files from source to destination rather than
+        moves them to preserve the original structure and to aid in error handling'''
+        if (os.path.isfile(source)):
+            self.logger.debug("Moving {} to {}".format(os.path.join(root_dir, source), os.path.join(dest_dir, source)))
+            shutil.copy2(os.path.join(root_dir, source), os.path.join(dest_dir, os.path.basename(source)))
+        else:
+            for root, subdirs, files in os.walk(source):
+                for subdir in subdirs:
+                    self._move_files(os.path.join(root, subdir), os.path.join(root, subdir), dest_dir)
+                for filename in files:
+                    shutil.copy2(os.path.join(root, filename), os.path.join(dest_dir, filename))
     
-    def _copy_project_conf(self):
+    def _copy_project_conf(self, project_dir, project_conf):
         '''Copies the project conf to the project directory'''
-        pass
+        shutil.copy2(project_conf, os.path.join(project_dir, "project.conf"))
     
-    def _copy_object_xml_and_rename_object(self):
+    def _copy_object_xml_and_rename_object(self, aux_object_dir, object_xml_template):
         '''Copies the project conf to the proper location and renames OBJECT_NAME
         to the new object name'''
-        pass
+        object_xml = os.path.join(aux_object_dir, "object.xml")
+        object_name = os.path.basename(aux_object_dir)
+    
+        # Read in the template file
+        with open(object_xml_template, 'r') as file:
+            filedata = file.read()
+    
+        # Replace the object name
+        filedata = filedata.replace('OBJECT_NAME', object_name)
+    
+        # Write the object.xml file out in the aux directory
+        with open(object_xml, 'w') as file:
+            file.write(filedata)
     
     
     

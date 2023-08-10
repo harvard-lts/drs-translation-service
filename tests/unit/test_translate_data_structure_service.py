@@ -1,13 +1,15 @@
-import pytest, sys, os.path, shutil
+import pytest, sys, os.path, shutil, os
 sys.path.append('app')
 import translation_service.translate_data_structure_service as translate_data_structure_service 
+from content_model_mapping.opaque_content_model_mapping import OpqaueContentModelMapping
 
 def test_translate_dvn_data_structure():
     '''Formats the directory and verifies that all files ended up where they should be'''
     loc = "/home/appuser/tests/data/doi-translation-service-test"
     expected_batch_dir = os.path.join(loc, os.path.basename(loc) + "-batch")
     
-    batch_dir = translate_data_structure_service.translate_data_structure(loc, {"test": "data"}, "Dataverse")
+    opaque_cmm = OpqaueContentModelMapping(os.getenv("EXTRACTED_PACKAGE_DVN", "True"))
+    batch_dir = opaque_cmm.translate_data_structure(loc)
     assert(expected_batch_dir == batch_dir)
     
     obj_dir = os.path.join(batch_dir, os.path.basename(loc))
@@ -33,7 +35,8 @@ def test_translate_dvn_data_structure_doc_only():
     loc = "/home/appuser/tests/data/doi-translation-service-test-doc-only"
     expected_batch_dir = os.path.join(loc, os.path.basename(loc) + "-batch")
     
-    batch_dir = translate_data_structure_service.translate_data_structure(loc, {"test": "data"}, "Dataverse")
+    opaque_cmm = OpqaueContentModelMapping(os.getenv("EXTRACTED_PACKAGE_DVN", "True"))
+    batch_dir = opaque_cmm.translate_data_structure(loc)
     assert(expected_batch_dir == batch_dir)
     
     obj_dir = os.path.join(batch_dir, os.path.basename(loc))

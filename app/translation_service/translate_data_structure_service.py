@@ -38,29 +38,6 @@ def translate_data_structure(package_path, supplemental_deposit_data, depositing
     return batch_dir
 
 
-def __handle_opaque_directory_mapping(package_path, object_dir, aux_object_dir, is_extracted_package):
-    logger.debug("Formatting for opaque content model")
-    parent_directory_path = package_path
-    if (is_extracted_package == "true"):
-        # Make batch dir and object dir
-        os.makedirs(object_dir, exist_ok=True)
-        # /package_path/extracted
-        extracted_files_dir = os.path.join(package_path, "extracted")
-        # /package_path/extracted/unzippeddir
-        extracted_files = os.listdir(extracted_files_dir)
-        if (len(extracted_files) != 1):
-            raise Exception(
-                "{} directory expected 1 item but found {}".format(extracted_files_dir, len(extracted_files)))
-
-        parent_directory_path = os.path.join(extracted_files_dir, extracted_files[0])
-
-    hascontent = __handle_content_files(object_dir, parent_directory_path)
-
-    __copy_project_conf_opaque(package_path)
-    __copy_object_xml_and_rename_object(aux_object_dir, hascontent, False)
-
-    __handle_documentation_files(object_dir, parent_directory_path)
-
 
 def __handle_opaque_container_directory_mapping(package_path, object_dir, aux_object_dir):
     logger.debug("Formatting for opaque container content model")
@@ -102,36 +79,7 @@ def __handle_opaque_container_directory_mapping(package_path, object_dir, aux_ob
     __copy_object_xml_and_rename_object(aux_object_dir, hascontent, True)
 
 
-def __handle_content_files(object_dir, extracted_path):
-    content_list_string = os.getenv("CONTENT_FILES_AND_DIRS", "")
-    content_list = content_list_string.split(",")
 
-    hascontent = False
-    for item in content_list:
-        item = item.strip()
-        item_path = os.path.join(extracted_path, item)
-        content_path = os.path.join(object_dir, "content")
-
-        # If there is a wildcard, then move all under that item
-        if ("*" in item):
-            for file in glob.glob(r'{}'.format(item_path)):
-                shutil.copy2(file, os.path.join(content_path, file))
-        elif os.path.exists(item_path):
-            logging.debug("Moving content for {}".format(item_path))
-            if not os.path.exists(content_path):
-                os.mkdir(content_path)
-            # If it is a path to a file, move the file
-            if (os.path.isfile(item_path)):
-                logger.debug("Moving {} to {}".format(item_path, os.path.basename(item_path)))
-                shutil.copy2(item_path, os.path.join(content_path, os.path.basename(item_path)))
-            # If it is a directory, use the recursive call
-            else:
-                __move_files(item_path, item_path, content_path)
-            hascontent = hascontent or True
-        else:
-            hascontent = hascontent or False
-
-    return hascontent
 
 
 def __move_files(root_dir, source, dest_dir):
@@ -146,31 +94,6 @@ def __move_files(root_dir, source, dest_dir):
                 __move_files(os.path.join(root, subdir), os.path.join(root, subdir), dest_dir)
             for filename in files:
                 shutil.copy2(os.path.join(root, filename), os.path.join(dest_dir, filename))
-
-
-def __handle_documentation_files(object_dir, extracted_path):
-    documentation_list_string = os.getenv("DOCUMENTATION_FILES_AND_DIRS", "")
-    documentation_list = documentation_list_string.split(",")
-
-    doc_path = os.path.join(object_dir, "documentation")
-    for item in documentation_list:
-        item = item.strip()
-        item_path = os.path.join(extracted_path, item)
-        # If there is a wildcard, then move all under that item
-        if ("*" in item):
-            for file in glob.glob('{}'.format(item_path)):
-                shutil.copy2(os.path.join(item_path, file), os.path.join(doc_path, file))
-        elif os.path.exists(item_path):
-            if not os.path.exists(doc_path):
-                os.mkdir(doc_path)
-
-            # If it is a path to a file, move the file
-            if (os.path.isfile(item_path)):
-                logger.debug("Moving {} to {}".format(item_path, os.path.basename(item_path)))
-                shutil.copy2(item_path, os.path.join(doc_path, os.path.basename(item_path)))
-            # If it is a directory, use the recursive call
-            else:
-                __move_files(item_path, item_path, doc_path)
 
 
 def __copy_project_conf_opaque(project_dir):
