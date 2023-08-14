@@ -35,7 +35,7 @@ pytest
 
 ## Invoking the task manually
 
-### invoke-task.py (add message that will be rejected to the queue)
+### invoke-dlq-task.py (add message that will be rejected to the queue)
 
 - Clone this repo from github 
 
@@ -51,7 +51,7 @@ pytest
 
 - Run invoke task python script
 
-`python3 scripts/invoke-task.py`
+`python3 scripts/invoke-dlq-task.py`
 
 - Bring up [DEV DAIS Rabbit UI](https://b-e9f45d5f-039d-4226-b5df-1a776c736346.mq.us-east-1.amazonaws.com/)  - credentials in LPE Shared-DAIS
 
