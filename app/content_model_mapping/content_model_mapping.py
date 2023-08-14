@@ -15,7 +15,7 @@ class ContentModelMapping(ABC):
         self.logger = logging.getLogger('dts')
     
     @abstractmethod
-    def _handle_directory_mapping(self, package_path, object_dir, aux_object_dir):
+    def handle_directory_mapping(self, package_path, object_dir, aux_object_dir):
         pass
                                 
     def _move_files(self, root_dir, source, dest_dir):
