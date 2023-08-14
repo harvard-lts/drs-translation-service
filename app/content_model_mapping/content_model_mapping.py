@@ -4,6 +4,8 @@ import os
 import os.path
 import logging
 
+OPAQUE_CONTENT_MODEL = 'opaque'
+
 class ContentModelMapping(ABC):
     '''Abstract class that defines how to map the data for the 
     inheriting content models.  Inheriting classes will perform
@@ -13,9 +15,9 @@ class ContentModelMapping(ABC):
         self.logger = logging.getLogger('dts')
     
     @abstractmethod
-    def handle_directory_mapping(self, package_path, object_dir, aux_object_dir):
+    def _handle_directory_mapping(self, package_path, object_dir, aux_object_dir):
         pass
-                                 
+                                
     def _move_files(self, root_dir, source, dest_dir):
         '''This method actually copies the files from source to destination rather than
         moves them to preserve the original structure and to aid in error handling'''
