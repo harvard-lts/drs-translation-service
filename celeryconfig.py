@@ -1,4 +1,6 @@
 import os
+from kombu import Exchange, Queue
+
 
 broker_url = os.getenv('BROKER_URL')
 broker_connection_retry_on_startup=True
