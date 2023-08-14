@@ -1,6 +1,5 @@
 import pytest, sys, os.path, shutil, os
 sys.path.append('app')
-import translation_service.translate_data_structure_service as translate_data_structure_service 
 from content_model_mapping.opaque_content_model_mapping import OpqaueContentModelMapping
 from content_model_mapping.opaque_container_content_model_mapping import OpqaueContainerContentModelMapping
 

@@ -1,5 +1,6 @@
 import os, os.path, logging, shutil
-import translation_service.translate_data_structure_service as translate_data_structure_service
+from content_model_mapping.opaque_content_model_mapping import OpqaueContentModelMapping
+from content_model_mapping.opaque_container_content_model_mapping import OpqaueContainerContentModelMapping
 from translation_service.batch_builder_assistant import BatchBuilderAssistant
 
 logger = logging.getLogger('dts')
@@ -10,9 +11,20 @@ batch_builder_assistant = BatchBuilderAssistant()
 
 def prepare_and_send_to_drs(package_dir, supplemental_deposit_data, depositing_application, testing = False):
     #Set up directories
-    batch_dir = translate_data_structure_service.translate_data_structure(package_dir, supplemental_deposit_data, depositing_application)
+    batch_name = os.path.basename(package_dir) + "-batch"
+    batch_dir = os.path.join(package_dir, batch_name)
+    
+    #This if-else is used for content model mapping for now.
+    if depositing_application == "Dataverse":
+        cmmapping = OpqaueContentModelMapping(os.getenv("EXTRACTED_PACKAGE_DVN", "True"))
+    else:
+        cmmapping = OpqaueContainerContentModelMapping()
+    object_name = os.path.basename(package_dir)
+    object_dir = os.path.join(batch_dir, object_name)
+    aux_object_dir = os.path.join(package_dir, "_aux", batch_name, object_name)
+    cmmapping.handle_directory_mapping(package_dir, object_dir, aux_object_dir)
     #Run BB
-    batch_builder_assistant.process_batch(package_dir, os.path.basename(batch_dir), supplemental_deposit_data, depositing_application)
+    batch_builder_assistant.process_batch(package_dir, batch_name, supplemental_deposit_data, depositing_application)
     
     #Move Batch to incoming
     batch_dir = __move_batch_to_incoming(package_dir, batch_dir)

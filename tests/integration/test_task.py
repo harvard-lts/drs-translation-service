@@ -35,7 +35,7 @@ def test_send_to_drs_task():
                      "retry_count":0},
                  "testing":"yes"}    
     
-    my_queue = Queue(os.getenv("PROCESS_CONSUME_QUEUE_NAME"), no_declare=True)
+    my_queue = kombu.Queue(os.getenv("PROCESS_CONSUME_QUEUE_NAME"), no_declare=True)
     res = app1.send_task(process_task,
                          args=[arguments], kwargs={},
                          queue=my_queue)
@@ -56,7 +56,7 @@ def test_send_to_drs_task():
             cleanup_dropbox(package_dir)
             #Remove the files
             cleanup_mock_loadreport(mock_lr)
-            assert False, "test_notification: could not find mock load report {} after 30 seconds".format(mock_lr)
+            assert False, "test_notification: could not find anything on the {} after 30 seconds".format(os.getenv("PROCESS_CONSUME_QUEUE_NAME"))
     
     #Check that the loading file exists and the batch exists
     assert os.path.exists(batch_dir)
