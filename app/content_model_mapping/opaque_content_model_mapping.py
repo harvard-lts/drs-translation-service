@@ -8,7 +8,7 @@ class OpqaueContentModelMapping(ContentModelMapping):
         self.is_extracted_package = is_extraced_package.lower()
         super().__init__()
         
-    def _handle_directory_mapping(self, package_path, object_dir, aux_object_dir):
+    def handle_directory_mapping(self, package_path, object_dir, aux_object_dir):
         self.logger.debug("Formatting for opaque content model")
         parent_directory_path = package_path
         if (self.is_extracted_package == "true"):

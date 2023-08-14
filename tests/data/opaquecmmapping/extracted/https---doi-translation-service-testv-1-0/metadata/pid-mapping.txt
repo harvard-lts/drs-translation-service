@@ -1,0 +1,4 @@
+https://doi.org/10.5072/FK2/O0FPAA data/Simple Demo/
+http://dvn-dev-hdc.lib.harvard.edu/file.xhtml?fileId=24 data/Simple Demo/test1.Bin
+http://dvn-dev-hdc.lib.harvard.edu/file.xhtml?fileId=23 data/Simple Demo/test2.Bin
+http://dvn-dev-hdc.lib.harvard.edu/file.xhtml?fileId=25 data/Simple Demo/test3.Bin
