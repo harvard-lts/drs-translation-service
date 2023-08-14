@@ -4,8 +4,6 @@ import os
 import os.path
 import logging
 
-OPAQUE_CONTENT_MODEL = 'opaque'
-
 class ContentModelMapping(ABC):
     '''Abstract class that defines how to map the data for the 
     inheriting content models.  Inheriting classes will perform
