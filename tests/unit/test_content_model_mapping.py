@@ -2,27 +2,24 @@ import pytest, sys, os.path, shutil, os
 sys.path.append('app')
 import translation_service.translate_data_structure_service as translate_data_structure_service 
 from content_model_mapping.opaque_content_model_mapping import OpqaueContentModelMapping
+from content_model_mapping.opaque_container_content_model_mapping import OpqaueContainerContentModelMapping
 
-def test_opaque_cm_mapping():
+def test_map_opaque_cm_mapping():
     '''Formats the directory and verifies that all files ended up where they should be'''
-    loc = "/home/appuser/tests/data/doi-translation-service-test"
-    expected_batch_dir = os.path.join(loc, os.path.basename(loc) + "-batch")
+    package_path = "/home/appuser/tests/data/doi-translation-service-test"
+    expected_batch_dir = os.path.join(package_path, os.path.basename(package_path) + "-batch")
     
-    batch_name = os.path.basename(loc) + "-batch"
+    batch_name = os.path.basename(package_path) + "-batch"
     batch_dir = os.path.join(package_path, batch_name)
     # Object name is the doi-name
     object_name = os.path.basename(package_path)
-    object_dir = os.path.join(batch_dir, object_name)
-
-    aux_object_dir = os.path.join(package_path, "_aux", batch_name, object_name)
-    os.makedirs(aux_object_dir, exist_ok=True)
-    os.makedirs(object_dir, exist_ok=True)
-    opaque_cmm = OpqaueContentModelMapping(os.getenv("EXTRACTED_PACKAGE_DVN", "True"))
-    batch_dir = opaque_cmm.handle_directory_mapping(loc)
-    assert(expected_batch_dir == batch_dir)
+    obj_dir = os.path.join(batch_dir, object_name)
+    obj_aux_dir = os.path.join(package_path, "_aux", batch_name, object_name)
+    os.makedirs(obj_aux_dir, exist_ok=True)
+    os.makedirs(obj_dir, exist_ok=True)
     
-    obj_dir = os.path.join(batch_dir, os.path.basename(loc, object_dir, aux_object_dir))
-    obj_aux_dir= os.path.join(loc, "_aux", os.path.basename(loc) + "-batch", os.path.basename(loc))
+    opaque_cmm = OpqaueContentModelMapping(os.getenv("EXTRACTED_PACKAGE_DVN", "True"))
+    opaque_cmm.handle_directory_mapping(package_path, obj_dir, obj_aux_dir)
     
     assert os.path.exists(obj_dir)
     assert os.path.exists(obj_aux_dir)
@@ -37,19 +34,24 @@ def test_opaque_cm_mapping():
     assert os.path.exists(os.path.join(obj_dir, "documentation", "datacite.xml"))
     assert os.path.exists(os.path.join(obj_dir, "documentation", "oai-ore.jsonld"))
     assert os.path.exists(os.path.join(obj_dir, "documentation", "pid-mapping.txt"))
-    cleanup_batch_dirs(batch_dir, os.path.join(loc, "_aux"), os.path.join(loc, "project.conf"))
+    cleanup_batch_dirs(batch_dir, os.path.join(package_path, "_aux"), os.path.join(package_path, "project.conf"))
 
-def test_opaque_cm_doc_only():
+def test_map_opaque_cm_doc_only():
     '''Formats the directory and verifies that all files ended up where they should be'''
-    loc = "/home/appuser/tests/data/doi-translation-service-test-doc-only"
-    expected_batch_dir = os.path.join(loc, os.path.basename(loc) + "-batch")
+    package_path = "/home/appuser/tests/data/doi-translation-service-test-doc-only"
+    expected_batch_dir = os.path.join(package_path, os.path.basename(package_path) + "-batch")
     
-    opaque_cmm = OpqaueContentModelMapping(os.getenv("EXTRACTED_PACKAGE_DVN", "True"))
-    batch_dir = opaque_cmm.handle_directory_mapping(loc)
-    assert(expected_batch_dir == batch_dir)
+    batch_name = os.path.basename(package_path) + "-batch"
+    batch_dir = os.path.join(package_path, batch_name)
+    # Object name is the doi-name
+    object_name = os.path.basename(package_path)
+    obj_dir = os.path.join(batch_dir, os.path.basename(package_path))
+    obj_aux_dir= os.path.join(package_path, "_aux", os.path.basename(package_path) + "-batch", os.path.basename(package_path))
+    os.makedirs(obj_aux_dir, exist_ok=True)
+    os.makedirs(obj_dir, exist_ok=True)
     
-    obj_dir = os.path.join(batch_dir, os.path.basename(loc))
-    obj_aux_dir= os.path.join(loc, "_aux", os.path.basename(loc) + "-batch", os.path.basename(loc))
+    opaque_cmm = OpqaueContentModelMapping(os.getenv("EXTRACTED_PACKAGE_DVN", "True")) 
+    opaque_cmm.handle_directory_mapping(package_path, obj_dir, obj_aux_dir)
     
     assert os.path.exists(obj_dir)
     assert os.path.exists(obj_aux_dir)
@@ -62,7 +64,76 @@ def test_opaque_cm_doc_only():
     assert os.path.exists(os.path.join(obj_dir, "documentation", "datacite.xml"))
     assert os.path.exists(os.path.join(obj_dir, "documentation", "oai-ore.jsonld"))
     assert os.path.exists(os.path.join(obj_dir, "documentation", "pid-mapping.txt"))
-    cleanup_batch_dirs(batch_dir, os.path.join(loc, "_aux"), os.path.join(loc, "project.conf"))
+    cleanup_batch_dirs(batch_dir, os.path.join(package_path, "_aux"), os.path.join(package_path, "project.conf"))
+
+def test_map_opaque_container_cm_zip():
+    '''Formats the directory and verifies that all files ended up where they should be'''
+    package_path = "/home/appuser/tests/data/epadd-export-test-zip"
+    
+    batch_name = os.path.basename(package_path) + "-batch"
+    batch_dir = os.path.join(package_path, batch_name)
+    # Object name is the doi-name
+    object_name = os.path.basename(package_path)
+    obj_dir = os.path.join(batch_dir, os.path.basename(package_path))
+    obj_aux_dir= os.path.join(package_path, "_aux", os.path.basename(package_path) + "-batch", os.path.basename(package_path))
+    os.makedirs(obj_aux_dir, exist_ok=True)
+    os.makedirs(obj_dir, exist_ok=True)
+    
+    opaque_container_cmm = OpqaueContainerContentModelMapping() 
+    opaque_container_cmm.handle_directory_mapping(package_path, obj_dir, obj_aux_dir)
+
+    assert os.path.exists(obj_dir)
+    assert os.path.exists(obj_aux_dir)
+
+    # Check that all files are where they are expected to be
+    assert os.path.exists(os.path.join(obj_dir, "container", "test_export.zip"))
+    cleanup_batch_dirs(batch_dir, os.path.join(package_path, "_aux"), os.path.join(package_path, "project.conf"))
+    
+def test_map_opaque_container_cm_7z():
+    '''Formats the directory and verifies that all files ended up where they should be'''
+    package_path = "/home/appuser/tests/data/epadd-export-test-7z"
+    
+    batch_name = os.path.basename(package_path) + "-batch"
+    batch_dir = os.path.join(package_path, batch_name)
+    # Object name is the doi-name
+    object_name = os.path.basename(package_path)
+    obj_dir = os.path.join(batch_dir, os.path.basename(package_path))
+    obj_aux_dir= os.path.join(package_path, "_aux", os.path.basename(package_path) + "-batch", os.path.basename(package_path))
+    os.makedirs(obj_aux_dir, exist_ok=True)
+    os.makedirs(obj_dir, exist_ok=True)
+    
+    opaque_container_cmm = OpqaueContainerContentModelMapping() 
+    opaque_container_cmm.handle_directory_mapping(package_path, obj_dir, obj_aux_dir)
+
+    assert os.path.exists(obj_dir)
+    assert os.path.exists(obj_aux_dir)
+
+    # Check that all files are where they are expected to be
+    assert os.path.exists(os.path.join(obj_dir, "container", "test.7z"))
+    cleanup_batch_dirs(batch_dir, os.path.join(package_path, "_aux"), os.path.join(package_path, "project.conf"))
+    
+def test_map_opaque_container_cm_gz():
+    '''Formats the directory and verifies that all files ended up where they should be'''
+    package_path = "/home/appuser/tests/data/epadd-export-test-gz"
+    
+    batch_name = os.path.basename(package_path) + "-batch"
+    batch_dir = os.path.join(package_path, batch_name)
+    # Object name is the doi-name
+    object_name = os.path.basename(package_path)
+    obj_dir = os.path.join(batch_dir, os.path.basename(package_path))
+    obj_aux_dir= os.path.join(package_path, "_aux", os.path.basename(package_path) + "-batch", os.path.basename(package_path))
+    os.makedirs(obj_aux_dir, exist_ok=True)
+    os.makedirs(obj_dir, exist_ok=True)
+    
+    opaque_container_cmm = OpqaueContainerContentModelMapping() 
+    opaque_container_cmm.handle_directory_mapping(package_path, obj_dir, obj_aux_dir)
+    
+    assert os.path.exists(obj_dir)
+    assert os.path.exists(obj_aux_dir)
+
+    # Check that all files are where they are expected to be
+    assert os.path.exists(os.path.join(obj_dir, "container", "test.gz"))
+    cleanup_batch_dirs(batch_dir, os.path.join(package_path, "_aux"), os.path.join(package_path, "project.conf"))
 
          
 def cleanup_batch_dirs(batch_path, aux_dir, project_conf):
