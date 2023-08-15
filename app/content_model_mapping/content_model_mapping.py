@@ -15,7 +15,7 @@ class ContentModelMapping(ABC):
     @abstractmethod
     def handle_directory_mapping(self, package_path, object_dir, aux_object_dir):
         pass
-                                 
+                                
     def _move_files(self, root_dir, source, dest_dir):
         '''This method actually copies the files from source to destination rather than
         moves them to preserve the original structure and to aid in error handling'''
