@@ -32,7 +32,8 @@ def test_send_to_drs_task():
                     {"dropbox_name": "", 
                      "original_queue": "myqueue",
                      "task_name": process_task,
-                     "retry_count":0},
+                     "retry_count":0,
+                     'failureEmail': os.getenv("DEFAULT_EMAIL_RECIPIENT")},
                  "testing":"yes"}    
     
     my_queue = Queue(os.getenv("PROCESS_CONSUME_QUEUE_NAME"), no_declare=True)
@@ -56,7 +57,7 @@ def test_send_to_drs_task():
             cleanup_dropbox(package_dir)
             #Remove the files
             cleanup_mock_loadreport(mock_lr)
-            assert False, "test_notification: could not find mock load report {} after 30 seconds".format(mock_lr)
+            assert False, "test_notification: could not find anything in the directory {} after 30 seconds".format(mock_lr)
     
     #Check that the loading file exists and the batch exists
     assert os.path.exists(batch_dir)

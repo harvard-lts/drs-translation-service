@@ -1,4 +1,5 @@
 from celery import Celery
+from kombu import Queue
 import os
 import traceback
 import logging
@@ -43,13 +44,16 @@ def prepare_and_send_to_drs(self, message):
             testing
         )
     except TranslationException as te:
-        emails = message["admin_metadata"]["failureEmail"]
+        emails = message["admin_metadata"].get("failureEmail")
         if te.emailaddress:
-            emails += "," + te.emailaddress
+            if emails is not None:
+                emails += "," + te.emailaddress
+            else:
+                emails = te.emailaddress
         exception_msg = traceback.format_exc()
         send_error_notifications(message, te, exception_msg, emails, self.request.retries)
     except Exception as e:
-        failureEmail = message["admin_metadata"]["failureEmail"]
+        failureEmail = message["admin_metadata"].get("failureEmail")
         exception_msg = traceback.format_exc()
         send_error_notifications(message, e, exception_msg, failureEmail, self.request.retries)   
     
@@ -71,8 +75,10 @@ def send_error_notifications(message_body, exception, exception_msg, emails, num
             "retry_count": 0
         }
     }
+    publish_queue = Queue(
+        os.getenv("PROCESS_PUBLISH_QUEUE_NAME"), no_declare=True)
     app.send_task(process_status_task, args=[msg_json], kwargs={},
-            queue=os.getenv("PROCESS_PUBLISH_QUEUE_NAME"))
+            queue=publish_queue)
     
     msg = "Could not process export for DRSIngest for {}.  Error {}.".format(message_body.get("package_id"), str(exception))
     body = msg + "\n" + exception_msg
