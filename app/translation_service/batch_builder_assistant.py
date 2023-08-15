@@ -44,18 +44,15 @@ class BatchBuilderAssistant:
             bb_script_name = os.getenv("BB_SCRIPT_NAME")
             command = "sh " + bb_script_name + " -a build -p " + project_path + " -b " + batch_name
             object_name = os.path.basename(project_path)
-            hasoverrides = False
             
             batch_prop_overrides = self.__build_batchprop_override_command(supplemental_deposit_metadata)
             if batch_prop_overrides is not None:
                 command += batch_prop_overrides
-                hasoverrides=True
-
+            
             object_prop_overrides = self.__build_objprop_override_command(project_path, object_name, supplemental_deposit_metadata, depositing_application)
             if object_prop_overrides is not None:
                 command += object_prop_overrides
-                hasoverrides=True
-
+            
             content_file_prop_overrides = None
             doc_file_prop_overrides = None  
             if (depositing_application == "Dataverse"):
@@ -69,6 +66,7 @@ class BatchBuilderAssistant:
                     emailaddress = supplemental_deposit_metadata["failureEmail"]
                 raise TranslationException("Unexpected depositing_application {}".format(depositing_application), emailaddress)
 
+            hasoverrides = False
             if content_file_prop_overrides is not None:
                 command += " -dirprop \"{}".format(content_file_prop_overrides)
                 hasoverrides=True

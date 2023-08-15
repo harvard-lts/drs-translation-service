@@ -22,6 +22,9 @@ def prepare_and_send_to_drs(package_dir, supplemental_deposit_data, depositing_a
     object_name = os.path.basename(package_dir)
     object_dir = os.path.join(batch_dir, object_name)
     aux_object_dir = os.path.join(package_dir, "_aux", batch_name, object_name)
+    os.makedirs(aux_object_dir, exist_ok=True)
+    os.makedirs(object_dir, exist_ok=True)
+    
     cmmapping.handle_directory_mapping(package_dir, object_dir, aux_object_dir)
     #Run BB
     batch_builder_assistant.process_batch(package_dir, batch_name, supplemental_deposit_data, depositing_application)
