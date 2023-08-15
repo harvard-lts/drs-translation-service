@@ -1,6 +1,5 @@
 import os
 import shutil
-import glob
 from content_model_mapping.content_model_mapping import ContentModelMapping
 from pathlib import Path
 

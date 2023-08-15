@@ -1,5 +1,6 @@
 import os
 import shutil
+import glob
 from content_model_mapping.content_model_mapping import ContentModelMapping
 
 class OpqaueContentModelMapping(ContentModelMapping):
