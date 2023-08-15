@@ -1,7 +1,7 @@
 import pytest, sys, os.path, shutil, os
 sys.path.append('app')
-import translation_service.translate_data_structure_service as translate_data_structure_service 
 from translate_data_structure.dataverse_translate_data_structure_service import DataverseTranslateDataStructureService
+from translate_data_structure.epadd_translate_data_structure_service import EpaddTranslateDataStructureService
 
 def test_translate_dvn_data_structure():
     '''Formats the directory and verifies that all files ended up where they should be'''
@@ -61,7 +61,8 @@ def test_translate_epadd_data_structure_zip():
     loc = "/home/appuser/tests/data/epadd-export-test-zip"
     expected_batch_dir = os.path.join(loc, os.path.basename(loc) + "-batch")
 
-    batch_dir = translate_data_structure_service.translate_data_structure(loc, {"test": "data"}, "ePADD")
+    epadd_translate_svc = EpaddTranslateDataStructureService()
+    batch_dir = epadd_translate_svc.translate_data_structure(loc)
     assert (expected_batch_dir == batch_dir)
 
     obj_dir = os.path.join(batch_dir, os.path.basename(loc))
@@ -72,7 +73,6 @@ def test_translate_epadd_data_structure_zip():
 
     # Check that all files are where they are expected to be
     assert os.path.exists(os.path.join(obj_dir, "container", "test_export.zip"))
-    assert os.path.exists(os.path.join(obj_dir, "documentation"))
     cleanup_batch_dirs(batch_dir, os.path.join(loc, "_aux"), os.path.join(loc, "project.conf"))
     
 def test_translate_epadd_data_structure_7z():
@@ -80,7 +80,8 @@ def test_translate_epadd_data_structure_7z():
     loc = "/home/appuser/tests/data/epadd-export-test-7z"
     expected_batch_dir = os.path.join(loc, os.path.basename(loc) + "-batch")
 
-    batch_dir = translate_data_structure_service.translate_data_structure(loc, {"test": "data"}, "ePADD")
+    epadd_translate_svc = EpaddTranslateDataStructureService()
+    batch_dir = epadd_translate_svc.translate_data_structure(loc)
     assert (expected_batch_dir == batch_dir)
 
     obj_dir = os.path.join(batch_dir, os.path.basename(loc))
@@ -91,7 +92,6 @@ def test_translate_epadd_data_structure_7z():
 
     # Check that all files are where they are expected to be
     assert os.path.exists(os.path.join(obj_dir, "container", "test.7z"))
-    assert os.path.exists(os.path.join(obj_dir, "documentation"))
     cleanup_batch_dirs(batch_dir, os.path.join(loc, "_aux"), os.path.join(loc, "project.conf"))
 
     
@@ -100,7 +100,8 @@ def test_translate_epadd_data_structure_gz():
     loc = "/home/appuser/tests/data/epadd-export-test-gz"
     expected_batch_dir = os.path.join(loc, os.path.basename(loc) + "-batch")
 
-    batch_dir = translate_data_structure_service.translate_data_structure(loc, {"test": "data"}, "ePADD")
+    epadd_translate_svc = EpaddTranslateDataStructureService()
+    batch_dir = epadd_translate_svc.translate_data_structure(loc)
     assert (expected_batch_dir == batch_dir)
 
     obj_dir = os.path.join(batch_dir, os.path.basename(loc))
@@ -111,47 +112,6 @@ def test_translate_epadd_data_structure_gz():
 
     # Check that all files are where they are expected to be
     assert os.path.exists(os.path.join(obj_dir, "container", "test.gz"))
-    assert os.path.exists(os.path.join(obj_dir, "documentation"))
-
-    cleanup_batch_dirs(batch_dir, os.path.join(loc, "_aux"), os.path.join(loc, "project.conf"))
-    
-def test_translate_epadd_data_structure_7z():
-    '''Formats the directory and verifies that all files ended up where they should be'''
-    loc = "/home/appuser/tests/data/epadd-export-test-7z"
-    expected_batch_dir = os.path.join(loc, os.path.basename(loc) + "-batch")
-
-    batch_dir = translate_data_structure_service.translate_data_structure(loc, {"test": "data"}, "ePADD")
-    assert (expected_batch_dir == batch_dir)
-
-    obj_dir = os.path.join(batch_dir, os.path.basename(loc))
-    obj_aux_dir = os.path.join(loc, "_aux", os.path.basename(loc) + "-batch", os.path.basename(loc))
-
-    assert os.path.exists(obj_dir)
-    assert os.path.exists(obj_aux_dir)
-
-    # Check that all files are where they are expected to be
-    assert os.path.exists(os.path.join(obj_dir, "container", "test.7z"))
-    assert os.path.exists(os.path.join(obj_dir, "documentation"))
-    cleanup_batch_dirs(batch_dir, os.path.join(loc, "_aux"), os.path.join(loc, "project.conf"))
-
-    
-def test_translate_epadd_data_structure_gz():
-    '''Formats the directory and verifies that all files ended up where they should be'''
-    loc = "/home/appuser/tests/data/epadd-export-test-gz"
-    expected_batch_dir = os.path.join(loc, os.path.basename(loc) + "-batch")
-
-    batch_dir = translate_data_structure_service.translate_data_structure(loc, {"test": "data"}, "ePADD")
-    assert (expected_batch_dir == batch_dir)
-
-    obj_dir = os.path.join(batch_dir, os.path.basename(loc))
-    obj_aux_dir = os.path.join(loc, "_aux", os.path.basename(loc) + "-batch", os.path.basename(loc))
-
-    assert os.path.exists(obj_dir)
-    assert os.path.exists(obj_aux_dir)
-
-    # Check that all files are where they are expected to be
-    assert os.path.exists(os.path.join(obj_dir, "container", "test.gz"))
-    assert os.path.exists(os.path.join(obj_dir, "documentation"))
     cleanup_batch_dirs(batch_dir, os.path.join(loc, "_aux"), os.path.join(loc, "project.conf"))
 
          
