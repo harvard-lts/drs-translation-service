@@ -1,8 +1,8 @@
 import pytest, sys, os.path, shutil
 sys.path.append('app')
-from translation_service.batch_builder_assistant import BatchBuilderAssistant 
+from batch_builder_service.dataverse_batch_builder_service import DataverseBatchBuilderService 
+from batch_builder_service.epadd_batch_builder_service import EpaddBatchBuilderService 
 
-batch_builder_assistant = BatchBuilderAssistant()
 dvn_project_path = "/home/appuser/tests/data/samplepreparedprojects/doi-translation-service-test"
 epadd_project_path = "/home/appuser/tests/data/samplepreparedprojects/epadd-test"
 epadd_with_mods_project_path = "/home/appuser/tests/data/samplepreparedprojects/epadd-test-with-mods"
@@ -13,7 +13,8 @@ epadd_with_mods_batch_name = "epadd-test-with-mods-batch"
 
 def test_build_basic_command():
     '''Verifies that the build command returns properly'''
-    command = batch_builder_assistant.build_command(dvn_project_path, dvn_batch_name, {}, "Dataverse")
+    dvn_bb_service = DataverseBatchBuilderService()
+    command = dvn_bb_service.build_command(dvn_project_path, dvn_batch_name, {})
     assert command == "sh {} -a build -p {} -b {}".format(bb_script_name, dvn_project_path, dvn_batch_name)
  
 def test_dvn_build_command_with_overrides():
@@ -40,7 +41,8 @@ def test_dvn_build_command_with_overrides():
      
     bb_script_name = os.getenv("BB_SCRIPT_NAME")
          
-    command = batch_builder_assistant.build_command(dvn_project_path, dvn_batch_name, supplemental_data, "Dataverse")
+    dvn_bb_service = DataverseBatchBuilderService()
+    command = dvn_bb_service.build_command(dvn_project_path, dvn_batch_name, supplemental_data)
      
     overridestring = "-batchprop \"successEmail=winner@mailinator.com,failureEmail=loser@mailinator.com,successMethod=dropbox,depositAgent=dimsdts1,depositAgentEmail=DTS@HU.onmicrosoft.com\""
     overridestring += " -objectprop \"doi-translation-service-test::ownerCode=HUL.TEST,billingCode=HUL.TEST.BILL_0001,resourceNamePattern={n},urnAuthorityPath=HUL.TEST,accessFlag=N,adminCategory=http://idtest.lib.harvard.edu:10020/wordshack/adminCategory/27186,role=CG_DATASET;\"" 
@@ -50,7 +52,8 @@ def test_dvn_build_command_with_overrides():
      
  
 def test_dvn_run_batch_builder_basic():
-     batch_builder_assistant.process_batch(dvn_project_path, dvn_batch_name, {}, "Dataverse")   
+     dvn_bb_service = DataverseBatchBuilderService()
+     dvn_bb_service.process_batch(dvn_project_path, dvn_batch_name, {})   
      expected_batch_file = os.path.join(dvn_project_path, dvn_batch_name, "batch.xml")
      assert os.path.exists(expected_batch_file)
      expected_descriptor_file = os.path.join(dvn_project_path, dvn_batch_name, os.path.basename(dvn_project_path), "descriptor.xml")
@@ -75,7 +78,8 @@ def test_dvn_run_batch_builder_with_overrides():
                "successMethod": "dropbox",
                "adminCategory": "http://idtest.lib.harvard.edu:10020/wordshack/adminCategory/27186"}
 
-     batch_builder_assistant.process_batch(dvn_project_path, dvn_batch_name, supplemental_data, "Dataverse")   
+     dvn_bb_service = DataverseBatchBuilderService()
+     dvn_bb_service.process_batch(dvn_project_path, dvn_batch_name, supplemental_data)   
      expected_batch_file = os.path.join(dvn_project_path, dvn_batch_name, "batch.xml")
      assert os.path.exists(expected_batch_file)
      expected_descriptor_file = os.path.join(dvn_project_path, dvn_batch_name, os.path.basename(dvn_project_path), "descriptor.xml")
@@ -84,7 +88,8 @@ def test_dvn_run_batch_builder_with_overrides():
      
 def test_dvm_run_batch_builder_basic_doc_only():
      project_path_no_content="/home/appuser/tests/data/samplepreparedprojects/doi-translation-service-test-doc-only"
-     batch_builder_assistant.process_batch(project_path_no_content, dvn_batch_name, {}, "Dataverse")   
+     dvn_bb_service = DataverseBatchBuilderService()
+     dvn_bb_service.process_batch(project_path_no_content, dvn_batch_name, {})   
      expected_batch_file = os.path.join(project_path_no_content, dvn_batch_name, "batch.xml")
      assert os.path.exists(expected_batch_file)
      expected_descriptor_file = os.path.join(project_path_no_content, dvn_batch_name, os.path.basename(dvn_project_path), "descriptor.xml")
@@ -92,7 +97,8 @@ def test_dvm_run_batch_builder_basic_doc_only():
      cleanup_created_files(expected_batch_file, expected_descriptor_file) 
      
 def test_epadd_run_batch_builder_basic():
-     batch_builder_assistant.process_batch(epadd_project_path, epadd_batch_name, {}, "ePADD")   
+     epadd_bb_service = EpaddBatchBuilderService()
+     epadd_bb_service.process_batch(epadd_project_path, epadd_batch_name, {})   
      expected_batch_file = os.path.join(epadd_project_path, epadd_batch_name, "batch.xml")
      assert os.path.exists(expected_batch_file)
      expected_descriptor_file = os.path.join(epadd_project_path, epadd_batch_name, os.path.basename(epadd_project_path), "descriptor.xml")
@@ -118,7 +124,8 @@ def test_epadd_run_batch_builder_with_overrides():
                "failureEmail": "loser@mailinator.com",
                "successMethod": "dropbox",
                "adminCategory": "http://idtest.lib.harvard.edu:10020/wordshack/adminCategory/27186"}
-     batch_builder_assistant.process_batch(epadd_project_path, epadd_batch_name, supplemental_data, "ePADD")   
+     epadd_bb_service = EpaddBatchBuilderService()
+     epadd_bb_service.process_batch(epadd_project_path, epadd_batch_name, supplemental_data)   
      expected_batch_file = os.path.join(epadd_project_path, epadd_batch_name, "batch.xml")
      assert os.path.exists(expected_batch_file)
      expected_descriptor_file = os.path.join(epadd_project_path, epadd_batch_name, os.path.basename(epadd_project_path), "descriptor.xml")
@@ -152,7 +159,8 @@ def test_epadd_build_command_with_overrides():
      
     bb_script_name = os.getenv("BB_SCRIPT_NAME")
          
-    command = batch_builder_assistant.build_command(epadd_with_mods_project_path, epadd_with_mods_batch_name, supplemental_data, "ePADD")
+    epadd_bb_service = EpaddBatchBuilderService()
+    command = epadd_bb_service.build_command(epadd_with_mods_project_path, epadd_with_mods_batch_name, supplemental_data)
     print(command)
     overridestring = "-batchprop \"successEmail=winner@mailinator.com,failureEmail=loser@mailinator.com,successMethod=dropbox,depositAgent=dimsdts1,depositAgentEmail=DTS@HU.onmicrosoft.com\""
     overridestring += " -objectprop \"epadd-test-with-mods::ownerCode=HUL.TEST,billingCode=HUL.TEST.BILL_0001,resourceNamePattern={n},urnAuthorityPath=HUL.TEST,accessFlag=N,adminCategory=http://idtest.lib.harvard.edu:10020/wordshack/adminCategory/27186,role=CG_EMAIL," 
@@ -179,7 +187,8 @@ def test_epadd_with_mods_run_batch_builder_with_overrides():
                "successMethod": "dropbox",
                "adminCategory": "http://idtest.lib.harvard.edu:10020/wordshack/adminCategory/27186",
                "embargoBasis": "Harvard policy"}
-     batch_builder_assistant.process_batch(epadd_with_mods_project_path, epadd_with_mods_batch_name, supplemental_data, "ePADD")   
+     epadd_bb_service = EpaddBatchBuilderService()
+     epadd_bb_service.process_batch(epadd_with_mods_project_path, epadd_with_mods_batch_name, supplemental_data)   
      expected_batch_file = os.path.join(epadd_with_mods_project_path, epadd_with_mods_batch_name, "batch.xml")
      assert os.path.exists(expected_batch_file)
      expected_descriptor_file = os.path.join(epadd_with_mods_project_path, epadd_with_mods_batch_name, os.path.basename(epadd_with_mods_project_path), "descriptor.xml")

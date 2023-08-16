@@ -1,13 +1,12 @@
 import os, os.path, logging, shutil
 from content_model_mapping.opaque_content_model_mapping import OpqaueContentModelMapping
 from content_model_mapping.opaque_container_content_model_mapping import OpqaueContainerContentModelMapping
-from translation_service.batch_builder_assistant import BatchBuilderAssistant
+from batch_builder_service.dataverse_batch_builder_service import DataverseBatchBuilderService 
+from batch_builder_service.epadd_batch_builder_service import EpaddBatchBuilderService 
 
 logger = logging.getLogger('dts')
 base_load_report_dir = os.getenv("BASE_LOADREPORT_PATH")
 sample_load_report="/home/appuser/tests/data/sampleloadreport/LOADREPORT_sample.txt"
-
-batch_builder_assistant = BatchBuilderAssistant()
 
 def prepare_and_send_to_drs(package_dir, supplemental_deposit_data, depositing_application, testing = False):
     #Set up directories
@@ -17,8 +16,10 @@ def prepare_and_send_to_drs(package_dir, supplemental_deposit_data, depositing_a
     #This if-else is used for content model mapping for now.
     if depositing_application == "Dataverse":
         cmmapping = OpqaueContentModelMapping(os.getenv("EXTRACTED_PACKAGE_DVN", "True"))
+        batch_builder_service = DataverseBatchBuilderService()
     else:
         cmmapping = OpqaueContainerContentModelMapping()
+        batch_builder_service = EpaddBatchBuilderService()
     object_name = os.path.basename(package_dir)
     object_dir = os.path.join(batch_dir, object_name)
     aux_object_dir = os.path.join(package_dir, "_aux", batch_name, object_name)
@@ -27,7 +28,7 @@ def prepare_and_send_to_drs(package_dir, supplemental_deposit_data, depositing_a
     
     cmmapping.handle_directory_mapping(package_dir, object_dir, aux_object_dir)
     #Run BB
-    batch_builder_assistant.process_batch(package_dir, batch_name, supplemental_deposit_data, depositing_application)
+    batch_builder_service.process_batch(package_dir, batch_name, supplemental_deposit_data)
     
     #Move Batch to incoming
     batch_dir = __move_batch_to_incoming(package_dir, batch_dir)
