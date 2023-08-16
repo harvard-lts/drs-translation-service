@@ -1,13 +1,13 @@
 import os, os.path, logging, shutil
+
 from translate_data_structure.dataverse_translate_data_structure_service import DataverseTranslateDataStructureService
 from translate_data_structure.epadd_translate_data_structure_service import EpaddTranslateDataStructureService
-from translation_service.batch_builder_assistant import BatchBuilderAssistant
+from batch_builder_service.dataverse_batch_builder_service import DataverseBatchBuilderService 
+from batch_builder_service.epadd_batch_builder_service import EpaddBatchBuilderService 
 
 logger = logging.getLogger('dts')
 base_load_report_dir = os.getenv("BASE_LOADREPORT_PATH")
 sample_load_report="/home/appuser/tests/data/sampleloadreport/LOADREPORT_sample.txt"
-
-batch_builder_assistant = BatchBuilderAssistant()
 
 def prepare_and_send_to_drs(package_dir, supplemental_deposit_data, depositing_application, testing = False):
     #Set up directories
@@ -17,12 +17,14 @@ def prepare_and_send_to_drs(package_dir, supplemental_deposit_data, depositing_a
     #This if-else is used for content model mapping for now.
     if depositing_application == "Dataverse":
         translate_service = DataverseTranslateDataStructureService()
+        batch_builder_service = DataverseBatchBuilderService()
     else:
         translate_service = EpaddTranslateDataStructureService()
+        batch_builder_service = EpaddBatchBuilderService()
     
     translate_service.translate_data_structure(package_dir)
     #Run BB
-    batch_builder_assistant.process_batch(package_dir, batch_name, supplemental_deposit_data, depositing_application)
+    batch_builder_service.process_batch(package_dir, batch_name, supplemental_deposit_data)
     
     #Move Batch to incoming
     batch_dir = __move_batch_to_incoming(package_dir, batch_dir)

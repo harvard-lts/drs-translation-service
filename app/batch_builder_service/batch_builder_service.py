@@ -1,29 +1,32 @@
-import os, os.path, logging
+from abc import ABC, abstractmethod
+import logging
+import os
+import os.path
 from translation_service.translation_exceptions import BatchBuilderException
-from translation_service.translation_exceptions import TranslationException
-from translation_service.epadd_mods_mapping_handler import EpaddModsMappingHandler
 
-logger = logging.getLogger('dts')
-
-'''
-The assistant processes the batches using 
-the Batch Builder client
-'''
-class BatchBuilderAssistant:
+class BatchBuilderService(ABC):
+    '''
+    The service processes the batches using 
+    the Batch Builder client
+    '''
     
     def __init__(self):
-        self.epadd_mods_mapping_handler = EpaddModsMappingHandler()
+        self.logger = logging.getLogger('dts')
     
-               
-    def process_batch(self, project_path, batch_name, supplemental_deposit_metadata, depositing_application):
+    @abstractmethod
+    def _build_dirprop_override_command(self, object_name, supplemental_deposit_metadata):
+        '''Subclasses build the -dirprop command'''
+        pass
+        
+    def process_batch(self, project_path, batch_name, supplemental_deposit_metadata):
         '''Builds the batch.xml and descriptor.xml for the prepared batch'''
         bb_client_path = os.getenv("BB_CLIENT_PATH")
 
         if os.path.isdir(project_path):
             command = "cd {} && ".format(bb_client_path)
-            command += self.build_command(project_path, batch_name, supplemental_deposit_metadata, depositing_application)
+            command += self.build_command(project_path, batch_name, supplemental_deposit_metadata)
 
-            logger.info("batch builder command: " + command)
+            self.logger.info("batch builder command: " + command)
             os.system(command)
                         
             expected_batch_file = os.path.join(project_path, batch_name, "batch.xml")
@@ -37,49 +40,30 @@ class BatchBuilderAssistant:
                 emailaddress = None
                 if "failureEmail" in supplemental_deposit_metadata and supplemental_deposit_metadata["failureEmail"]:
                     emailaddress = supplemental_deposit_metadata["failureEmail"]
-                raise BatchBuilderException("Failed to create batch, no descriptor found: " + command, emailaddress)  
-                        
-
-    def build_command(self, project_path, batch_name, supplemental_deposit_metadata, depositing_application):
-            bb_script_name = os.getenv("BB_SCRIPT_NAME")
-            command = "sh " + bb_script_name + " -a build -p " + project_path + " -b " + batch_name
-            object_name = os.path.basename(project_path)
+                raise BatchBuilderException("Failed to create batch, no descriptor found: " + command, emailaddress) 
             
-            batch_prop_overrides = self.__build_batchprop_override_command(supplemental_deposit_metadata)
-            if batch_prop_overrides is not None:
-                command += batch_prop_overrides
+    def build_command(self, project_path, batch_name, supplemental_deposit_metadata):
+        bb_script_name = os.getenv("BB_SCRIPT_NAME")
+        command = "sh " + bb_script_name + " -a build -p " + project_path + " -b " + batch_name
+        object_name = os.path.basename(project_path)
             
-            object_prop_overrides = self.__build_objprop_override_command(project_path, object_name, supplemental_deposit_metadata, depositing_application)
-            if object_prop_overrides is not None:
-                command += object_prop_overrides
+        batch_prop_overrides = self.__build_batchprop_override_command(supplemental_deposit_metadata)
+        if batch_prop_overrides is not None:
+            command += batch_prop_overrides
             
-            content_file_prop_overrides = None
-            doc_file_prop_overrides = None  
-            if (depositing_application == "Dataverse"):
-                content_file_prop_overrides = self.__build_fileprop_override_command(object_name, "content", supplemental_deposit_metadata)
-                doc_file_prop_overrides = self.__build_fileprop_override_command(object_name, "documentation", supplemental_deposit_metadata)
-            elif (depositing_application == "ePADD"):
-                content_file_prop_overrides = self.__build_fileprop_override_command(object_name, "container", supplemental_deposit_metadata)        
-            else:
-                emailaddress = None
-                if "failureEmail" in supplemental_deposit_metadata and supplemental_deposit_metadata["failureEmail"]:
-                    emailaddress = supplemental_deposit_metadata["failureEmail"]
-                raise TranslationException("Unexpected depositing_application {}".format(depositing_application), emailaddress)
-
-            hasoverrides = False
-            if content_file_prop_overrides is not None:
-                command += " -dirprop \"{}".format(content_file_prop_overrides)
-                hasoverrides=True
-                
-            if doc_file_prop_overrides is not None:
-                if content_file_prop_overrides is not None:
-                    command += ";{}\"".format(doc_file_prop_overrides)
-                else:
-                    command += " -dirprop \"{}\"".format(doc_file_prop_overrides)
-            elif hasoverrides:
-                command += "\""    
-            return command
-        
+        object_prop_overrides = self.__build_objprop_override_command(project_path, object_name, supplemental_deposit_metadata)
+        if object_prop_overrides is not None:
+            command += object_prop_overrides
+            
+        dir_prop_overrids = self._build_dirprop_override_command(object_name, supplemental_deposit_metadata)   
+        if dir_prop_overrids:
+            command += dir_prop_overrids
+        return command
+    
+    def _build_additional_file_prop_command(self, object_name, supplemental_deposit_metadata):
+        '''Override in the subclass if there are additional overrides'''
+        return None
+            
     def __validate_descriptors_exist(self, batch_path): 
         for root, dirs, files in os.walk(batch_path):
             if "descriptor.xml" in files:
@@ -115,7 +99,7 @@ class BatchBuilderAssistant:
         return command                           
 
 
-    def __build_objprop_override_command(self, project_path, object_name, supplemental_deposit_metadata, depositing_application):  
+    def __build_objprop_override_command(self, project_path, object_name, supplemental_deposit_metadata):  
         '''-objectprop object_name::property=value,property=value;'''  
         overrides = ""  
         delimiter = "" 
@@ -147,26 +131,26 @@ class BatchBuilderAssistant:
             objectRole = supplemental_deposit_metadata["objectRole"].rstrip()
             objectRole = objectRole.replace(":", "_")
             overrides += "{}role={}".format(delimiter,objectRole)
-        embargoBasis = None
-        if "embargoBasis" in supplemental_deposit_metadata and supplemental_deposit_metadata["embargoBasis"]:
-            embargoBasis = supplemental_deposit_metadata["embargoBasis"]
-            
-        if (depositing_application == "ePADD"):  
-            emailaddress = None
-            if "failureEmail" in supplemental_deposit_metadata and supplemental_deposit_metadata["failureEmail"]:
-                emailaddress = supplemental_deposit_metadata["failureEmail"]
-            epadd_overrides =  self.epadd_mods_mapping_handler.build_object_overrides(project_path, object_name, embargoBasis, emailaddress)
-            if epadd_overrides:
-                overrides += delimiter + epadd_overrides
-            
+        
+        additional_overrides = self._build_additional_objprop_overrides(project_path, object_name, supplemental_deposit_metadata) 
+        if additional_overrides:
+            overrides += delimiter + additional_overrides 
+    
         command = None
         if overrides:
             command = " -objectprop \"{}::{};\"".format(object_name, overrides);
             
         return command 
-
-    def __build_fileprop_override_command(self, object_name, directory_name, supplemental_deposit_metadata):  
-        '''Syntax object_name::directory_path::property=value,property=value;'''  
+    
+    def _build_additional_objprop_overrides(self, project_path, object_name, supplemental_deposit_metadata):
+        '''Implemented by subclasses if they have more objprop overrides'''
+        return None
+    
+    def _build_dirprop_override_command_by_dir(self, object_name, directory_name, supplemental_deposit_metadata):  
+        '''Syntax object_name::directory_path::property=value,property=value;
+        NOTE: This is called by _build_dirprop_override_command which appends
+        the -dirprop command'''
+        
         overrides = ""  
         delimiter = ""  
         if "firstGenerationInDrs" in supplemental_deposit_metadata:
@@ -184,5 +168,5 @@ class BatchBuilderAssistant:
         command = None
         if overrides:
             command = "{}::{}::{}".format(object_name, directory_name, overrides);
-            
-        return command  
+        
+        return command

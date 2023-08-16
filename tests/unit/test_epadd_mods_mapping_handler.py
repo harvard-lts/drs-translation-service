@@ -1,6 +1,6 @@
 import jsonschema, json, pytest, sys, shutil
 sys.path.append('app')
-from translation_service.epadd_mods_mapping_handler import EpaddModsMappingHandler
+from batch_builder_service.epadd_mods_mapping_handler import EpaddModsMappingHandler
 from translation_service.translation_exceptions import MissingEmbargoBasisException
 
 def test_valid_json():
