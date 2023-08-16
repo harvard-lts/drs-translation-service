@@ -3,7 +3,7 @@ import os, os.path
 from logging.handlers import TimedRotatingFileHandler
 
 
-import load_report_service.load_report_service as load_report_service
+from load_report_service.dataverse_load_report_service import DataverseLoadReportService
 import translation_service.translation_service as translation_service
 import werkzeug
 from flask import Flask, request
@@ -47,6 +47,7 @@ def create_app():
         if ("dryrun" in args):
             dryrun = True
         try:
+            load_report_service = DataverseLoadReportService()
             load_report_service.handle_load_report(args['filename'], dryrun)
         except LoadReportException as lre:
             msg = "Handling of load report failed: {}".format(str(lre))
@@ -73,6 +74,7 @@ def create_app():
             dryrun = True
 
         try:
+            load_report_service = DataverseLoadReportService()
             load_report_service.handle_failed_batch(args['batchName'], dryrun)
         except LoadReportException as lre:
             msg = "Handling of failed batch returned an error: {}".format(str(lre))
