@@ -1,5 +1,5 @@
 from batch_builder_service.batch_builder_service import BatchBuilderService
-from translation_service.epadd_mods_mapping_handler import EpaddModsMappingHandler
+from batch_builder_service.epadd_mods_mapping_handler import EpaddModsMappingHandler
 
 class EpaddBatchBuilderService(BatchBuilderService):
     

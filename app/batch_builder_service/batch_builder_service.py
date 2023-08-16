@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 import logging
 import os
 import os.path
+from translation_service.translation_exceptions import BatchBuilderException
 
 class BatchBuilderService(ABC):
     '''
