@@ -57,6 +57,10 @@ DROPBOX_NAMES=XXX
 #Leave blank if using locally, otherwise give one dropbox name that is used for testing
 TEST_DROPBOX_NAME=XXX
 
+#Dropbox name for the application (use dev names for testing/local)
+EPADD_DROPBOX_NAME=XXX
+DVN_DROPBOX_NAME=XXX
+
 #Was the exported package unzipped by the transfer service?
 #Dataverse = true
 EXTRACTED_PACKAGE_DVN=True
