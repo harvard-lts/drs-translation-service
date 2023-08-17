@@ -1,9 +1,7 @@
 import logging, traceback, re
 import os, os.path
 from logging.handlers import TimedRotatingFileHandler
-
-
-from load_report_service.dataverse_load_report_service import DataverseLoadReportService
+from load_report_service.load_report_service_builder import LoadReportServiceBuilder
 import translation_service.translation_service as translation_service
 import werkzeug
 from flask import Flask, request
@@ -43,11 +41,14 @@ def create_app():
         args = request.args
         if ("filename" not in args):
             return 'Missing filename argument!', 400
+        if ("dropbox" not in args):
+            return 'Missing dropbox argument!', 400
         dryrun = False
         if ("dryrun" in args):
             dryrun = True
         try:
-            load_report_service = DataverseLoadReportService()
+            builder = LoadReportServiceBuilder()
+            load_report_service = builder.get_load_report_service(args['dropbox'])
             load_report_service.handle_load_report(args['filename'], dryrun)
         except LoadReportException as lre:
             msg = "Handling of load report failed: {}".format(str(lre))
@@ -69,12 +70,15 @@ def create_app():
         args = request.args
         if ("batchName" not in args):
             return 'Missing batchName argument!', 400
+        if ("dropbox" not in args):
+            return 'Missing dropbox argument!', 400
         dryrun = False
         if ("dryrun" in args):
             dryrun = True
 
         try:
-            load_report_service = DataverseLoadReportService()
+            builder = LoadReportServiceBuilder()
+            load_report_service = builder.get_load_report_service(args['dropbox'])
             load_report_service.handle_failed_batch(args['batchName'], dryrun)
         except LoadReportException as lre:
             msg = "Handling of failed batch returned an error: {}".format(str(lre))
