@@ -3,7 +3,6 @@ import os, os.path, shutil
 from load_report_service.load_report import LoadReport
 from load_report_service.load_report_exception import LoadReportException
 from celery import Celery
-from kombu import Queue
 
 base_load_report_dir = os.getenv("BASE_LOADREPORT_PATH")
 base_dropbox_dir = os.getenv("BASE_DROPBOX_PATH")
@@ -80,12 +79,9 @@ class LoadReportService(ABC):
                 "retry_count": 0
             }
         }
-        publish_queue = Queue(
-            os.getenv("PROCESS_PUBLISH_QUEUE_NAME"), no_declare=True)
         app.send_task(process_status_task, args=[msg_json], kwargs={},
-                      queue=publish_queue)
+                  queue=os.getenv("PROCESS_PUBLISH_QUEUE_NAME"))
         return urn
-        
     
     def handle_failed_batch(self, batch_name, dry_run = False):
         #Send failed notification
@@ -103,29 +99,9 @@ class LoadReportService(ABC):
                 "retry_count": 0
             }
         }
-        publish_queue = Queue(
-            os.getenv("PROCESS_PUBLISH_QUEUE_NAME"), no_declare=True)
         app.send_task(process_status_task, args=[msg_json], kwargs={},
-                      queue=publish_queue)
-    
-        #Delete batch from dropbox
-        # TODO: Fix delete
-        # Not deleting for now, the loadreport is written with appadmin permissions
-        # and will have to be updated on the DRS side
-        # if not dry_run:
-    #         dropbox_path = None
-    #         dropbox_names = os.getenv("DROPBOX_NAMES", "")
-    #         if dropbox_names != "":
-    #             dropbox_names_list = dropbox_names.split(",")
-    #             #Loop through the dropboxes to determine where the batch
-    #             for dropbox_name in dropbox_names_list:
-    #                 dropbox_name = dropbox_name.strip()
-    #                 dropbox_path = os.path.join(base_dropbox_dir, dropbox_name, "incoming", batch_name)
-    #                 if (os.path.exists(dropbox_path)):
-    #                     break
-    #         else:
-    #             dropbox_path = os.path.join(base_dropbox_dir, batch_name)
-        #     self._delete_batch_from_dropbox(dropbox_path)
+                  queue=os.getenv("PROCESS_PUBLISH_QUEUE_NAME"))
+
         return batch_name
         
     def _delete_load_report_from_dropbox(self, load_report_batch_path):
