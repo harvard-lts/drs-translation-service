@@ -99,10 +99,10 @@ class LoadReportService(ABC):
                 "retry_count": 0
             }
         }
-    	app.send_task(process_status_task, args=[msg_json], kwargs={},
+        app.send_task(process_status_task, args=[msg_json], kwargs={},
                   queue=os.getenv("PROCESS_PUBLISH_QUEUE_NAME"))
 
-    	return batch_name
+        return batch_name
         
     def _delete_load_report_from_dropbox(self, load_report_batch_path):
         '''
