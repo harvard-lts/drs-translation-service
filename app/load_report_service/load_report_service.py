@@ -81,7 +81,7 @@ class LoadReportService(ABC):
         }
         app.send_task(process_status_task, args=[msg_json], kwargs={},
                   queue=os.getenv("PROCESS_PUBLISH_QUEUE_NAME"))
-    	return urn
+        return urn
     
     def handle_failed_batch(self, batch_name, dry_run = False):
         #Send failed notification
