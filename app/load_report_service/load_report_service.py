@@ -79,7 +79,7 @@ class LoadReportService(ABC):
                 "retry_count": 0
             }
         }
-    	app.send_task(process_status_task, args=[msg_json], kwargs={},
+        app.send_task(process_status_task, args=[msg_json], kwargs={},
                   queue=os.getenv("PROCESS_PUBLISH_QUEUE_NAME"))
     	return urn
     
