@@ -19,6 +19,10 @@ class TranslationService(ABC):
         pass
 
     @abstractmethod
+    def _get_batch_builder_service():
+        pass
+
+    @abstractmethod
     def _get_translate_data_structure_service():
         pass
 
@@ -27,15 +31,8 @@ class TranslationService(ABC):
         batch_name = os.path.basename(package_dir) + "-batch"
         batch_dir = os.path.join(package_dir, batch_name)
         
-        # This if-else is used for content model mapping for now.
-        '''
-        if depositing_application == "Dataverse":
-            translate_service = DataverseTranslateDataStructureService()
-            batch_builder_service = DataverseBatchBuilderService()
-        else:
-            translate_service = EpaddTranslateDataStructureService()
-            batch_builder_service = EpaddBatchBuilderService()
-        '''    
+        translate_service = self._get_translate_data_structure_service()
+        batch_builder_service = self._get_batch_builder_service()
         
         self.translate_service.translate_data_structure(package_dir)
         # Run BB

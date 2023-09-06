@@ -3,19 +3,15 @@ from dataverse_translation_service import TranslationService
 
 class DataverseTranslationService(TranslationService):
 
-    def prepare_and_send_to_drs(self, package_dir, supplemental_deposit_data,
-                                depositing_application, testing=False):
-        '''Prepares the package for DRS and sends it to DRS'''
-        self.logger.info("Preparing package for DRS")
-        self.logger.debug("Package dir: %s", package_dir)
-        self.logger.debug("Supplemental deposit data: %s",
-                          supplemental_deposit_data)
-        self.logger.debug("Depositing application: %s", depositing_application)
-        self.logger.debug("Testing: %s", testing)
-        self.__create_loading_file(package_dir)
-        self.__update_permissions(package_dir)
-        self.__move_batch_to_incoming(package_dir)
-        self.__cleanup_project_dir(package_dir)
+    # add an instance of the EpaddTranslateDataStructureService
+    # to the class
+    def _get_translate_data_structure_service(self):
+        return EpaddTranslateDataStructureService()
+    
+    # add an instance of the EpaddBatchBuilderService
+    # to the class
+    def _get_batch_builder_service(self):
+        return EpaddBatchBuilderService()
 
     def get_admin_metadata(self, drs_config_path):
         '''Returns the admin metadata'''
