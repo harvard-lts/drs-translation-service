@@ -32,6 +32,7 @@ class TranslationService(ABC):
         batch_dir = os.path.join(package_dir, batch_name)
         
         translate_service = self._get_translate_data_structure_service()
+        
         batch_builder_service = self._get_batch_builder_service()
         
         self.translate_service.translate_data_structure(package_dir)

@@ -3,7 +3,7 @@ import os, os.path
 from logging.handlers import TimedRotatingFileHandler
 from load_report_service.load_report_service_builder import LoadReportServiceBuilder
 from translation_service.translation_service_builder import TranslationServiceBuilder
-import translation_service.translation_service as translation_service
+from translation_service.translation_service import TranslationService
 import werkzeug
 from flask import Flask, request
 from healthcheck import HealthCheck, EnvironmentDump
@@ -178,6 +178,7 @@ def reprocess_batch(batch_path):
         return msg, 500
 
         drs_config_path = os.path.join(batch_path, "drsConfig.txt")
+        translation_service = TranslationService()
         translation_service = builder.get_translation_service()
         admin_metadata = translation_service.get_admin_metadata(drs_config_path)
         # If errors were caught while trying to parse the drsConfig file

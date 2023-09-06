@@ -1,4 +1,5 @@
-from dataverse_translation_service import TranslationService
+from translation_service.translation_service import TranslationService
+from translate_data_structure.dataverse_translate_data_structure_service import DataverseTranslateDataStructureService
 
 
 class DataverseTranslationService(TranslationService):

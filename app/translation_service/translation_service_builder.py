@@ -1,6 +1,6 @@
 import logging
-from translation_service.dataverse_translation_service import DataverseTranslationService
-from translation_service.epadd_translation_service import EpaddTranslationService
+# from dataverse_translation_service import DataverseTranslationService
+# from epadd_translation_service import EpaddTranslationService
 
 
 class TranslationServiceBuilder():
