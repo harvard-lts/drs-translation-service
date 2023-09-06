@@ -6,7 +6,6 @@ import logging
 import translation_service.translation_service as translation_service
 from translation_service.translation_exceptions import TranslationException
 import notifier.notifier as notifier
-from celery.exceptions import Reject
 
 app = Celery()
 app.config_from_object('celeryconfig')
@@ -19,15 +18,6 @@ logger = logging.getLogger('dts')
 
 @app.task(bind=True, serializer='json', name=process_task, max_retries=retries, acks_late=True, autoretry_for=(Exception,))
 def prepare_and_send_to_drs(self, message):
-    logger.debug("message body {}".format(message))
-    if "dlq_testing" in message:
-        if self.request.retries < retries:
-            logger.debug("retrying DIMS Process")
-            self.retry(countdown=3)
-        else:
-            logger.debug("Sending to DLQ")
-            send_max_retry_notifications(message)
-            raise Reject("reject", requeue=False)  
     logger.debug("retries {}".format(self.request.retries))
     try:
         testing = False
