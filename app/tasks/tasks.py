@@ -34,13 +34,14 @@ def prepare_and_send_to_drs(self, message):
         if "testing" in message:
             testing = True
         # This calls a method to handle prepping the batch for distribution to the DRS
+        builder = translation_service.TranslationServiceBuilder(message['application_name'])
         translation_service.prepare_and_send_to_drs(
             os.path.join(
                 message["destination_path"],
                 message["package_id"]
             ),
             message['admin_metadata'],
-            message['application_name'],
+            builder,
             testing
         )
     except TranslationException as te:
