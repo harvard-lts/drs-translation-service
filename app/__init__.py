@@ -163,7 +163,8 @@ def reprocess_batch(batch_path):
     dropbox_name = batch_as_array[-3]
 
     try:
-        builder = TranslationServiceBuilder(dropbox_name)
+        builder = TranslationServiceBuilder()
+        translation_service = builder.get_translation_service(dropbox_name)
     except TranslationException as te:
         msg = "Handling of failed batch returned an error: {}".format(str(te))
         exception_msg = traceback.format_exc()

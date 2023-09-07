@@ -22,12 +22,11 @@ def test_prepare_and_create_mock_lr():
     
     #Run prepare
     translation_service = DataverseTranslationService()
-    builder = TranslationServiceBuilder()
-    translation_service = builder.get_translation_service("Dataverse")
+    # builder = TranslationServiceBuilder()
+    # translation_service = builder.get_translation_service("Dataverse")
+ 
 
-    builder = translation_service.TranslationServiceBuilder("Dataverse")     
-
-    batch_dir = translation_service.prepare_and_send_to_drs(package_dir, builder, "Dataverse", True)
+    batch_dir = translation_service.prepare_and_send_to_drs(package_dir, {"dropbox_name": dropbox_name_for_testing}, True)
 
     translate_service = translation_service._get_translate_data_structure_service()
     

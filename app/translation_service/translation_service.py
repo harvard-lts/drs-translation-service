@@ -13,20 +13,22 @@ class TranslationService(ABC):
     
     def __init__(self):
         self.logger = logging.getLogger('dts')
+        self.base_load_report_dir = os.getenv("BASE_LOADREPORT_PATH")
+        self.sample_load_report="/home/appuser/tests/data/sampleloadreport/LOADREPORT_sample.txt"
 
     @abstractmethod
-    def get_admin_metadata(self, config_path):
+    def get_admin_metadata(self):
         pass
 
     @abstractmethod
-    def _get_batch_builder_service():
+    def _get_batch_builder_service(self):
         pass
 
     @abstractmethod
-    def _get_translate_data_structure_service():
+    def _get_translate_data_structure_service(self):
         pass
 
-    def prepare_and_send_to_drs(self, package_dir, supplemental_deposit_data, translation_service_builder, testing=False):
+    def prepare_and_send_to_drs(self, package_dir, supplemental_deposit_data, testing=False):
         # Set up directories
         batch_name = os.path.basename(package_dir) + "-batch"
         batch_dir = os.path.join(package_dir, batch_name)
@@ -35,12 +37,12 @@ class TranslationService(ABC):
         
         batch_builder_service = self._get_batch_builder_service()
         
-        self.translate_service.translate_data_structure(package_dir)
+        translate_service.translate_data_structure(package_dir)
         # Run BB
         batch_builder_service.process_batch(package_dir, batch_name, supplemental_deposit_data)
         
         # Move Batch to incoming
-        batch_dir = self._move_batch_to_incoming(package_dir, batch_dir)
+        batch_dir = self.__move_batch_to_incoming(package_dir, batch_dir)
         
         if not testing:
             # Remove old project dir
@@ -96,11 +98,11 @@ class TranslationService(ABC):
         # Make sure to append incoming if it is a real dropbox
         if dropbox_name != "":
             dropbox_name = os.path.join(dropbox_name, "incoming")
-        batch_load_report_dir = os.path.join(base_load_report_dir, dropbox_name, batch_name)
+        batch_load_report_dir = os.path.join(self.base_load_report_dir, dropbox_name, batch_name)
         # Create dir in LR dir
         os.mkdir(batch_load_report_dir)
         
         mock_load_report_name = "LOADREPORT_{}.txt".format(batch_name)
         mock_load_report_dest = os.path.join(batch_load_report_dir, mock_load_report_name)
-        shutil.copy(sample_load_report, mock_load_report_dest)
+        shutil.copy(self.sample_load_report, mock_load_report_dest)
         

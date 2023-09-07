@@ -5,6 +5,7 @@ import traceback
 import logging
 import translation_service.translation_service as translation_service
 from translation_service.translation_exceptions import TranslationException
+from translation_service.translation_service_builder import TranslationServiceBuilder
 import notifier.notifier as notifier
 
 app = Celery()
@@ -24,14 +25,14 @@ def prepare_and_send_to_drs(self, message):
         if "testing" in message:
             testing = True
         # This calls a method to handle prepping the batch for distribution to the DRS
-        builder = translation_service.TranslationServiceBuilder(message['application_name'])
+        builder = TranslationServiceBuilder()
+        translation_service = builder.get_translation_service(message["application_name"])
         translation_service.prepare_and_send_to_drs(
             os.path.join(
                 message["destination_path"],
                 message["package_id"]
             ),
             message['admin_metadata'],
-            builder,
             testing
         )
     except TranslationException as te:
