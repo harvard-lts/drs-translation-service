@@ -178,21 +178,17 @@ def reprocess_batch(batch_path):
         notifier.send_error_notification(str(e), body)
         return msg, 500
 
-        drs_config_path = os.path.join(batch_path, "drsConfig.txt")
-        translation_service = TranslationService()
-        translation_service = builder.get_translation_service()
-        admin_metadata = translation_service.get_admin_metadata(drs_config_path)
-        # If errors were caught while trying to parse the drsConfig file
-        # then move exit
-        if not admin_metadata:
-            return
-        admin_metadata["dropbox_name"] = dropbox_name
+    admin_metadata = translation_service.get_admin_metadata(drs_config_path)
+    # If errors were caught while trying to parse the drsConfig file
+    # then move exit
+    if not admin_metadata:
+        return
+    admin_metadata["dropbox_name"] = dropbox_name
                 
     # This calls a method to handle prepping the batch for distribution to the DRS
     translation_service.prepare_and_send_to_drs(
         batch_path,
         admin_metadata,
-        application_name,
         False
     )
 

@@ -1,6 +1,7 @@
 import pytest, sys, os.path, shutil
 sys.path.append('app')
 from translation_service.dataverse_translation_service import DataverseTranslationService
+from translation_service.epadd_translation_service import EpaddTranslationService
 from translation_service.translation_service_builder import TranslationServiceBuilder 
 
 base_dropbox_dir = os.getenv("BASE_DROPBOX_PATH")
@@ -59,20 +60,20 @@ def cleanup_mock_loadreport(mock_lr):
         print("Error in cleanup: %s" % (e.strerror))
         
     
-def test_parse_drsconfig_metadata():
-    translation_service = DataverseTranslationService()
+def test_get_admin_metadata():
+    translation_service = EpaddTranslationService()
     admin_md = translation_service.get_admin_metadata('//home/appuser/tests/data/unprocessed/drsConfig.txt')
     print(admin_md)
     assert admin_md
 
-def test_failed_parse_drsconfig_metadata_nodrsconfig():
-    translation_service = DataverseTranslationService()
+def test_failed_get_admin_metadata_nodrsconfig():
+    translation_service = EpaddTranslationService()
     admin_md = translation_service.get_admin_metadata('/home/appuser/tests/data/unprocessed-nodrsconfig/drsConfig.txt')
     print(admin_md)
     assert not admin_md
 
-def test_failed_parse_drsconfig_metadata_missingadminmd():
-    translation_service = DataverseTranslationService()
+def test_failed_get_admin_metadata_missingadminmd():
+    translation_service = EpaddTranslationService()
     admin_md = translation_service.get_admin_metadata('/home/appuser/tests/data/unprocessed-missingadminmd/drsConfig.txt')
     print(admin_md)
     assert not admin_md
