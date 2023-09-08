@@ -179,7 +179,7 @@ def reprocess_batch(batch_path):
     if dropbox_name == "epadd":
         drs_config_path = os.path.join(batch_path, "drsConfig.txt")
         admin_metadata = translation_service.get_admin_metadata(drs_config_path)
-    elif if re.match("dvn", dropbox_name):
+    elif re.match("dvn", dropbox_name):
         admin_metadata = {"dropbox_name": dropbox_name}
 
     # If errors were caught while trying to parse the drsConfig file
