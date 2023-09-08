@@ -79,3 +79,7 @@ MQ_USER=ims
 MQ_PASSWORD=XXX
 QUEUE_NAME=/queue/dais-notify
 DEFAULT_EMAIL_RECIPIENT=dts@hu.onmicrosoft.com
+
+#rabbit mq email notifier
+EMAIL_NOTIFIER_TASK_NAME=rabbitmq-email-notifier.tasks.notify_email_message
+EMAIL_NOTIFIER_QUEUE_NAME=email-notifier
