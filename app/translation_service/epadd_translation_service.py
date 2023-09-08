@@ -1,5 +1,6 @@
 from translation_service.translation_service import TranslationService
 from translate_data_structure.epadd_translate_data_structure_service import EpaddTranslateDataStructureService
+from batch_builder_service.epadd_batch_builder_service import EpaddBatchBuilderService
 
 
 class EpaddTranslationService(TranslationService):

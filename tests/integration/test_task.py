@@ -3,6 +3,7 @@ import os
 import shutil
 import os.path
 import time
+from tasks.tasks import process_task
 
 app1 = Celery('tasks')
 app1.config_from_object('celeryconfig')
@@ -25,7 +26,7 @@ def test_send_to_drs_task():
     process_task = os.getenv('PROCESS_TASK_NAME', 'dts.tasks.prepare_and_send_to_drs')
 
     arguments = {"package_id": "doi-translation-service-test",
-                 "application_name": "Dataverse",
+                 "application_name": "dvn",
                  "destination_path": base_dropbox_dir,
                  "admin_metadata":
                     {"dropbox_name": "", 
