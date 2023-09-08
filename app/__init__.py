@@ -1,9 +1,8 @@
-import logging, traceback, re
+import logging, traceback
 import os, os.path
 from logging.handlers import TimedRotatingFileHandler
 from load_report_service.load_report_service_builder import LoadReportServiceBuilder
 from translation_service.translation_service_builder import TranslationServiceBuilder
-from translation_service.translation_service import TranslationService
 import werkzeug
 from flask import Flask, request
 from healthcheck import HealthCheck, EnvironmentDump
@@ -177,14 +176,17 @@ def reprocess_batch(batch_path):
         body = msg + "\n" + exception_msg
         notifier.send_error_notification(str(e), body)
         return msg, 500
+    if dropbox_name == "epadd":
+        drs_config_path = os.path.join(batch_path, "drsConfig.txt")
+        admin_metadata = translation_service.get_admin_metadata(drs_config_path)
+    elif if re.match("dvn", dropbox_name):
+        admin_metadata = {"dropbox_name": dropbox_name}
 
-    admin_metadata = translation_service.get_admin_metadata(drs_config_path)
     # If errors were caught while trying to parse the drsConfig file
     # then move exit
     if not admin_metadata:
         return
-    admin_metadata["dropbox_name"] = dropbox_name
-                
+    admin_metadata["dropbox_name"] = dropbox_name            
     # This calls a method to handle prepping the batch for distribution to the DRS
     translation_service.prepare_and_send_to_drs(
         batch_path,

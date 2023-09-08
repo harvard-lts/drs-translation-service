@@ -1,5 +1,4 @@
 from abc import ABC, abstractmethod
-from batch_builder_service.batch_builder_service import BatchBuilderService
 import os
 import os.path
 import logging
