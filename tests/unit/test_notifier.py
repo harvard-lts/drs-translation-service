@@ -1,4 +1,5 @@
-import pytest, json, sys
+import pytest
+import sys
 from celery.result import AsyncResult
 sys.path.append('app')
 import notifier.notifier as notifier 
