@@ -4,6 +4,7 @@ ENV=development
 LOGFILE_PATH=/home/appuser/logs/drs_translation_service.log
 #Choose from CRITICAL, ERROR, WARNING, INFO, DEBUG
 LOGLEVEL=DEBUG
+CELERY_LOG_LEVEL=DEBUG
 
 PYTHONPATH=/home/appuser/app
 #Default to one hour
