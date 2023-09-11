@@ -4,6 +4,7 @@ ENV=development
 LOGFILE_PATH=/home/appuser/logs/drs_translation_service.log
 #Choose from CRITICAL, ERROR, WARNING, INFO, DEBUG
 LOGLEVEL=DEBUG
+CELERY_LOG_LEVEL=DEBUG
 
 PYTHONPATH=/home/appuser/app
 #Default to one hour
@@ -79,3 +80,7 @@ MQ_USER=ims
 MQ_PASSWORD=XXX
 QUEUE_NAME=/queue/dais-notify
 DEFAULT_EMAIL_RECIPIENT=dts@hu.onmicrosoft.com
+
+#rabbit mq email notifier
+EMAIL_NOTIFIER_TASK_NAME=rabbitmq-email-notifier.tasks.notify_email_message
+EMAIL_NOTIFIER_QUEUE_NAME=email-notifier
