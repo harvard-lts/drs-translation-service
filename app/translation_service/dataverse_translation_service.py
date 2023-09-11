@@ -19,6 +19,6 @@ class DataverseTranslationService(TranslationService):
 
     def get_admin_metadata(self, drs_config_path):
         '''Returns the admin metadata'''
-        admin_metadata = {"dropbox_name": DROPBOX_NAME}
+        admin_metadata = {"dropbox_name": self.DROPBOX_NAME}
 
         return admin_metadata
