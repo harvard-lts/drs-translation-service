@@ -5,6 +5,8 @@ from batch_builder_service.dataverse_batch_builder_service import DataverseBatch
 
 class DataverseTranslationService(TranslationService):
 
+    DROPBOX_NAME = "dataverse"
+
     # add an instance of the DataverseTranslateDataStructureService
     # to the class
     def _get_translate_data_structure_service(self):
@@ -15,8 +17,8 @@ class DataverseTranslationService(TranslationService):
     def _get_batch_builder_service(self):
         return DataverseBatchBuilderService()
 
-    def get_admin_metadata(self, dropbox_name):
+    def get_admin_metadata(self, drs_config_path):
         '''Returns the admin metadata'''
-        admin_metadata = {"dropbox_name": dropbox_name}
+        admin_metadata = {"dropbox_name": DROPBOX_NAME}
 
         return admin_metadata

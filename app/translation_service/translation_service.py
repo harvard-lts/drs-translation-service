@@ -16,7 +16,7 @@ class TranslationService(ABC):
         self.sample_load_report="/home/appuser/tests/data/sampleloadreport/LOADREPORT_sample.txt"
 
     @abstractmethod
-    def get_admin_metadata(self):
+    def get_admin_metadata(self, drs_config_path):
         pass
 
     @abstractmethod

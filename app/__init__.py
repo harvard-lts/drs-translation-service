@@ -176,11 +176,8 @@ def reprocess_batch(batch_path):
         body = msg + "\n" + exception_msg
         notifier.send_error_notification(str(e), body)
         return msg, 500
-    if dropbox_name == "epadd":
-        drs_config_path = os.path.join(batch_path, "drsConfig.txt")
-        admin_metadata = translation_service.get_admin_metadata(drs_config_path)
-    elif re.match("dvn", dropbox_name):
-        admin_metadata = {"dropbox_name": dropbox_name}
+    drs_config_path = os.path.join(batch_path, "drsConfig.txt")
+    admin_metadata = translation_service.get_admin_metadata(drs_config_path)
 
     # If errors were caught while trying to parse the drsConfig file
     # then move exit
