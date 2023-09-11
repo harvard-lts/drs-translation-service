@@ -9,7 +9,6 @@ from healthcheck import HealthCheck, EnvironmentDump
 from load_report_service.load_report_exception import LoadReportException
 from translation_service.translation_exceptions import TranslationException
 from requests import Response
-import re
 import notifier.notifier as notifier
 
 LOG_FILE_BACKUP_COUNT = 1
