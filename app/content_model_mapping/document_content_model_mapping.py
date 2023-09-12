@@ -5,11 +5,11 @@ from content_model_mapping.content_model_mapping import ContentModelMapping
 
 class DocumentContentModelMapping(ContentModelMapping):
     def handle_directory_mapping(self, package_path, object_dir, aux_object_dir):
-        '''Moves the container into the container directory'''
+        '''Moves the document into the document directory'''
         self.logger.debug("Formatting for document content model")
-        container_dir = os.path.join(object_dir, "container")
-        if not os.path.exists(container_dir):
-            os.mkdir(container_dir)
+        document_dir = os.path.join(object_dir, "document")
+        if not os.path.exists(document_dir):
+            os.mkdir(document_dir)
 
         suffixes = ["pdf", "doc", "docx", "wp", "wpd", "epub", "rtf"]
 
@@ -21,7 +21,7 @@ class DocumentContentModelMapping(ContentModelMapping):
                 self.logger.debug("Found package: %s", file)
                 filename = os.path.basename(file)
                 if f".{suffix}" in filename:
-                    shutil.copy2(file, os.path.join(container_dir, filename))
+                    shutil.copy2(file, os.path.join(document_dir, filename))
 
         project_conf = os.getenv("DOCUMENT_PROJECT_CONF_TEMPLATE")        
         self._copy_project_conf(package_path, project_conf)

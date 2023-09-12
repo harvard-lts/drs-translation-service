@@ -5,11 +5,11 @@ from content_model_mapping.content_model_mapping import ContentModelMapping
 
 class AudioContentModelMapping(ContentModelMapping):
     def handle_directory_mapping(self, package_path, object_dir, aux_object_dir):
-        '''Moves the container into the container directory'''
+        '''Moves the audio into the audio directory'''
         self.logger.debug("Formatting for audio content model")
-        container_dir = os.path.join(object_dir, "container")
-        if not os.path.exists(container_dir):
-            os.mkdir(container_dir)
+        audio_dir = os.path.join(object_dir, "audio")
+        if not os.path.exists(audio_dir):
+            os.mkdir(audio_dir)
 
         suffixes = ["wav", "mp3", "mp4", "aifc", "m2a", "zip", "xml"]
 
@@ -21,7 +21,7 @@ class AudioContentModelMapping(ContentModelMapping):
                 self.logger.debug("Found package: %s", file)
                 filename = os.path.basename(file)
                 if f".{suffix}" in filename:
-                    shutil.copy2(file, os.path.join(container_dir, filename))
+                    shutil.copy2(file, os.path.join(audio_dir, filename))
 
         project_conf = os.getenv("AUDIO_PROJECT_CONF_TEMPLATE")        
         self._copy_project_conf(package_path, project_conf)
