@@ -23,7 +23,7 @@ class TranslationServiceBuilder():
     
     def get_translation_service_from_dropbox(self, dropbox_name):
         '''Get the load report name based on the depositing application'''
-        self.logger.debug("Getting translation service for {}".format(depositing_application))
+        self.logger.debug("Getting translation service for {}".format(dropbox_name))
 
         if "epadd" in dropbox_name:
             return DataverseTranslationService()
