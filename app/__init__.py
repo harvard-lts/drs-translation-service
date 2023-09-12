@@ -1,14 +1,14 @@
-import logging, traceback, re
+import logging, traceback
 import os, os.path
 from logging.handlers import TimedRotatingFileHandler
 from load_report_service.load_report_service_builder import LoadReportServiceBuilder
-import translation_service.translation_service as translation_service
+from translation_service.translation_service_builder import TranslationServiceBuilder
 import werkzeug
 from flask import Flask, request
 from healthcheck import HealthCheck, EnvironmentDump
 from load_report_service.load_report_exception import LoadReportException
+from translation_service.translation_exceptions import TranslationException
 from requests import Response
-
 import notifier.notifier as notifier
 
 LOG_FILE_BACKUP_COUNT = 1
@@ -155,27 +155,40 @@ def disable_cached_responses(app: Flask) -> None:
 
 def reprocess_batch(batch_path):
     logging.getLogger('dts').debug("Reprocessing: " + batch_path)
+    
     admin_metadata = {}
     batch_as_array = batch_path.split("/")
     dropbox_name = batch_as_array[-3]
-    if re.match("dvn", dropbox_name):
-        application_name = "Dataverse"
-        admin_metadata = {"dropbox_name": dropbox_name}
-    else:
-        application_name = "ePADD"
-        drs_config_path = os.path.join(batch_path, "drsConfig.txt")
-        admin_metadata = translation_service.parse_drsconfig_metadata(drs_config_path)
-        #If errors were caught while trying to parse the drsConfig file
-        #then move exit
-        if not admin_metadata:
-            return
-        admin_metadata["dropbox_name"] = dropbox_name
-                
+
+    try:
+        builder = TranslationServiceBuilder()
+        translation_service = builder.get_translation_service_from_dropbox(dropbox_name)
+        if translation_service is None:
+            raise Exception("Translatino Service could not be determined for {}".format(dropbox_name))
+    except TranslationException as te:
+        msg = "Handling of failed batch returned an error: {}".format(str(te))
+        exception_msg = traceback.format_exc()
+        body = msg + "\n" + exception_msg
+        notifier.send_error_notification(str(te), body)
+        return msg, 400
+    except Exception as e:
+        msg = "Handling of failed batch returned an error: {}".format(str(e))
+        exception_msg = traceback.format_exc()
+        body = msg + "\n" + exception_msg
+        notifier.send_error_notification(str(e), body)
+        return msg, 500
+    drs_config_path = os.path.join(batch_path, "drsConfig.txt")
+    admin_metadata = translation_service.get_admin_metadata(drs_config_path)
+
+    # If errors were caught while trying to parse the drsConfig file
+    # then move exit
+    if not admin_metadata:
+        return
+    admin_metadata["dropbox_name"] = dropbox_name            
     # This calls a method to handle prepping the batch for distribution to the DRS
     translation_service.prepare_and_send_to_drs(
         batch_path,
         admin_metadata,
-        application_name,
         False
     )
 

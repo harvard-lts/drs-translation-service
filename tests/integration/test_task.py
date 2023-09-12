@@ -3,6 +3,7 @@ import os
 import shutil
 import os.path
 import time
+from tasks.tasks import process_task
 
 app1 = Celery('tasks')
 app1.config_from_object('celeryconfig')
