@@ -162,7 +162,9 @@ def reprocess_batch(batch_path):
 
     try:
         builder = TranslationServiceBuilder()
-        translation_service = builder.get_translation_service(dropbox_name)
+        translation_service = builder.get_translation_service_from_dropbox(dropbox_name)
+        if translation_service is None:
+            raise Exception("Translatino Service could not be determined for {}".format(dropbox_name))
     except TranslationException as te:
         msg = "Handling of failed batch returned an error: {}".format(str(te))
         exception_msg = traceback.format_exc()

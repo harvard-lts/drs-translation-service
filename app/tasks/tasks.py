@@ -27,6 +27,8 @@ def prepare_and_send_to_drs(self, message):
         builder = TranslationServiceBuilder()
         
         translation_service = builder.get_translation_service(message["application_name"])
+        if translation_service is None:
+            raise Exception("Translatino Service could not be determined for {}".format(message["application_name"]))
         translation_service.prepare_and_send_to_drs(
             os.path.join(
                 message["destination_path"],
