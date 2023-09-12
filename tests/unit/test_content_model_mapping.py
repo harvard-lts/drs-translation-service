@@ -2,6 +2,10 @@ import pytest, sys, os.path, shutil, os
 sys.path.append('app')
 from content_model_mapping.opaque_content_model_mapping import OpqaueContentModelMapping
 from content_model_mapping.opaque_container_content_model_mapping import OpqaueContainerContentModelMapping
+from content_model_mapping.text_content_model_mapping import TextContentModelMapping
+from content_model_mapping.audio_content_model_mapping import AudioContentModelMapping
+from content_model_mapping.document_content_model_mapping import DocumentContentModelMapping
+from content_model_mapping.still_image_content_model_mapping import StillImageContentModelMapping
 
 def test_map_opaque_cm_mapping():
     '''Formats the directory and verifies that all files ended up where they should be'''
@@ -134,6 +138,26 @@ def test_map_opaque_container_cm_gz():
     assert os.path.exists(os.path.join(obj_dir, "container", "test.gz"))
     cleanup_batch_dirs(batch_dir, os.path.join(package_path, "_aux"), os.path.join(package_path, "project.conf"))
 
+def test_map_document_cm_mapping():
+    package_path = "/home/appuser/tests/data/document_cm/tests/data/document_cm/test.pdf"
+    batch_name = os.path.basename(package_path) + "-batch"
+    batch_dir = os.path.join(package_path, batch_name)
+    # Object name is the doi-name
+    object_name = os.path.basename(package_path)
+    obj_dir = os.path.join(batch_dir, os.path.basename(package_path))
+    obj_aux_dir= os.path.join(package_path, "_aux", os.path.basename(package_path) + "-batch", os.path.basename(package_path))
+    os.makedirs(obj_aux_dir, exist_ok=True)
+    os.makedirs(obj_dir, exist_ok=True)
+    
+    document_cmm = DocumentContentModelMapping()
+    document_cmm.handle_directory_mapping(package_path, obj_dir, obj_aux_dir)
+    
+    assert os.path.exists(obj_dir)
+    assert os.path.exists(obj_aux_dir)
+
+    # Check that all files are where they are expected to be
+    assert os.path.exists(os.path.join(obj_dir, "container", "test.pdf"))
+    cleanup_batch_dirs(batch_dir, os.path.join(package_path, "_aux"), os.path.join(package_path, "project.conf"))
          
 def cleanup_batch_dirs(batch_path, aux_dir, project_conf):
     '''Removes the newly created batch folders'''
