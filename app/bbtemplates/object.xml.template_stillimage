@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Objectconfig cm="document">
+<Objectconfig cm="still image">
     <directory name="OBJECT_NAME">
         <metadataCategory name="objectMetadata">
             <property name="billingCode" value="HUL.TEST.BILL.0001"/>
-            <property name="accessFlag" value="N"/>
             <property name="ownerCode" value="HUL.TEST"/>
+            <property name="accessFlag" value="N"/>
         </metadataCategory>
         <metadataCategory name="nrsMetadata">
             <property name="resourceNamePattern" value="{n}"/>
             <property name="urnAuthorityPath" value="HUL.GUEST"/>
         </metadataCategory>
-        <directory name="document">
+        <directory name="image">
             <metadataCategory name="fileMetadata">
                 <property name="isFirstGenerationInDrs" value="yes"/>
                 <property name="usageClass" value="LOWUSE"/>

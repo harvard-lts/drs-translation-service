@@ -5,7 +5,7 @@ from content_model_mapping.opaque_container_content_model_mapping import OpqaueC
 from content_model_mapping.text_content_model_mapping import TextContentModelMapping
 from content_model_mapping.audio_content_model_mapping import AudioContentModelMapping
 from content_model_mapping.document_content_model_mapping import DocumentContentModelMapping
-from content_model_mapping.still_image_content_model_mapping import StillImageContentModelMapping
+from content_model_mapping.stillimage_content_model_mapping import StillImageContentModelMapping
 
 def test_map_opaque_cm_mapping():
     '''Formats the directory and verifies that all files ended up where they should be'''
@@ -201,8 +201,8 @@ def test_map_audio_cm_mapping():
     assert os.path.exists(os.path.join(obj_dir, "audio", "test.mp4"))
     cleanup_batch_dirs(batch_dir, os.path.join(package_path, "_aux"), os.path.join(package_path, "project.conf"))
  
-def test_map_still_image_cm_mapping():
-    package_path = "/home/appuser/tests/data/still_image_cm"
+def test_map_stillimage_cm_mapping():
+    package_path = "/home/appuser/tests/data/stillimage_cm"
     batch_name = os.path.basename(package_path) + "-batch"
     batch_dir = os.path.join(package_path, batch_name)
     # Object name is the doi-name
@@ -212,15 +212,15 @@ def test_map_still_image_cm_mapping():
     os.makedirs(obj_aux_dir, exist_ok=True)
     os.makedirs(obj_dir, exist_ok=True)
     
-    still_image_cmm = StillImageContentModelMapping()
-    still_image_cmm.handle_directory_mapping(package_path, obj_dir, obj_aux_dir)
+    stillimage_cmm = StillImageContentModelMapping()
+    stillimage_cmm.handle_directory_mapping(package_path, obj_dir, obj_aux_dir)
     
     assert os.path.exists(obj_dir)
     assert os.path.exists(obj_aux_dir)
 
     # Check that all files are where they are expected to be
-    assert os.path.exists(os.path.join(obj_dir, "still_image", "test.gif"))
-    assert os.path.exists(os.path.join(obj_dir, "still_image", "test2.gif"))
+    assert os.path.exists(os.path.join(obj_dir, "image", "test.gif"))
+    assert os.path.exists(os.path.join(obj_dir, "image", "test2.gif"))
     cleanup_batch_dirs(batch_dir, os.path.join(package_path, "_aux"), os.path.join(package_path, "project.conf"))
          
 def cleanup_batch_dirs(batch_path, aux_dir, project_conf):

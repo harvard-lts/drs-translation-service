@@ -5,11 +5,11 @@ from content_model_mapping.content_model_mapping import ContentModelMapping
 
 class StillImageContentModelMapping(ContentModelMapping):
     def handle_directory_mapping(self, package_path, object_dir, aux_object_dir):
-        '''Moves the still_image into the still_image directory'''
+        '''Moves the stillimage into the stillimage directory'''
         self.logger.debug("Formatting for still image content model")
-        still_image_dir = os.path.join(object_dir, "still_image")
-        if not os.path.exists(still_image_dir):
-            os.mkdir(still_image_dir)
+        stillimage_dir = os.path.join(object_dir, "image")
+        if not os.path.exists(stillimage_dir):
+            os.mkdir(stillimage_dir)
 
         suffixes = ["jpg", "jp2", "gif", "tif", "tiff"]
 
@@ -21,7 +21,7 @@ class StillImageContentModelMapping(ContentModelMapping):
                 self.logger.debug("Found package: %s", file)
                 filename = os.path.basename(file)
                 if f".{suffix}" in filename:
-                    shutil.copy2(file, os.path.join(still_image_dir, filename))
+                    shutil.copy2(file, os.path.join(stillimage_dir, filename))
 
         project_conf = os.getenv("STILL_IMAGE_PROJECT_CONF_TEMPLATE")        
         self._copy_project_conf(package_path, project_conf)
