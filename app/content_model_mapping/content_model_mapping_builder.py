@@ -17,7 +17,7 @@ class ContentModelMappingBuilder():
         # by inspecting mime type of the files
         # example code snippet:
         # https://github.huit.harvard.edu/LTS/etds/blob/ba9a05cbf2ed25ff9f50d28503b849edb9ceec8e/bin/etds2drs.py#L698
-        content_model = self.__get_content_model(directory, filename)
+        content_model = self.__get_content_model(package_path, filename)
         
         if content_model == "text":
             return TextContentModelMapping()
@@ -30,7 +30,7 @@ class ContentModelMappingBuilder():
         else:
             raise Exception("Unknown content model: " + content_model)
    
-    def __get_content_model(self, package_path):
+    def __get_content_model(self, package_path, filename):
         '''Get the content model from the package path'''
         mime_type = check_output(['file', '-b', '--mime-type', os.path.join(directory, filename)]).strip().decode()
 
