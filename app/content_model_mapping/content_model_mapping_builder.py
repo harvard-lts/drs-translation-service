@@ -4,13 +4,14 @@ from content_model_mapping.document_content_model_mapping import DocumentContent
 from content_model_mapping.stillimage_content_model_mapping import StillImageContentModelMapping
 from content_model_mapping.text_content_model_mapping import TextContentModelMapping
 from subprocess import check_output
+import os
 
 class ContentModelMappingBuilder():
     def __init__(self):
         self.logger = logging.getLogger(__name__)
         self.logger.debug("ContentModelMappingBuilder initialized")
 
-    def get_content_model_mapping(self, directory, filename):
+    def get_content_model_mapping(self, package_path, filename):
 
         content_model = None
         # get the content model from the package path
@@ -32,10 +33,10 @@ class ContentModelMappingBuilder():
    
     def __get_content_model(self, package_path, filename):
         '''Get the content model from the package path'''
-        mime_type = check_output(['file', '-b', '--mime-type', os.path.join(directory, filename)]).strip().decode()
+        mime_type = check_output(['file', '-b', '--mime-type', os.path.join(package_path, filename)]).strip().decode()
 
-		try: 
-			return {
+        try: 
+            return {
 				# this is not a complete list
 				'application/pdf': 'document',
 				'text/plain': 'text',
@@ -52,5 +53,5 @@ class ContentModelMappingBuilder():
 				'audio/mp4': 'audio',
 				'application/vnd.rn-realmedia': 'audio'
 				}[mime_type]
-		except:
+        except:
 			return 'opaque'    
