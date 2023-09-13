@@ -5,7 +5,7 @@ from content_model_mapping.stillimage_content_model_mapping import StillImageCon
 from content_model_mapping.text_content_model_mapping import TextContentModelMapping
 
 
-class ContentModelMappingBuilder:
+class ContentModelMappingBuilder():
     def __init__(self):
         self.logger = logging.getLogger(__name__)
         self.logger.debug("ContentModelMappingBuilder initialized")
