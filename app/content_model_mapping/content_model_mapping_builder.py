@@ -10,7 +10,14 @@ class ContentModelMappingBuilder:
         self.logger = logging.getLogger(__name__)
         self.logger.debug("ContentModelMappingBuilder initialized")
 
-    def get_content_model_mapping(self, content_model):
+    def get_content_model_mapping(self, package_path):
+
+        content_model = None
+        # get the content model from the package path
+        # by inspecting mime type of the files
+        # example code snippet:
+        # https://github.huit.harvard.edu/LTS/etds/blob/ba9a05cbf2ed25ff9f50d28503b849edb9ceec8e/bin/etds2drs.py#L698
+        
         if content_model == "text":
             return TextContentModelMapping()
         elif content_model == "stillimage":
