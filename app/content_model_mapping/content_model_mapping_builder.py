@@ -10,7 +10,7 @@ class ContentModelMappingBuilder():
         self.logger = logging.getLogger(__name__)
         self.logger.debug("ContentModelMappingBuilder initialized")
 
-    def get_content_model_mapping(self, directory):
+    def get_content_model_mapping(self, directory, filename):
 
         content_model = None
         # get the content model from the package path
