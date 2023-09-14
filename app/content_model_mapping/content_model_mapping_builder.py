@@ -3,7 +3,7 @@ from content_model_mapping.audio_content_model_mapping import AudioContentModelM
 from content_model_mapping.document_content_model_mapping import DocumentContentModelMapping
 from content_model_mapping.stillimage_content_model_mapping import StillImageContentModelMapping
 from content_model_mapping.text_content_model_mapping import TextContentModelMapping
-from content_model_mapping.opaque_container_content_model_mapping import OpqaueContainerContentModelMapping
+from content_model_mapping.opaque_content_model_mapping import OpaqueContentModelMapping
 from subprocess import check_output
 import os
 
@@ -30,7 +30,7 @@ class ContentModelMappingBuilder():
         elif content_model == "audio":
             return AudioContentModelMapping()
         elif content_model == "opaque":
-            return OpqaueContainerContentModelMapping()
+            return OpaqueContentModelMapping("True")
         else:
             raise Exception("Unknown content model: " + content_model)
    
