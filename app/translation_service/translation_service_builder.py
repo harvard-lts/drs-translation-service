@@ -26,7 +26,7 @@ class TranslationServiceBuilder():
         self.logger.debug("Getting translation service for {}".format(dropbox_name))
 
         if "epadd" in dropbox_name:
-            return DataverseTranslationService()
-        elif "dvn" in dropbox_name:
             return EpaddTranslationService()
+        elif "dvn" in dropbox_name:
+            return DataverseTranslationService()
         return None
