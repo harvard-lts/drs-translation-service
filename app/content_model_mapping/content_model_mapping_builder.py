@@ -3,6 +3,7 @@ from content_model_mapping.audio_content_model_mapping import AudioContentModelM
 from content_model_mapping.document_content_model_mapping import DocumentContentModelMapping
 from content_model_mapping.stillimage_content_model_mapping import StillImageContentModelMapping
 from content_model_mapping.text_content_model_mapping import TextContentModelMapping
+from content_model_mapping.opaque_container_content_model_mapping import OpqaueContainerContentModelMapping
 from subprocess import check_output
 import os
 
@@ -22,12 +23,14 @@ class ContentModelMappingBuilder():
         
         if content_model == "text":
             return TextContentModelMapping()
-        elif content_model == "stillimage":
+        elif content_model == "image":
             return StillImageContentModelMapping()
         elif content_model == "document":
             return DocumentContentModelMapping()
         elif content_model == "audio":
             return AudioContentModelMapping()
+        elif content_model == "opaque":
+            return OpqaueContainerContentModelMapping()
         else:
             raise Exception("Unknown content model: " + content_model)
    
@@ -54,4 +57,4 @@ class ContentModelMappingBuilder():
 				'application/vnd.rn-realmedia': 'audio'
 				}[mime_type]
         except:
-			return 'opaque'    
+            return 'opaque'
