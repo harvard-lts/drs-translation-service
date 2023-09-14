@@ -3,7 +3,7 @@ import shutil
 from content_model_mapping.content_model_mapping import ContentModelMapping
 from pathlib import Path
 
-class OpqaueContainerContentModelMapping(ContentModelMapping):
+class OpaqueContainerContentModelMapping(ContentModelMapping):
         
     def handle_directory_mapping(self, package_path, object_dir, aux_object_dir):
         '''Moves the container into the container directory'''

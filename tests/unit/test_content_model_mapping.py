@@ -1,11 +1,12 @@
 import pytest, sys, os.path, shutil, os
 sys.path.append('app')
-from content_model_mapping.opaque_content_model_mapping import OpqaueContentModelMapping
-from content_model_mapping.opaque_container_content_model_mapping import OpqaueContainerContentModelMapping
+from content_model_mapping.opaque_content_model_mapping import OpaqueContentModelMapping
+from content_model_mapping.opaque_container_content_model_mapping import OpaqueContainerContentModelMapping
 from content_model_mapping.text_content_model_mapping import TextContentModelMapping
 from content_model_mapping.audio_content_model_mapping import AudioContentModelMapping
 from content_model_mapping.document_content_model_mapping import DocumentContentModelMapping
 from content_model_mapping.stillimage_content_model_mapping import StillImageContentModelMapping
+from content_model_mapping.content_model_mapping_builder import ContentModelMappingBuilder
 
 def test_map_opaque_cm_mapping():
     '''Formats the directory and verifies that all files ended up where they should be'''
@@ -21,7 +22,7 @@ def test_map_opaque_cm_mapping():
     os.makedirs(obj_aux_dir, exist_ok=True)
     os.makedirs(obj_dir, exist_ok=True)
     
-    opaque_cmm = OpqaueContentModelMapping(os.getenv("EXTRACTED_PACKAGE_DVN", "True"))
+    opaque_cmm = OpaqueContentModelMapping(os.getenv("EXTRACTED_PACKAGE_DVN", "True"))
     opaque_cmm.handle_directory_mapping(package_path, obj_dir, obj_aux_dir)
     
     assert os.path.exists(obj_dir)
@@ -53,7 +54,7 @@ def test_map_opaque_cm_doc_only():
     os.makedirs(obj_aux_dir, exist_ok=True)
     os.makedirs(obj_dir, exist_ok=True)
     
-    opaque_cmm = OpqaueContentModelMapping(os.getenv("EXTRACTED_PACKAGE_DVN", "True")) 
+    opaque_cmm = OpaqueContentModelMapping(os.getenv("EXTRACTED_PACKAGE_DVN", "True")) 
     opaque_cmm.handle_directory_mapping(package_path, obj_dir, obj_aux_dir)
     
     assert os.path.exists(obj_dir)
@@ -82,7 +83,7 @@ def test_map_opaque_container_cm_zip():
     os.makedirs(obj_aux_dir, exist_ok=True)
     os.makedirs(obj_dir, exist_ok=True)
     
-    opaque_container_cmm = OpqaueContainerContentModelMapping() 
+    opaque_container_cmm = OpaqueContainerContentModelMapping() 
     opaque_container_cmm.handle_directory_mapping(package_path, obj_dir, obj_aux_dir)
 
     assert os.path.exists(obj_dir)
@@ -105,7 +106,7 @@ def test_map_opaque_container_cm_7z():
     os.makedirs(obj_aux_dir, exist_ok=True)
     os.makedirs(obj_dir, exist_ok=True)
     
-    opaque_container_cmm = OpqaueContainerContentModelMapping() 
+    opaque_container_cmm = OpaqueContainerContentModelMapping() 
     opaque_container_cmm.handle_directory_mapping(package_path, obj_dir, obj_aux_dir)
 
     assert os.path.exists(obj_dir)
@@ -128,7 +129,7 @@ def test_map_opaque_container_cm_gz():
     os.makedirs(obj_aux_dir, exist_ok=True)
     os.makedirs(obj_dir, exist_ok=True)
     
-    opaque_container_cmm = OpqaueContainerContentModelMapping() 
+    opaque_container_cmm = OpaqueContainerContentModelMapping() 
     opaque_container_cmm.handle_directory_mapping(package_path, obj_dir, obj_aux_dir)
     
     assert os.path.exists(obj_dir)
@@ -198,7 +199,7 @@ def test_map_audio_cm_mapping():
     assert os.path.exists(obj_aux_dir)
 
     # Check that all files are where they are expected to be
-    assert os.path.exists(os.path.join(obj_dir, "audio", "test.mp4"))
+    assert os.path.exists(os.path.join(obj_dir, "audio", "test.mp3"))
     cleanup_batch_dirs(batch_dir, os.path.join(package_path, "_aux"), os.path.join(package_path, "project.conf"))
  
 def test_map_stillimage_cm_mapping():
@@ -222,7 +223,33 @@ def test_map_stillimage_cm_mapping():
     assert os.path.exists(os.path.join(obj_dir, "image", "test.gif"))
     assert os.path.exists(os.path.join(obj_dir, "image", "test2.gif"))
     cleanup_batch_dirs(batch_dir, os.path.join(package_path, "_aux"), os.path.join(package_path, "project.conf"))
-         
+
+def test_content_model_mapping_builder():
+    '''Tests that the builder returns the correct content model mapping'''
+    package_path_doc = "/home/appuser/tests/data/document_cm"
+    filename_doc = "test.pdf"
+    package_path_txt = "/home/appuser/tests/data/text_cm"
+    filename_txt = "test.csv"
+    package_path_img = "/home/appuser/tests/data/stillimage_cm"
+    filename_img = "test.gif"
+    package_path_audio = "/home/appuser/tests/data/audio_cm"
+    filename_audio = "test.mp3"
+    package_path_opaque = "/home/appuser/tests/data/opaque_cm"
+    filename_opaque = "test.mp4"
+
+    filename_doc = "test.pdf"
+    builder = ContentModelMappingBuilder()
+    content_model_mapping = builder.get_content_model_mapping(package_path_doc, filename_doc)
+    assert isinstance(content_model_mapping, DocumentContentModelMapping)
+    content_model_mapping = builder.get_content_model_mapping(package_path_txt, filename_txt)
+    assert isinstance(content_model_mapping, TextContentModelMapping)
+    content_model_mapping = builder.get_content_model_mapping(package_path_img, filename_img)
+    assert isinstance(content_model_mapping, StillImageContentModelMapping)
+    content_model_mapping = builder.get_content_model_mapping(package_path_audio, filename_audio)
+    assert isinstance(content_model_mapping, AudioContentModelMapping)
+    content_model_mapping = builder.get_content_model_mapping(package_path_opaque, filename_opaque)
+    assert isinstance(content_model_mapping, OpaqueContentModelMapping)
+
 def cleanup_batch_dirs(batch_path, aux_dir, project_conf):
     '''Removes the newly created batch folders'''
     try:

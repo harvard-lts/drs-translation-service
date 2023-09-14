@@ -16,9 +16,9 @@ class TranslationServiceBuilder():
         self.logger.debug("Getting translation service for {}".format(depositing_application))
 
         if depositing_application == self.EPADD_APPLICATION_NAME:
-            return DataverseTranslationService()
-        elif depositing_application == self.DVN_APPLICATION_NAME:
             return EpaddTranslationService()
+        elif depositing_application == self.DVN_APPLICATION_NAME:
+            return DataverseTranslationService()
         return None
     
     def get_translation_service_from_dropbox(self, dropbox_name):
@@ -26,7 +26,7 @@ class TranslationServiceBuilder():
         self.logger.debug("Getting translation service for {}".format(dropbox_name))
 
         if "epadd" in dropbox_name:
-            return DataverseTranslationService()
-        elif "dvn" in dropbox_name:
             return EpaddTranslationService()
+        elif "dvn" in dropbox_name:
+            return DataverseTranslationService()
         return None

@@ -3,7 +3,7 @@ import shutil
 import glob
 from content_model_mapping.content_model_mapping import ContentModelMapping
 
-class OpqaueContentModelMapping(ContentModelMapping):
+class OpaqueContentModelMapping(ContentModelMapping):
     
     def __init__(self, is_extraced_package):
         self.is_extracted_package = is_extraced_package.lower()
