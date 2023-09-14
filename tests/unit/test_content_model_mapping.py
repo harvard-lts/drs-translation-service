@@ -199,7 +199,7 @@ def test_map_audio_cm_mapping():
     assert os.path.exists(obj_aux_dir)
 
     # Check that all files are where they are expected to be
-    assert os.path.exists(os.path.join(obj_dir, "audio", "test.mp4"))
+    assert os.path.exists(os.path.join(obj_dir, "audio", "test.mp3"))
     cleanup_batch_dirs(batch_dir, os.path.join(package_path, "_aux"), os.path.join(package_path, "project.conf"))
  
 def test_map_stillimage_cm_mapping():
@@ -233,7 +233,7 @@ def test_content_model_mapping_builder():
     package_path_img = "/home/appuser/tests/data/stillimage_cm"
     filename_img = "test.gif"
     package_path_audio = "/home/appuser/tests/data/audio_cm"
-    filename_audio = "test.mp4"
+    filename_audio = "test.mp3"
     package_path_opaque = "/home/appuser/tests/data/opaque_cm"
     filename_opaque = "test.mp4"
 
@@ -246,9 +246,9 @@ def test_content_model_mapping_builder():
     content_model_mapping = builder.get_content_model_mapping(package_path_img, filename_img)
     assert isinstance(content_model_mapping, StillImageContentModelMapping)
     content_model_mapping = builder.get_content_model_mapping(package_path_audio, filename_audio)
-    # assert isinstance(content_model_mapping, AudioContentModelMapping)
+    assert isinstance(content_model_mapping, AudioContentModelMapping)
     content_model_mapping = builder.get_content_model_mapping(package_path_opaque, filename_opaque)
-    # assert isinstance(content_model_mapping, OpaqueContainerContentModelMapping)
+    assert isinstance(content_model_mapping, OpaqueContentModelMapping)
 
 def cleanup_batch_dirs(batch_path, aux_dir, project_conf):
     '''Removes the newly created batch folders'''
