@@ -1,5 +1,6 @@
 import pytest, sys, os.path, shutil, os
 sys.path.append('app')
+from content_model_mapping.etd_opaque_content_model_mapping import ETDOpaqueContentModelMapping
 from content_model_mapping.opaque_content_model_mapping import OpaqueContentModelMapping
 from content_model_mapping.opaque_container_content_model_mapping import OpaqueContainerContentModelMapping
 from content_model_mapping.text_content_model_mapping import TextContentModelMapping
@@ -248,7 +249,7 @@ def test_content_model_mapping_builder():
     content_model_mapping = builder.get_content_model_mapping(package_path_audio, filename_audio)
     assert isinstance(content_model_mapping, AudioContentModelMapping)
     content_model_mapping = builder.get_content_model_mapping(package_path_opaque, filename_opaque)
-    assert isinstance(content_model_mapping, OpaqueContentModelMapping)
+    assert isinstance(content_model_mapping, ETDOpaqueContentModelMapping)
 
 def cleanup_batch_dirs(batch_path, aux_dir, project_conf):
     '''Removes the newly created batch folders'''
