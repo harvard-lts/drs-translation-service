@@ -19,7 +19,10 @@ class ETDOpaqueContentModelMapping(ContentModelMapping):
         audio_suffixes = ["wav", "mp3", "mp4", "aifc", "m2a", "zip", "xml"]
         text_suffixes = ["txt", "xml", "csv", "java", "pl", "py", "rb", "sh", "c", "cpp", "h", "hpp", "js", "css", "html", "htm", "php", "json", "md", "r", "sql", "tsv", "yml"]
         excluded_suffixes = []
-        excluded_suffixes.join(document_suffixes, stillimage_suffixes, audio_suffixes, text_suffixes)
+        excluded_suffixes.append(document_suffixes)
+        excluded_suffixes.append(stillimage_suffixes)
+        excluded_suffixes.append(audio_suffixes)
+        excluded_suffixes.append(text_suffixes)
 
         self.logger.debug("globbing...")
 
