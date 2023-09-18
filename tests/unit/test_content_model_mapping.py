@@ -1,6 +1,6 @@
 import pytest, sys, os.path, shutil, os
 sys.path.append('app')
-from content_model_mapping.opaque_content_model_mapping import OpaqueContentModelMapping
+from content_model_mapping.opaque_content_model_mapping import ETDOpaqueContentModelMapping
 from content_model_mapping.opaque_container_content_model_mapping import OpaqueContainerContentModelMapping
 from content_model_mapping.text_content_model_mapping import TextContentModelMapping
 from content_model_mapping.audio_content_model_mapping import AudioContentModelMapping
