@@ -3,7 +3,7 @@ from content_model_mapping.audio_content_model_mapping import AudioContentModelM
 from content_model_mapping.document_content_model_mapping import DocumentContentModelMapping
 from content_model_mapping.stillimage_content_model_mapping import StillImageContentModelMapping
 from content_model_mapping.text_content_model_mapping import TextContentModelMapping
-from content_model_mapping.opaque_content_model_mapping import OpaqueContentModelMapping
+from content_model_mapping.etd_opaque_content_model_mapping import ETDOpaqueContentModelMapping
 from content_model_mapping.content_model_mapping_builder import ContentModelMappingBuilder
 import glob
 import os
@@ -36,7 +36,7 @@ class ETDTranslateDataStructureService(TranslateDataStructureService):
             elif ((isinstance(content_model, TextContentModelMapping)) and (self.text_cmm is None)):
                 self.text_cmm = content_model
                 self.text_cmm.handle_directory_mapping(package_path, object_dir, aux_object_dir)
-            elif ((isinstance(content_model, OpaqueContentModelMapping)) and (self.opaque_cmm is None)):
+            elif ((isinstance(content_model, ETDOpaqueContentModelMapping)) and (self.opaque_cmm is None)):
                 self.opaque_cmm = content_model
                 self.opaque_cmm.handle_directory_mapping(package_path, object_dir, aux_object_dir)
             else: # all content models have been created
