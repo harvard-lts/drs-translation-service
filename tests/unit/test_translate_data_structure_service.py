@@ -199,7 +199,7 @@ def test_translate_etd_data_structure_audio():
 
 def test_translate_etd_data_structure_opaque():
     '''Formats the directory and verifies that all files ended up where they should be'''
-    loc = "/home/appuser/tests/data/opaque_cm"
+    loc = "/home/appuser/tests/data/opaque_etd_cm"
     expected_batch_dir = os.path.join(loc, os.path.basename(loc) + "-batch")
 
     etd_translate_svc = ETDTranslateDataStructureService()
@@ -213,7 +213,7 @@ def test_translate_etd_data_structure_opaque():
     assert os.path.exists(obj_aux_dir)
 
     # Check that all files are where they are expected to be
-    assert os.path.exists(os.path.join(obj_dir, "content", "test.mp4"))
+    assert os.path.exists(os.path.join(obj_dir, "content", "test-zip.txt.gz"))
     cleanup_batch_dirs(batch_dir, os.path.join(loc, "_aux"), os.path.join(loc, "project.conf"))
 
 
@@ -238,7 +238,7 @@ def test_translate_etd_data_structure_multiple_cm():
     assert os.path.exists(os.path.join(obj_dir, "image", "test.gif"))
     assert os.path.exists(os.path.join(obj_dir, "image", "test2.gif"))
     assert os.path.exists(os.path.join(obj_dir, "audio", "test.mp3"))
-    assert os.path.exists(os.path.join(obj_dir, "content", "test.mp4"))
+    assert os.path.exists(os.path.join(obj_dir, "content", "test-zip.txt.gz"))
     cleanup_batch_dirs(batch_dir, os.path.join(loc, "_aux"), os.path.join(loc, "project.conf"))
 
 
