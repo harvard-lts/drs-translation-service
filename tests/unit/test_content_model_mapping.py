@@ -1,6 +1,7 @@
 import pytest, sys, os.path, shutil, os
 sys.path.append('app')
 from content_model_mapping.etd_opaque_content_model_mapping import ETDOpaqueContentModelMapping
+from content_model_mapping.opaque_content_model_mapping import OpaqueContentModelMapping
 from content_model_mapping.opaque_container_content_model_mapping import OpaqueContainerContentModelMapping
 from content_model_mapping.text_content_model_mapping import TextContentModelMapping
 from content_model_mapping.audio_content_model_mapping import AudioContentModelMapping
@@ -22,7 +23,7 @@ def test_map_opaque_cm_mapping():
     os.makedirs(obj_aux_dir, exist_ok=True)
     os.makedirs(obj_dir, exist_ok=True)
     
-    opaque_cmm = ETDOpaqueContentModelMapping(os.getenv("EXTRACTED_PACKAGE_DVN", "True"))
+    opaque_cmm = OpaqueContentModelMapping(os.getenv("EXTRACTED_PACKAGE_DVN", "True"))
     opaque_cmm.handle_directory_mapping(package_path, obj_dir, obj_aux_dir)
     
     assert os.path.exists(obj_dir)
@@ -54,7 +55,7 @@ def test_map_opaque_cm_doc_only():
     os.makedirs(obj_aux_dir, exist_ok=True)
     os.makedirs(obj_dir, exist_ok=True)
     
-    opaque_cmm = ETDOpaqueContentModelMapping(os.getenv("EXTRACTED_PACKAGE_DVN", "True")) 
+    opaque_cmm = OpaqueContentModelMapping(os.getenv("EXTRACTED_PACKAGE_DVN", "True")) 
     opaque_cmm.handle_directory_mapping(package_path, obj_dir, obj_aux_dir)
     
     assert os.path.exists(obj_dir)
