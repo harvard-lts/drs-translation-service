@@ -30,7 +30,7 @@ class ContentModelMappingBuilder():
         elif content_model == "audio":
             return AudioContentModelMapping()
         elif content_model == "opaque":
-            return ETDOpaqueContentModelMapping("False")
+            return ETDOpaqueContentModelMapping()
         else:
             raise Exception("Unknown content model: " + content_model)
    
