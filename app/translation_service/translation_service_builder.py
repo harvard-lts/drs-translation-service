@@ -1,12 +1,14 @@
 import logging
 from translation_service.dataverse_translation_service import DataverseTranslationService
 from translation_service.epadd_translation_service import EpaddTranslationService
+from translation_service.etd_translation_service import ETDTranslationService
 
 
 class TranslationServiceBuilder():
 
     EPADD_APPLICATION_NAME = "ePADD"
     DVN_APPLICATION_NAME = "Dataverse"
+    ETD_APPLICATION_NAME = "ETD"
 
     def __init__(self):
         self.logger = logging.getLogger("dts")
@@ -19,6 +21,8 @@ class TranslationServiceBuilder():
             return EpaddTranslationService()
         elif depositing_application == self.DVN_APPLICATION_NAME:
             return DataverseTranslationService()
+        elif depositing_application == self.ETD_APPLICATION_NAME:
+            return ETDTranslationService()
         return None
     
     def get_translation_service_from_dropbox(self, dropbox_name):
@@ -29,4 +33,6 @@ class TranslationServiceBuilder():
             return EpaddTranslationService()
         elif "dvn" in dropbox_name:
             return DataverseTranslationService()
+        elif "etd" in dropbox_name:
+            return ETDTranslationService()
         return None
