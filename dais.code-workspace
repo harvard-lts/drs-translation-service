@@ -1,0 +1,31 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../import-management-service"
+		},
+		{
+			"path": "../dais-cron"
+		},
+		{
+			"path": "../dais-notifier"
+		},
+		{
+			"path": "../DAIS-IF"
+		},
+		{
+			"path": "../hdc3a-transfer-service"
+		},
+		{
+			"path": "../hdc-integration-tests"
+		},
+		{
+			"path": "../epadd-curator-app"
+		}
+	],
+	"settings": {
+		"editor.fontSize": 14
+	}
+}

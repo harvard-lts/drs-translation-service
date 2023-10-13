@@ -1,5 +1,6 @@
 from translation_service.translation_service import TranslationService
 from translate_data_structure.etd_translate_data_structure_service import ETDTranslateDataStructureService
+from batch_builder_service.etd_batch_builder_service import ETDBatchBuilderService
 
 
 class ETDTranslationService(TranslationService):
@@ -21,3 +22,8 @@ class ETDTranslationService(TranslationService):
         admin_metadata = {"dropbox_name": self.DROPBOX_NAME}
 
         return admin_metadata
+    
+    # add an instance of the EpaddBatchBuilderService
+    # to the class
+    def _get_batch_builder_service(self):
+        return ETDBatchBuilderService()
