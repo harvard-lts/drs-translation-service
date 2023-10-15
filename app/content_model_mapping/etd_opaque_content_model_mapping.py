@@ -13,6 +13,10 @@ class ETDOpaqueContentModelMapping(ContentModelMapping):
         content_dir = os.path.join(object_dir, "content")
         if not os.path.exists(content_dir):
             os.mkdir(content_dir)
+        # Required directory even if not used
+        documentation_dir = os.path.join(object_dir, "documentation")
+        if not os.path.exists(documentation_dir):
+            os.mkdir(documentation_dir)
         
         document_suffixes = ["pdf", "doc", "docx", "wp", "wpd", "epub", "rtf"]
         stillimage_suffixes = ["jpg", "jp2", "gif", "tif", "tiff"]
