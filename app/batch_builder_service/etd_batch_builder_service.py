@@ -7,7 +7,10 @@ class ETDBatchBuilderService(BatchBuilderService):
         
         command = ""
         if "contentModel" in supplemental_deposit_metadata:
-            file_prop_overrides = self._build_dirprop_override_command_by_dir(object_name, supplemental_deposit_metadata["contentModel"], supplemental_deposit_metadata)
+            dirname = supplemental_deposit_metadata["contentModel"]
+            if dirname == "opaque":
+                dirname = "content"
+            file_prop_overrides = self._build_dirprop_override_command_by_dir(object_name, dirname, supplemental_deposit_metadata)
             if file_prop_overrides is not None:
                 command = " -dirprop \"{}\"".format(file_prop_overrides)
         return command
