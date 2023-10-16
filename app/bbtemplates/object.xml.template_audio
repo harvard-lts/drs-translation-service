@@ -13,7 +13,7 @@
         <directory name="audio">
             <metadataCategory name="fileMetadata">
                 <property name="usageClass" value="LOWUSE"/>
-                <property name="fileAccessFlag" value="P"/>
+                <property name="fileAccessFlag" value="N"/>
             </metadataCategory>
         </directory>
     </directory>
