@@ -20,7 +20,7 @@ class ETDOpaqueContentModelMapping(ContentModelMapping):
         
         document_suffixes = ["pdf", "doc", "docx", "wp", "wpd", "epub", "rtf"]
         stillimage_suffixes = ["jpg", "jp2", "gif", "tif", "tiff"]
-        audio_suffixes = ["wav", "mp3", "mp4", "aifc", "m2a", "zip", "xml"]
+        audio_suffixes = ["wav", "mp3", "mp4", "aifc", "m2a"]
         text_suffixes = ["txt", "xml", "csv", "java", "pl", "py", "rb", "sh", "c", "cpp", "h", "hpp", "js", "css", "html", "htm", "php", "json", "md", "r", "sql", "tsv", "yml"]
         excluded_suffixes = document_suffixes + stillimage_suffixes + audio_suffixes + text_suffixes
 
