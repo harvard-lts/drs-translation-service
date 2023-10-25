@@ -17,7 +17,6 @@ class TranslateDataStructureService(ABC):
         self._handle_content_model_mapping(package_path, object_dir, aux_object_dir)
         
         return batch_dir
-
-    @abstractmethod
+        
     def _handle_content_model_mapping(self, package_path, object_dir, aux_object_dir):
         pass

@@ -34,9 +34,22 @@ class ETDOpaqueContentModelMapping(ContentModelMapping):
                 shutil.copy2(file, os.path.join(content_dir, filename))
 
         project_conf = os.getenv("OPAQUE_PROJECT_CONF_TEMPLATE")
-        self._copy_project_conf(package_path, project_conf)
         object_xml_template = os.getenv("OPAQUE_OBJECT_XML_TEMPLATE")
-        self._copy_object_xml_and_rename_object(aux_object_dir, object_xml_template)
+        self._handle_project_conf_and_object_xml(package_path, aux_object_dir, project_conf, object_xml_template)
+
+    def handle_single_file_directory_mapping(self, filename_path, package_path, object_dir, aux_object_dir):
+        content_dir = os.path.join(object_dir, "content")
+        if not os.path.exists(content_dir):
+            os.mkdir(content_dir)
+        # Required directory even if not used
+        documentation_dir = os.path.join(object_dir, "documentation")
+        if not os.path.exists(documentation_dir):
+            os.mkdir(documentation_dir)
+        shutil.copy2(filename_path, os.path.join(content_dir, os.path.basename(filename_path)))
+
+        project_conf = os.getenv("OPAQUE_PROJECT_CONF_TEMPLATE")
+        object_xml_template = os.getenv("OPAQUE_OBJECT_XML_TEMPLATE")
+        self._handle_project_conf_and_object_xml(package_path, aux_object_dir, project_conf, object_xml_template)
 
     
    

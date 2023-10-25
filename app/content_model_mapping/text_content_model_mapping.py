@@ -25,6 +25,15 @@ class TextContentModelMapping(ContentModelMapping):
                     shutil.copy2(file, os.path.join(text_dir, filename))
 
         project_conf = os.getenv("TEXT_PROJECT_CONF_TEMPLATE")        
-        self._copy_project_conf(package_path, project_conf)
         object_xml_template = os.getenv("TEXT_OBJECT_XML_TEMPLATE")
-        self._copy_object_xml_and_rename_object(aux_object_dir, object_xml_template)      
+        self._handle_project_conf_and_object_xml(package_path, aux_object_dir, project_conf, object_xml_template)
+
+    def handle_single_file_directory_mapping(self, filename_path, package_path, object_dir, aux_object_dir):
+        content_dir = os.path.join(object_dir, "text")
+        if not os.path.exists(content_dir):
+            os.mkdir(content_dir)
+        shutil.copy2(filename_path, os.path.join(content_dir, os.path.basename(filename_path)))
+
+        project_conf = os.getenv("TEXT_PROJECT_CONF_TEMPLATE")        
+        object_xml_template = os.getenv("TEXT_OBJECT_XML_TEMPLATE")
+        self._handle_project_conf_and_object_xml(package_path, aux_object_dir, project_conf, object_xml_template)
