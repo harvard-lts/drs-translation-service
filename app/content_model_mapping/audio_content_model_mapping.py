@@ -27,7 +27,7 @@ class AudioContentModelMapping(ContentModelMapping):
         object_xml_template = os.getenv("AUDIO_OBJECT_XML_TEMPLATE")
         self._handle_project_conf_and_object_xml(package_path, aux_object_dir, project_conf, object_xml_template)
 
-    def handle_single_file_directory_mapping(self, target_filename, filename_path, package_path, object_dir, aux_object_dir):
+    def handle_single_file_directory_mapping(self, filename_path, target_filename, package_path, object_dir, aux_object_dir):
         content_dir = os.path.join(object_dir, "audio")
         if not os.path.exists(content_dir):
             os.mkdir(content_dir)
