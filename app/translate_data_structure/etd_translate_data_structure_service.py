@@ -46,6 +46,8 @@ class ETDTranslateDataStructureService(TranslateDataStructureService):
         if self.mets_extractor is None:
             raise TranslationException("No mets.xml file was supplied. DRS Deposit will be haulted for {}".format(package_path), None)
     
+        supplemental_deposit_data["dash_id"] = self.mets_extractor.get_identifier()
+        
         for f in extractedfiles:
             if (os.path.isfile(os.path.join(filepath, f))):
                 # Remove punctuation to give a default object name
@@ -55,19 +57,31 @@ class ETDTranslateDataStructureService(TranslateDataStructureService):
                 object_name = self.format_etd_osn(supplemental_deposit_data['school_dropbox_name'], f)
                 object_dir = os.path.join(batch_dir, object_name)
                 aux_object_dir = os.path.join(package_path, "_aux", batch_name, object_name)
-                self.__handle_etd_content_model_mapping(os.path.join(filepath, f), modified_file_name, package_path, object_dir, aux_object_dir)
-
+                self.__handle_etd_content_model_mapping(os.path.join(filepath, f), 
+                                                        modified_file_name, package_path, 
+                                                        object_dir, aux_object_dir, supplemental_deposit_data)
+                
+        
         # Add mapping files
         return batch_dir
 
-    def __handle_etd_content_model_mapping(self, fullfilename, modified_file_name, package_path, object_dir, aux_object_dir):
+    def __handle_etd_content_model_mapping(self, fullfilename, modified_file_name, 
+                                           package_path, object_dir, 
+                                           aux_object_dir, supplemental_deposit_data):
         '''Handle the content model mapping'''
-
         #for filename in glob.glob(os.path.join(package_path, '*.*')):
         content_model = self.cmm_builder.get_content_model_mapping(os.path.dirname(fullfilename), os.path.basename(fullfilename))
         os.makedirs(aux_object_dir, exist_ok=True)
         os.makedirs(object_dir, exist_ok=True)
         content_model.handle_single_file_directory_mapping(fullfilename, modified_file_name, package_path, object_dir, aux_object_dir)
+        # Add the mapping files
+        mapping_file_builder = MappingFileBuilder()
+        relative_dir = os.path.join(content_model.get_file_directory_name(), modified_file_name)
+        mapping_file_builder.build_mapping_file(os.path.basename(object_dir), relative_dir, supplemental_deposit_data, aux_object_dir)
+        object_mapping_dest = os.path.join(package_path, "_aux", "template")
+        os.makedirs(object_mapping_dest, exist_ok=True)
+        mapping_file_builder.build_object_mapping_file(os.path.basename(object_dir), 
+                                                       supplemental_deposit_data, object_mapping_dest)
 
     def __unzip_submission_file(self, submission_file_path):
 

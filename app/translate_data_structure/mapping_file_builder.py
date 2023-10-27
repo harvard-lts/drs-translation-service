@@ -26,8 +26,6 @@ class MappingFile:
     def __init__(self, object_osn, relative_file_path):
         self.file_osn = object_osn + "_1"
         self.relative_file_path = relative_file_path
-        print(self.file_osn)
-        print(self.relative_file_path)
         self.dash_id = None
         self.alma_id = None
         self.pq_id = None

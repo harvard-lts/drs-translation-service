@@ -61,8 +61,3 @@ class ContentModelMapping(ABC):
         # Write the object.xml file out in the aux directory
         with open(object_xml, 'w') as file:
             file.write(filedata)
-    
-    def handle_mapping_files(self):
-        pass
-
-    

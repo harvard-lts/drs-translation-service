@@ -218,6 +218,17 @@ def test_translate_etd_submission_1():
     assert os.path.exists(os.path.join(batch_dir, 
                                        "ETD_DOCUMENTATION_dce_2022_PQ_29161227", 
                                        "text", "mets.xml"))
+    assert os.path.exists(os.path.join(loc, "_aux", os.path.basename(batch_dir),
+                                       "ETD_DOCUMENTATION_dce_2022_PQ_29161227", 
+                                        "mapping.txt"))
+    assert os.path.exists(os.path.join(loc, "_aux", os.path.basename(batch_dir),
+                                       "ETD_LICENSE_dce_2022_PQ_29161227", 
+                                        "mapping.txt"))
+    assert os.path.exists(os.path.join(loc, "_aux", os.path.basename(batch_dir),
+                                       "ETD_THESIS_dce_2022_PQ_29161227", 
+                                        "mapping.txt"))
+    assert os.path.exists(os.path.join(loc, "_aux", "template", 
+                                        "object_mapping.txt"))
     cleanup_batch_dirs(batch_dir, os.path.join(loc, "_aux"), os.path.join(loc, "project.conf"))
     shutil.rmtree(os.path.join(loc, "extracted"))
 
@@ -235,6 +246,14 @@ def test_translate_etd_submission_2():
     assert os.path.exists(os.path.join(batch_dir, 
                                        "ETD_DOCUMENTATION_dce_2011_PQ_1496780", 
                                        "text", "mets.xml"))
+    assert os.path.exists(os.path.join(loc, "_aux", os.path.basename(batch_dir),
+                                       "ETD_THESIS_dce_2011_PQ_1496780", 
+                                        "mapping.txt"))
+    assert os.path.exists(os.path.join(loc, "_aux", os.path.basename(batch_dir),
+                                       "ETD_DOCUMENTATION_dce_2011_PQ_1496780", 
+                                        "mapping.txt"))
+    assert os.path.exists(os.path.join(loc, "_aux", "template", 
+                                        "object_mapping.txt"))
     cleanup_batch_dirs(batch_dir, os.path.join(loc, "_aux"), os.path.join(loc, "project.conf"))
 
 def test_format_etd_osn():
