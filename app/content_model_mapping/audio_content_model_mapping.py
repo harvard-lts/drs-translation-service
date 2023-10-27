@@ -36,3 +36,6 @@ class AudioContentModelMapping(ContentModelMapping):
         project_conf = os.getenv("AUDIO_PROJECT_CONF_TEMPLATE")        
         object_xml_template = os.getenv("AUDIO_OBJECT_XML_TEMPLATE")
         self._handle_project_conf_and_object_xml(package_path, aux_object_dir, project_conf, object_xml_template)
+
+    def get_file_directory_name(self):
+        return "audio"

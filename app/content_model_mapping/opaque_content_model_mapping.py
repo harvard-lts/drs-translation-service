@@ -93,4 +93,5 @@ class OpaqueContentModelMapping(ContentModelMapping):
                 else:
                     self._move_files(item_path, item_path, doc_path)
     
-   
+    def get_file_directory_name(self):
+        return "content"

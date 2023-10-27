@@ -16,6 +16,11 @@ class ContentModelMapping(ABC):
     def handle_directory_mapping(self, package_path, object_dir, aux_object_dir):
         pass
 
+    @abstractmethod
+    def get_file_directory_name(self):
+        '''The main directory name for the content (image, text, etc)'''
+        pass
+
     def handle_single_file_directory_mapping(self, filename_path, target_filename, package_path, object_dir, aux_object_dir):
         pass
 
@@ -57,13 +62,7 @@ class ContentModelMapping(ABC):
         with open(object_xml, 'w') as file:
             file.write(filedata)
     
-    def _create_mapping_txt(self):
-        with open('readme.txt', 'w') as f:
-            f.write('Create a new text file!')
+    def handle_mapping_files(self):
         pass
 
-    def _create_object_mapping_txt(self):
-        pass
-    
-    
     
