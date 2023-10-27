@@ -16,7 +16,7 @@ class ContentModelMapping(ABC):
     def handle_directory_mapping(self, package_path, object_dir, aux_object_dir):
         pass
 
-    def handle_single_file_directory_mapping(self, filename_path, package_path, object_dir, aux_object_dir):
+    def handle_single_file_directory_mapping(self, filename_path, target_filename, package_path, object_dir, aux_object_dir):
         pass
 
     def _handle_project_conf_and_object_xml(self, package_path, aux_object_dir, project_conf_template, object_xml_template):
@@ -56,6 +56,14 @@ class ContentModelMapping(ABC):
         # Write the object.xml file out in the aux directory
         with open(object_xml, 'w') as file:
             file.write(filedata)
+    
+    def _create_mapping_txt(self):
+        with open('readme.txt', 'w') as f:
+            f.write('Create a new text file!')
+        pass
+
+    def _create_object_mapping_txt(self):
+        pass
     
     
     

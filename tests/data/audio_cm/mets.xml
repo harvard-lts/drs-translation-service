@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<mets xmlns="http://www.loc.gov/METS/" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ID="etd-mets-1" OBJID="etd-submission-104761" TYPE="DSpace ITEM" PROFILE="http://www.dspace.org/schema/aip/mets_aip_1_0.xsd" xsi:schemaLocation="http://www.loc.gov/METS/ http://www.loc.gov/standards/mets/mets.xsd">
+  <metsHdr CREATEDATE="2021-04-16T18:04:15-04:00">
+    <agent ROLE="CREATOR" TYPE="OTHER">
+      <name>ETD Administrator, ProQuest</name>
+    </agent>
+  </metsHdr>
+  <dmdSec ID="etdadmin-mets-dmd-1" GROUPID="etdadmin-mets-dmd-1">
+    <mdWrap LABEL="DIM Metadata" MDTYPE="OTHER" OTHERMDTYPE="DIM">
+      <xmlData xmlns:dim="http://www.dspace.org/xmlns/dspace/dim">
+        <dim:dim>
+          <dim:field mdschema="dc" element="contributor" qualifier="author" authority="">Cohen, Matthew Saul</dim:field>
+          <dim:field mdschema="dc" element="identifier" qualifier="other">1496780</dim:field>
+          <dim:field mdschema="dc" element="title">Turkey and the EU: European Soft Power and How It Has Impacted Turkey</dim:field>
+          <dim:field mdschema="dc" element="description" qualifier="abstract">This study investigated recent developments in relations between Turkey and the European Union (EU), and, specifically, the impact of the EU accession process on Turkey. Review and analysis focused on seven key areas of Turkish culture, politics and foreign relations, including: how Turkish citizens and Turkey's government view the EU and EU membership; the role of religion in Turkey; the structure of Turkish democracy; the state of human rights in Turkey; education policy in Turkey; the Turkish economy; and Turkish foreign policy. Each has evolved over the course of EU membership negotiations, partly as a consequence of the negotiations themselves. Examining how Turkey and the EU have interacted during the accession process, it is clear that Turkey has made substantial changes in policy, but also that implementation of the new laws has had only mixed success. Many of these changes have brought Turkey more in line with European models of the modern state. However, for a wide variety of reasons, including some related to the accession process, Turkey has taken a substantially more negative view of the EU and of membership in the EU as negotiations have continued. The actions of the EU towards Turkey have been an important factor in leading Turkey to reassess its alliances and develop closer ties with non-Western states, while becoming more skeptical of traditional allies. Overall, EU mandated reforms appear to have led to impressive advances in Turkey's domestic affairs, but have also driven Turkish foreign policy to seek stronger ties with non-Western states.</dim:field>
+          <dim:field mdschema="dc" element="subject">European Union</dim:field>
+          <dim:field mdschema="dc" element="subject">International Relations</dim:field>
+          <dim:field mdschema="dc" element="subject">Islam and Government</dim:field>
+          <dim:field mdschema="dc" element="subject">Turkey</dim:field>
+          <dim:field mdschema="dc" element="subject">Turkish Foreign Policy</dim:field>
+          <dim:field mdschema="dc" element="subject">Turkish Policy</dim:field>
+          <dim:field mdschema="dc" element="subject" qualifier="PQ">Political science</dim:field>
+          <dim:field mdschema="dc" element="subject" qualifier="PQ">International relations</dim:field>
+          <dim:field mdschema="dc" element="subject" qualifier="PQ">European studies</dim:field>
+          <dim:field mdschema="dc" element="contributor" qualifier="advisor">Kafadar, Cemal</dim:field>
+          <dim:field mdschema="dc" element="date" qualifier="created">2011</dim:field>
+          <dim:field mdschema="dc" element="date" qualifier="submitted">2011</dim:field>
+          <dim:field mdschema="dc" element="format" qualifier="mimetype">application/pdf</dim:field>
+          <dim:field mdschema="dc" element="language" qualifier="iso">en</dim:field>
+          <dim:field mdschema="dc" element="type" qualifier="material">text</dim:field>
+          <dim:field mdschema="dc" element="type">Thesis or Dissertation</dim:field>
+          <dim:field mdschema="dc" element="description" qualifier="provenance">Submission originally under a zero month embargo, it is available immediately.</dim:field>
+          <dim:field mdschema="dc" element="description" qualifier="provenance">The student, Cohen, Matthew, submitted this Dissertation for approval on 2011-07-13 at 12:05.</dim:field>
+          <dim:field mdschema="dc" element="description" qualifier="provenance">DSpace AIP METS Submission Ingestion Package generated from ETD Administrator submission #104761 on 2021-04-16 at 18:04:15</dim:field>
+          <dim:field mdschema="thesis" element="degree" qualifier="date">2011</dim:field>
+          <dim:field mdschema="thesis" element="degree" qualifier="grantor">Harvard University, Extension School: Master of Liberal Arts in Ext. Studies (ALM)</dim:field>
+          <dim:field mdschema="thesis" element="degree" qualifier="level">Master's</dim:field>
+          <dim:field mdschema="thesis" element="degree" qualifier="name">A.L.M.</dim:field>
+          <dim:field mdschema="thesis" element="degree" qualifier="department">Government</dim:field>
+          <dim:field mdschema="dash" element="depositing" qualifier="author" authority="">Cohen, Matthew Saul</dim:field>
+          <dim:field mdschema="dash" element="author" qualifier="email" authority="">mscohen17@yahoo.com</dim:field>
+          <dim:field mdschema="dash" element="license">LAA</dim:field>
+        </dim:dim>
+      </xmlData>
+    </mdWrap>
+  </dmdSec>
+  <amdSec ID="amd_whole_item">
+    <rightsMD ID="rightsMD_whole_item">
+      <mdWrap MDTYPE="OTHER" OTHERMDTYPE="METSRIGHTS">
+        <xmlData xmlns:rights="http://cosimo.stanford.edu/sdr/metsrights/" xsi:schemaLocation="http://cosimo.stanford.edu/sdr/metsrights/ http://www.loc.gov/standards/rights/METSRights.xsd">
+          <rights:RightsDeclarationMD RIGHTSCATEGORY="LICENSED">
+            <rights:Context in-effect="true" CONTEXTCLASS="GENERAL PUBLIC">
+              <rights:Permissions DISCOVER="true" DISPLAY="true" MODIFY="false" DELETE="false"/>
+            </rights:Context>
+          </rights:RightsDeclarationMD>
+        </xmlData>
+      </mdWrap>
+    </rightsMD>
+    <sourceMD ID="sourceMD_whole_item">
+      <mdWrap MDTYPE="OTHER" OTHERMDTYPE="AIP-TECHMD">
+        <xmlData xmlns:dim="http://www.dspace.org/xmlns/dspace/dim">
+          <dim:dim dspaceType="ITEM">
+            <dim:field mdschema="dc" element="creator">disspub@proquest.com</dim:field>
+          </dim:dim>
+        </xmlData>
+      </mdWrap>
+    </sourceMD>
+  </amdSec>
+  <amdSec ID="amd_primary">
+    <rightsMD ID="rightsMD_primary">
+      <mdWrap MDTYPE="OTHER" OTHERMDTYPE="METSRIGHTS">
+        <xmlData xmlns:rights="http://cosimo.stanford.edu/sdr/metsrights/" xsi:schemaLocation="http://cosimo.stanford.edu/sdr/metsrights/ http://www.loc.gov/standards/rights/METSRights.xsd">
+          <rights:RightsDeclarationMD RIGHTSCATEGORY="LICENSED">
+            <rights:Context in-effect="true" CONTEXTCLASS="MANAGED GRP">
+              <rights:UserName USERTYPE="GROUP">Staff</rights:UserName>
+              <rights:Permissions DISCOVER="true" DISPLAY="true" MODIFY="false" DELETE="false"/>
+            </rights:Context>
+            <rights:Context in-effect="true" CONTEXTCLASS="GENERAL PUBLIC">
+              <rights:Permissions DISCOVER="true" DISPLAY="true" MODIFY="false" DELETE="false"/>
+            </rights:Context>
+          </rights:RightsDeclarationMD>
+        </xmlData>
+      </mdWrap>
+    </rightsMD>
+    <sourceMD ID="sourceMD_primary">
+      <mdWrap MDTYPE="OTHER" OTHERMDTYPE="AIP-TECHMD">
+        <xmlData xmlns:dim="http://www.dspace.org/xmlns/dspace/dim">
+          <dim:dim dspaceType="BITSTREAM">
+            <dim:field mdschema="dc" element="title">TurkeyandtheEU-EuropeanSoftPowerandHowItHasImpactedTurkey.pdf</dim:field>
+            <dim:field mdschema="dc" element="format" qualifier="mimetype">application/pdf</dim:field>
+            <dim:field mdschema="dc" element="format" qualifier="supportlevel">KNOWN</dim:field>
+            <dim:field mdschema="dc" element="format" qualifier="internal">false</dim:field>
+          </dim:dim>
+        </xmlData>
+      </mdWrap>
+    </sourceMD>
+  </amdSec>
+  <fileSec>
+    <fileGrp ID="etdadmin-mets-fgrp-1" USE="CONTENT">
+      <file GROUPID="etdadmin-mets-file-group" ID="etdadmin-mets-file-205325" MIMETYPE="audio/mp3" ADMID="amd_supplemental_1234" SEQ="1">
+        <FLocat LOCTYPE="URL" xlink:href="test.mp3"/>
+      </file>
+    </fileGrp>
+  </fileSec>
+  <structMap ID="etdadmin-mets-struct-1" LABEL="structure" TYPE="LOGICAL">
+    <div ID="etdadmin-mets-div-1" DMDID="etdadmin-mets-dmd-1" TYPE="DSpace Item">
+      <fptr FILEID="etdadmin-mets-file-205325"/>
+      <div ID="etdadmin-mets-div-205325" TYPE="DSpace Content Bitstream">
+        <fptr FILEID="etdadmin-mets-file-205325"/>
+      </div>
+    </div>
+  </structMap>
+</mets>

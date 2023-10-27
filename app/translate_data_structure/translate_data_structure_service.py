@@ -4,7 +4,7 @@ from abc import abstractmethod, ABC
 
 class TranslateDataStructureService(ABC):
            
-    def translate_data_structure(self, package_path):
+    def translate_data_structure(self, package_path, supplemental_deposit_data=None):
         batch_name = os.path.basename(package_path) + "-batch"
         batch_dir = os.path.join(package_path, batch_name)
         # Object name is the same as the package name
