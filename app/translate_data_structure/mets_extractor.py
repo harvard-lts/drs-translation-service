@@ -52,6 +52,15 @@ class MetsExtractor:
             if field is not None:
                 self.identifier = field.text
         return self.identifier
+    
+    def get_embargo_until(self):
+        '''Get the identifier from 
+        <dim:field mdschema="dash" element="embargo" qualifier="until">'''
+        if self.embargo_until is None:
+            field = self.root.find(".//dim:field[@mdschema='dash'][@element='embargo'][@qualifier='until']", namespaces)
+            if field is not None:
+                self.embargo_until = field.text
+        return self.embargo_until
 
 class FileSecInfo:
     def __init__(self, amdid=None, mimetype=None):

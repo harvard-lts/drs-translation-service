@@ -47,7 +47,7 @@ class BatchBuilderService(ABC):
         command = "sh " + bb_script_name + " -a build -p " + project_path + " -b " + batch_name
         object_name = os.path.basename(project_path)
             
-        batch_prop_overrides = self.__build_batchprop_override_command(supplemental_deposit_metadata)
+        batch_prop_overrides = self._build_batchprop_override_command(supplemental_deposit_metadata)
         if batch_prop_overrides is not None:
             command += batch_prop_overrides
             
@@ -70,7 +70,7 @@ class BatchBuilderService(ABC):
                 return True
         return False 
     
-    def __build_batchprop_override_command(self, supplemental_deposit_metadata): 
+    def _build_batchprop_override_command(self, supplemental_deposit_metadata): 
         '''Syntax -batchprop property=value,property=value,property=value;'''
         overrides = ""   
         delimiter = ""
@@ -167,6 +167,6 @@ class BatchBuilderService(ABC):
             overrides += "{}fileStorageClass={}".format(delimiter,supplemental_deposit_metadata["storageClass"].rstrip())
         command = None
         if overrides:
-            command = "{}::{}::{}".format(object_name, directory_name, overrides);
+            command = "{}::{}::{}".format(object_name, directory_name, overrides)
         
         return command

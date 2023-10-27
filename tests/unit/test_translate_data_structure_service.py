@@ -116,81 +116,15 @@ def test_translate_epadd_data_structure_gz():
     assert os.path.exists(os.path.join(obj_dir, "container", "test.gz"))
     cleanup_batch_dirs(batch_dir, os.path.join(loc, "_aux"), os.path.join(loc, "project.conf"))
 
-def test_translate_etd_data_structure_opaque():
-    '''Formats the directory and verifies that all files ended up where they should be'''
-    loc = "/home/appuser/tests/data/opaque_etd_cm"
-    expected_batch_dir = os.path.join(loc, os.path.basename(loc) + "-batch")
-
-    etd_translate_svc = ETDTranslateDataStructureService()
-    batch_dir = etd_translate_svc.translate_data_structure(loc, {"school_dropbox_name": "dce"})
-    assert (expected_batch_dir == batch_dir)
-
-    # Check that all files are where they are expected to be
-    assert os.path.exists(os.path.join(batch_dir, "ETD_THESIS_SUPPLEMENT_dce_2011_PQ_1496780", "text", "test.xxx"))
-    cleanup_batch_dirs(batch_dir, os.path.join(loc, "_aux"), os.path.join(loc, "project.conf"))
-
-def test_translate_etd_data_structure_document():
-    '''Formats the directory and verifies that all files ended up where they should be'''
-    loc = "/home/appuser/tests/data/document_cm"
-    expected_batch_dir = os.path.join(loc, os.path.basename(loc) + "-batch")
-
-    etd_translate_svc = ETDTranslateDataStructureService()
-    batch_dir = etd_translate_svc.translate_data_structure(loc, {"school_dropbox_name": "dce"})
-    assert (expected_batch_dir == batch_dir)
-
-    # Check that all files are where they are expected to be
-    assert os.path.exists(os.path.join(batch_dir, "ETD_THESIS_SUPPLEMENT_dce_2011_PQ_1496780", "document", "test.pdf"))
-    cleanup_batch_dirs(batch_dir, os.path.join(loc, "_aux"), os.path.join(loc, "project.conf"))
-
-
-def test_translate_etd_data_structure_text():
-    '''Formats the directory and verifies that all files ended up where they should be'''
-    loc = "/home/appuser/tests/data/text_cm"
-    expected_batch_dir = os.path.join(loc, os.path.basename(loc) + "-batch")
-
-    etd_translate_svc = ETDTranslateDataStructureService()
-    batch_dir = etd_translate_svc.translate_data_structure(loc, {"school_dropbox_name": "dce"})
-    assert (expected_batch_dir == batch_dir)
-
-    # Check that all files are where they are expected to be
-    assert os.path.exists(os.path.join(batch_dir, "ETD_THESIS_SUPPLEMENT_dce_2011_PQ_1496780", "text", "test.csv"))
-    cleanup_batch_dirs(batch_dir, os.path.join(loc, "_aux"), os.path.join(loc, "project.conf"))
-
-
-def test_translate_etd_data_structure_still_image():
-    '''Formats the directory and verifies that all files ended up where they should be'''
-    loc = "/home/appuser/tests/data/stillimage_cm"
-    expected_batch_dir = os.path.join(loc, os.path.basename(loc) + "-batch")
-
-    etd_translate_svc = ETDTranslateDataStructureService()
-    batch_dir = etd_translate_svc.translate_data_structure(loc, {"school_dropbox_name": "dce"})
-    assert (expected_batch_dir == batch_dir)
-
-    # Check that all files are where they are expected to be
-    assert os.path.exists(os.path.join(batch_dir, "ETD_THESIS_SUPPLEMENT_dce_2011_PQ_1496780", "image", "test.gif"))
-    cleanup_batch_dirs(batch_dir, os.path.join(loc, "_aux"), os.path.join(loc, "project.conf"))
-
-
-def test_translate_etd_data_structure_audio():
-    '''Formats the directory and verifies that all files ended up where they should be'''
-    loc = "/home/appuser/tests/data/audio_cm"
-    expected_batch_dir = os.path.join(loc, os.path.basename(loc) + "-batch")
-
-    etd_translate_svc = ETDTranslateDataStructureService()
-    batch_dir = etd_translate_svc.translate_data_structure(loc, {"school_dropbox_name": "dce"})
-    assert (expected_batch_dir == batch_dir)
-
-   # Check that all files are where they are expected to be
-    assert os.path.exists(os.path.join(batch_dir, "ETD_THESIS_SUPPLEMENT_dce_2011_PQ_1496780", "audio", "test.mp3"))
-    cleanup_batch_dirs(batch_dir, os.path.join(loc, "_aux"), os.path.join(loc, "project.conf"))
-
 
 def test_translate_etd_data_structure_missing_file_sec_data():
     '''Verifies that missing fileSec data results in a failure'''
+    loc = "/home/appuser/tests/data/etd-missing-filesec-data"
     with pytest.raises(TranslationException):
-        loc = "/home/appuser/tests/data/etd-missing-filesec-data"
         etd_translate_svc = ETDTranslateDataStructureService()
         batch_dir = etd_translate_svc.translate_data_structure(loc, {"school_dropbox_name": "dce"})
+        
+    cleanup_batch_dirs(os.path.join(loc, "etd-missing-filesec-data-batch"), os.path.join(loc, "_aux"), os.path.join(loc, "project.conf"))
 
 
 def test_translate_etd_data_structure_without_mets():

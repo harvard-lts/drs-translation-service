@@ -48,6 +48,7 @@ class ETDTranslateDataStructureService(TranslateDataStructureService):
     
         supplemental_deposit_data["dash_id"] = self.mets_extractor.get_identifier()
         
+        thesis = None
         for f in extractedfiles:
             if (os.path.isfile(os.path.join(filepath, f))):
                 # Remove punctuation to give a default object name
@@ -55,21 +56,31 @@ class ETDTranslateDataStructureService(TranslateDataStructureService):
                 # Use only alpha-numeric, period (.), underscore (_), or dash (-) for filenames
                 modified_file_name = re.sub(r"[^\w\d\.\-]", "_", f)
                 object_name = self.format_etd_osn(supplemental_deposit_data['school_dropbox_name'], f)
-                object_dir = os.path.join(batch_dir, object_name)
-                aux_object_dir = os.path.join(package_path, "_aux", batch_name, object_name)
-                self.__handle_etd_content_model_mapping(os.path.join(filepath, f), 
-                                                        modified_file_name, package_path, 
-                                                        object_dir, aux_object_dir, supplemental_deposit_data)
+                if ROLE_THESIS in object_name and ROLE_SUPPLEMENT not in object_name:
+                    thesis = ThesisData(object_name, modified_file_name, f)
+                else:
+                    object_dir = os.path.join(batch_dir, object_name)
+                    aux_object_dir = os.path.join(package_path, "_aux", batch_name, object_name)
+                    self.__handle_etd_content_model_mapping(os.path.join(filepath, f), 
+                                                            modified_file_name, package_path, 
+                                                            object_dir, aux_object_dir, supplemental_deposit_data)
                 
-        
-        # Add mapping files
+        # Do the thesis last so the correct project conf gets copied
+        # and the object mapping file is placed for the thesis
+        if thesis is None:
+            raise TranslationException("No thesis supplied for {}".format(package_path), None)
+        object_dir = os.path.join(batch_dir, thesis.object_name)
+        aux_object_dir = os.path.join(package_path, "_aux", batch_name, thesis.object_name)
+        self.__handle_etd_content_model_mapping(os.path.join(filepath, thesis.original_file_name), 
+                                                            thesis.file_name, package_path, 
+                                                            object_dir, aux_object_dir, supplemental_deposit_data)
+
         return batch_dir
 
     def __handle_etd_content_model_mapping(self, fullfilename, modified_file_name, 
                                            package_path, object_dir, 
                                            aux_object_dir, supplemental_deposit_data):
         '''Handle the content model mapping'''
-        #for filename in glob.glob(os.path.join(package_path, '*.*')):
         content_model = self.cmm_builder.get_content_model_mapping(os.path.dirname(fullfilename), os.path.basename(fullfilename))
         os.makedirs(aux_object_dir, exist_ok=True)
         os.makedirs(object_dir, exist_ok=True)
@@ -140,3 +151,9 @@ class ETDTranslateDataStructureService(TranslateDataStructureService):
         elif amdid.startswith(AMD_LIC):
             return ROLE_LICENSE
         return None
+
+class ThesisData:
+    def __init__(self, object_name, file_name, original_file_name):
+        self.object_name = object_name
+        self.file_name = file_name
+        self.original_file_name = original_file_name
