@@ -1,7 +1,6 @@
 from translate_data_structure.translate_data_structure_service import TranslateDataStructureService
 from content_model_mapping.content_model_mapping_builder import ContentModelMappingBuilder
 from translation_service.translation_exceptions import TranslationException
-from translate_data_structure.mets_extractor import MetsExtractor
 from translate_data_structure.mapping_file_builder import MappingFileBuilder
 import glob
 import os
@@ -11,13 +10,6 @@ import logging
 import re
 
 
-AMD_PRIMARY = "amd_primary"
-AMD_SUP = "amd_supplemental"
-AMD_LIC = "amd_license"
-ROLE_THESIS = "THESIS"
-ROLE_SUPPLEMENT = "THESIS_SUPPLEMENT"
-ROLE_LICENSE = "LICENSE"
-ROLE_DOCUMENTATION = "DOCUMENTATION"
 logger = logging.getLogger('dts')
 class ETDTranslateDataStructureService(TranslateDataStructureService):
 
@@ -42,25 +34,25 @@ class ETDTranslateDataStructureService(TranslateDataStructureService):
         elif len(files) > 1:
             extractedfiles = files
 
-        self.mets_extractor = self.__create_mets_extractor(filepath, extractedfiles)
-        if self.mets_extractor is None:
-            raise TranslationException("No mets.xml file was supplied. DRS Deposit will be haulted for {}".format(package_path), None)
+        if "file_info" not in supplemental_deposit_data:
+            raise TranslationException("file_info was not provided in the supplemental_deposit_data for {}. Data: {}".
+                                       format(package_path, supplemental_deposit_data), None)
     
-        supplemental_deposit_data["dash_id"] = self.mets_extractor.get_identifier()
-        
         thesis = None
         for f in extractedfiles:
             if (os.path.isfile(os.path.join(filepath, f))):
-                # Remove punctuation to give a default object name
-                # The object name will be overwritten in the mapping.txt file
-                # Use only alpha-numeric, period (.), underscore (_), or dash (-) for filenames
-                modified_file_name = re.sub(r"[^\w\d\.\-]", "_", f)
-                object_name = self.format_etd_osn(supplemental_deposit_data['school_dropbox_name'], f)
-                if ROLE_THESIS in object_name and ROLE_SUPPLEMENT not in object_name:
-                    thesis = ThesisData(object_name, modified_file_name, f)
+                file_info_dict = supplemental_deposit_data['file_info']
+                if f not in file_info_dict:
+                    raise TranslationException("File infor for {} was not provided in the supplemental_deposit_data. Data: {}".
+                                       format(f, supplemental_deposit_data), None)
+                file_info = file_info_dict[f]
+                object_osn = file_info['object_osn']
+                modified_file_name = file_info['modified_file_name']
+                if file_info['object_role'] == "THESIS":
+                    thesis = ThesisData(object_osn, modified_file_name, f)
                 else:
-                    object_dir = os.path.join(batch_dir, object_name)
-                    aux_object_dir = os.path.join(package_path, "_aux", batch_name, object_name)
+                    object_dir = os.path.join(batch_dir, object_osn)
+                    aux_object_dir = os.path.join(package_path, "_aux", batch_name, object_osn)
                     self.__handle_etd_content_model_mapping(os.path.join(filepath, f), 
                                                             modified_file_name, package_path, 
                                                             object_dir, aux_object_dir, supplemental_deposit_data)
@@ -108,49 +100,6 @@ class ETDTranslateDataStructureService(TranslateDataStructureService):
         
         # Remove the submission file
         return extracteditems
-    
-    def __create_mets_extractor(self, filepath, extractedfiles):
-        for f in extractedfiles:
-            if f == "mets.xml":
-                return MetsExtractor(os.path.join(filepath, f))
-        return None
-
-    def format_etd_osn(self, school_dropbox_name, filename, mets_file_path = None):
-        '''Formats the OSN to use the format of 
-        ETD_[OBJECT_ROLE]_[SCHOOL_CODE]_[DEGREE_DATE_VALUE]_PQ_[PROQUEST_IDENTIFIER_VALUE]'''
-        if self.mets_extractor is None:
-            if mets_file_path is not None:
-                self.mets_extractor = MetsExtractor(mets_file_path)
-            else:
-                raise TranslationException("No mets.xml file was supplied. DRS Deposit will be haulted for {}-{}".
-                                           format(school_dropbox_name, filename), None)
-        amdid_mimetype = self.mets_extractor.get_amdid_and_mimetype(filename)
-        if amdid_mimetype.amdid is None and filename != "mets.xml":
-            raise TranslationException("Missing or incorrect fileSec info in mets.xml for {}".
-                                           format(filename), None)
-
-        degree_date = self.mets_extractor.get_degree_date()
-        identifier = self.mets_extractor.get_identifier()
-        role = self.__determine_role(amdid_mimetype.amdid, filename)
-        osn = "ETD_{}_{}_{}_PQ_{}".format(role, school_dropbox_name, degree_date, identifier)
-        return osn
-    
-    def __determine_role(self, amdid, filename):
-        # mets.xml is the only one not in the mets.xml fileSec
-        # so it will not have the amdid
-        if amdid is None:
-            if filename == "mets.xml":
-                return ROLE_DOCUMENTATION
-            else:
-                return None
-
-        if amdid.startswith(AMD_PRIMARY):
-            return ROLE_THESIS
-        elif amdid.startswith(AMD_SUP):
-            return ROLE_SUPPLEMENT
-        elif amdid.startswith(AMD_LIC):
-            return ROLE_LICENSE
-        return None
 
 class ThesisData:
     def __init__(self, object_name, file_name, original_file_name):

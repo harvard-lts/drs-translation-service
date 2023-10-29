@@ -140,8 +140,31 @@ def test_translate_etd_submission_1():
     loc = "/home/appuser/tests/data/etd-submission-1"
     expected_batch_dir = os.path.join(loc, os.path.basename(loc) + "-batch")
 
+    supplemental_deposit_data = {"school_dropbox_name": "dce",
+                                 "file_info": {"Harvard_IR_License_-_LAA_for_ETDs_(2020).pdf": {
+                                                    "modified_file_name": "Harvard_IR_License_-_LAA_for_ETDs__2020_.pdf",
+                                                    "file_role": "LICENSE",
+                                                    "object_role": "LICENSE",
+                                                    "object_osn": "ETD_LICENSE_dce_2022_PQ_29161227",
+                                                    "file_osn": "ETD_LICENSE_dce_2022_PQ_29161227_1"
+                                               },
+                                               "ES 100 Final Thesis PDF - Liam Nuttall.pdf": {
+                                                    "modified_file_name": "ES_100_Final_Thesis_PDF_-_Liam_Nuttall.pdf",
+                                                    "file_role": "ARCHIVAL_MASTER",
+                                                    "object_role": "THESIS",
+                                                    "object_osn": "ETD_THESIS_dce_2022_PQ_29161227",
+                                                    "file_osn": "ETD_THESIS_dce_2022_PQ_29161227_1"
+                                               },
+                                               "mets.xml": {
+                                                    "modified_file_name": "mets.xml",
+                                                    "file_role": "DOCUMENTATION",
+                                                    "object_role": "DOCUMENTATION",
+                                                    "object_osn": "ETD_DOCUMENTATION_dce_2022_PQ_29161227",
+                                                    "file_osn": "ETD_DOCUMENTATION_dce_2022_PQ_29161227_1"
+                                               }
+                                 }}
     etd_translate_svc = ETDTranslateDataStructureService()
-    batch_dir = etd_translate_svc.translate_data_structure(loc, {"school_dropbox_name": "dce"})
+    batch_dir = etd_translate_svc.translate_data_structure(loc, supplemental_deposit_data)
     assert (expected_batch_dir == batch_dir)
     assert os.path.exists(os.path.join(batch_dir, 
                                        "ETD_THESIS_dce_2022_PQ_29161227", 
@@ -171,8 +194,24 @@ def test_translate_etd_submission_2():
     loc = "/home/appuser/tests/data/etd-submission-2"
     expected_batch_dir = os.path.join(loc, os.path.basename(loc) + "-batch")
 
+    supplemental_deposit_data = {"school_dropbox_name": "dce",
+                                 "file_info": {"TurkeyandtheEU-EuropeanSoftPowerandHowItHasImpactedTurkey.pdf": {
+                                                    "modified_file_name": "TurkeyandtheEU-EuropeanSoftPowerandHowItHasImpactedTurkey.pdf",
+                                                    "file_role": "ARCHIVAL_MASTER",
+                                                    "object_role": "THESIS",
+                                                    "object_osn": "ETD_THESIS_dce_2011_PQ_1496780",
+                                                    "file_osn": "ETD_THESIS_dce_2011_PQ_1496780_1"
+                                               },
+                                               "mets.xml": {
+                                                    "modified_file_name": "mets.xml",
+                                                    "file_role": "DOCUMENTATION",
+                                                    "object_role": "DOCUMENTATION",
+                                                    "object_osn": "ETD_DOCUMENTATION_dce_2011_PQ_1496780",
+                                                    "file_osn": "ETD_DOCUMENTATION_dce_2011_PQ_1496780_1"
+                                               }
+                                 }}
     etd_translate_svc = ETDTranslateDataStructureService()
-    batch_dir = etd_translate_svc.translate_data_structure(loc, {"school_dropbox_name": "dce"})
+    batch_dir = etd_translate_svc.translate_data_structure(loc, supplemental_deposit_data)
     assert (expected_batch_dir == batch_dir)
     assert os.path.exists(os.path.join(batch_dir, 
                                        "ETD_THESIS_dce_2011_PQ_1496780", 
@@ -190,17 +229,17 @@ def test_translate_etd_submission_2():
                                         "object_mapping.txt"))
     cleanup_batch_dirs(batch_dir, os.path.join(loc, "_aux"), os.path.join(loc, "project.conf"))
 
-def test_format_etd_osn():
-    etd_translate_svc = ETDTranslateDataStructureService()
-    thesis = etd_translate_svc.format_etd_osn("dce", "TurkeyandtheEU-EuropeanSoftPowerandHowItHasImpactedTurkey.pdf", 
-                                              "/home/appuser/tests/data/etd-submission-2/mets.xml")
-    expected_thesis = "ETD_THESIS_dce_2011_PQ_1496780"
-    assert expected_thesis == thesis
+# def test_format_etd_osn():
+#     etd_translate_svc = ETDTranslateDataStructureService()
+#     thesis = etd_translate_svc.format_etd_osn("dce", "TurkeyandtheEU-EuropeanSoftPowerandHowItHasImpactedTurkey.pdf", 
+#                                               "/home/appuser/tests/data/etd-submission-2/mets.xml")
+#     expected_thesis = "ETD_THESIS_dce_2011_PQ_1496780"
+#     assert expected_thesis == thesis
     
-    mets = etd_translate_svc.format_etd_osn("dce", "mets.xml", 
-                                              "/home/appuser/tests/data/etd-submission-2/mets.xml")
-    expected_mets = "ETD_DOCUMENTATION_dce_2011_PQ_1496780"
-    assert expected_mets == mets
+#     mets = etd_translate_svc.format_etd_osn("dce", "mets.xml", 
+#                                               "/home/appuser/tests/data/etd-submission-2/mets.xml")
+#     expected_mets = "ETD_DOCUMENTATION_dce_2011_PQ_1496780"
+#     assert expected_mets == mets
 
 def cleanup_batch_dirs(batch_path, aux_dir, project_conf):
     '''Removes the newly created batch folders'''

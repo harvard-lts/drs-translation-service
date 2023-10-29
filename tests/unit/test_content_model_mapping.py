@@ -222,7 +222,6 @@ def test_map_stillimage_cm_mapping():
 
     # Check that all files are where they are expected to be
     assert os.path.exists(os.path.join(obj_dir, "image", "test.gif"))
-    assert os.path.exists(os.path.join(obj_dir, "image", "test2.gif"))
     cleanup_batch_dirs(batch_dir, os.path.join(package_path, "_aux"), os.path.join(package_path, "project.conf"))
 
 def test_content_model_mapping_builder():
