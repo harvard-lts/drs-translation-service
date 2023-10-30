@@ -3,6 +3,7 @@ sys.path.append('app')
 from translate_data_structure.dataverse_translate_data_structure_service import DataverseTranslateDataStructureService
 from translate_data_structure.epadd_translate_data_structure_service import EpaddTranslateDataStructureService
 from translate_data_structure.etd_translate_data_structure_service import ETDTranslateDataStructureService
+from translation_service.translation_exceptions import TranslationException
 
 def test_translate_dvn_data_structure():
     '''Formats the directory and verifies that all files ended up where they should be'''
@@ -115,132 +116,111 @@ def test_translate_epadd_data_structure_gz():
     assert os.path.exists(os.path.join(obj_dir, "container", "test.gz"))
     cleanup_batch_dirs(batch_dir, os.path.join(loc, "_aux"), os.path.join(loc, "project.conf"))
 
-
-def test_translate_etd_data_structure_document():
+def test_translate_etd_submission_1():
     '''Formats the directory and verifies that all files ended up where they should be'''
-    loc = "/home/appuser/tests/data/document_cm"
+    loc = "/home/appuser/tests/data/etd-submission-1"
     expected_batch_dir = os.path.join(loc, os.path.basename(loc) + "-batch")
 
+    supplemental_deposit_data = {"alma_id": "Alma1234",
+              "pq_id": "1234",
+              "dash_id": "dash1234",
+              "ownerCode": "HUL.TEST",
+              "urnAuthorityPath": "HUL.TEST",
+              "billingCode": "HUL.TEST.BILL_0001",
+              "urnAuthorityPath": "HUL.TEST",
+              "file_info": {"Harvard_IR_License_-_LAA_for_ETDs_(2020).pdf": {
+                                "modified_file_name": "Harvard_IR_License_-_LAA_for_ETDs__2020_.pdf",
+                                "file_role": "LICENSE",
+                                "object_role": "LICENSE",
+                                "object_osn": "ETD_LICENSE_dce_2022_PQ_29161227",
+                                "file_osn": "ETD_LICENSE_dce_2022_PQ_29161227_1"
+                            },
+                            "ES 100 Final Thesis PDF - Liam Nuttall.pdf": {
+                                "modified_file_name": "ES_100_Final_Thesis_PDF_-_Liam_Nuttall.pdf",
+                                "file_role": "ARCHIVAL_MASTER",
+                                "object_role": "THESIS",
+                                "object_osn": "ETD_THESIS_dce_2022_PQ_29161227",
+                                "file_osn": "ETD_THESIS_dce_2022_PQ_29161227_1"
+                            },
+                            "mets.xml": {
+                                "modified_file_name": "mets.xml",
+                                "file_role": "DOCUMENTATION",
+                                "object_role": "DOCUMENTATION",
+                                "object_osn": "ETD_DOCUMENTATION_dce_2022_PQ_29161227",
+                                "file_osn": "ETD_DOCUMENTATION_dce_2022_PQ_29161227_1"
+                            }
+                            }}
     etd_translate_svc = ETDTranslateDataStructureService()
-    batch_dir = etd_translate_svc.translate_data_structure(loc)
+    batch_dir = etd_translate_svc.translate_data_structure(loc, supplemental_deposit_data)
     assert (expected_batch_dir == batch_dir)
-
-    obj_dir = os.path.join(batch_dir, os.path.basename(loc))
-    obj_aux_dir = os.path.join(loc, "_aux", os.path.basename(loc) + "-batch", os.path.basename(loc))
-
-    assert os.path.exists(obj_dir)
-    assert os.path.exists(obj_aux_dir)
-
-    # Check that all files are where they are expected to be
-    assert os.path.exists(os.path.join(obj_dir, "document", "test.pdf"))
+    assert os.path.exists(os.path.join(batch_dir, 
+                                       "ETD_THESIS_dce_2022_PQ_29161227", 
+                                       "document", "ES_100_Final_Thesis_PDF_-_Liam_Nuttall.pdf"))
+    assert os.path.exists(os.path.join(batch_dir, 
+                                       "ETD_LICENSE_dce_2022_PQ_29161227", 
+                                       "document", "Harvard_IR_License_-_LAA_for_ETDs__2020_.pdf"))
+    assert os.path.exists(os.path.join(batch_dir, 
+                                       "ETD_DOCUMENTATION_dce_2022_PQ_29161227", 
+                                       "text", "mets.xml"))
+    assert os.path.exists(os.path.join(loc, "_aux", os.path.basename(batch_dir),
+                                       "ETD_DOCUMENTATION_dce_2022_PQ_29161227", 
+                                        "mapping.txt"))
+    assert os.path.exists(os.path.join(loc, "_aux", os.path.basename(batch_dir),
+                                       "ETD_LICENSE_dce_2022_PQ_29161227", 
+                                        "mapping.txt"))
+    assert os.path.exists(os.path.join(loc, "_aux", os.path.basename(batch_dir),
+                                       "ETD_THESIS_dce_2022_PQ_29161227", 
+                                        "mapping.txt"))
+    assert os.path.exists(os.path.join(loc, "_aux", "template", 
+                                        "object_mapping.txt"))
     cleanup_batch_dirs(batch_dir, os.path.join(loc, "_aux"), os.path.join(loc, "project.conf"))
+    shutil.rmtree(os.path.join(loc, "extracted"))
 
-
-def test_translate_etd_data_structure_text():
+def test_translate_etd_submission_2():
     '''Formats the directory and verifies that all files ended up where they should be'''
-    loc = "/home/appuser/tests/data/text_cm"
+    loc = "/home/appuser/tests/data/etd-submission-2"
     expected_batch_dir = os.path.join(loc, os.path.basename(loc) + "-batch")
 
+    supplemental_deposit_data = {"alma_id": "Alma1234",
+              "pq_id": "1234",
+              "dash_id": "dash1234",
+              "ownerCode": "HUL.TEST",
+              "urnAuthorityPath": "HUL.TEST",
+              "billingCode": "HUL.TEST.BILL_0001",
+              "urnAuthorityPath": "HUL.TEST",
+              "file_info": {"TurkeyandtheEU-EuropeanSoftPowerandHowItHasImpactedTurkey.pdf": {
+                                                    "modified_file_name": "TurkeyandtheEU-EuropeanSoftPowerandHowItHasImpactedTurkey.pdf",
+                                                    "file_role": "ARCHIVAL_MASTER",
+                                                    "object_role": "THESIS",
+                                                    "object_osn": "ETD_THESIS_dce_2011_PQ_1496780",
+                                                    "file_osn": "ETD_THESIS_dce_2011_PQ_1496780_1"
+                                               },
+                                               "mets.xml": {
+                                                    "modified_file_name": "mets.xml",
+                                                    "file_role": "DOCUMENTATION",
+                                                    "object_role": "DOCUMENTATION",
+                                                    "object_osn": "ETD_DOCUMENTATION_dce_2011_PQ_1496780",
+                                                    "file_osn": "ETD_DOCUMENTATION_dce_2011_PQ_1496780_1"
+                                               }
+                                 }}
     etd_translate_svc = ETDTranslateDataStructureService()
-    batch_dir = etd_translate_svc.translate_data_structure(loc)
+    batch_dir = etd_translate_svc.translate_data_structure(loc, supplemental_deposit_data)
     assert (expected_batch_dir == batch_dir)
-
-    obj_dir = os.path.join(batch_dir, os.path.basename(loc))
-    obj_aux_dir = os.path.join(loc, "_aux", os.path.basename(loc) + "-batch", os.path.basename(loc))
-
-    assert os.path.exists(obj_dir)
-    assert os.path.exists(obj_aux_dir)
-
-    # Check that all files are where they are expected to be
-    assert os.path.exists(os.path.join(obj_dir, "text", "test.csv"))
+    assert os.path.exists(os.path.join(batch_dir, 
+                                       "ETD_THESIS_dce_2011_PQ_1496780", 
+                                       "document", "TurkeyandtheEU-EuropeanSoftPowerandHowItHasImpactedTurkey.pdf"))
+    assert os.path.exists(os.path.join(batch_dir, 
+                                       "ETD_DOCUMENTATION_dce_2011_PQ_1496780", 
+                                       "text", "mets.xml"))
+    assert os.path.exists(os.path.join(loc, "_aux", os.path.basename(batch_dir),
+                                       "ETD_THESIS_dce_2011_PQ_1496780", 
+                                        "mapping.txt"))
+    assert os.path.exists(os.path.join(loc, "_aux", os.path.basename(batch_dir),
+                                       "ETD_DOCUMENTATION_dce_2011_PQ_1496780", 
+                                        "mapping.txt"))
+    assert os.path.exists(os.path.join(loc, "_aux", "template", 
+                                        "object_mapping.txt"))
     cleanup_batch_dirs(batch_dir, os.path.join(loc, "_aux"), os.path.join(loc, "project.conf"))
-
-
-def test_translate_etd_data_structure_still_image():
-    '''Formats the directory and verifies that all files ended up where they should be'''
-    loc = "/home/appuser/tests/data/stillimage_cm"
-    expected_batch_dir = os.path.join(loc, os.path.basename(loc) + "-batch")
-
-    etd_translate_svc = ETDTranslateDataStructureService()
-    batch_dir = etd_translate_svc.translate_data_structure(loc)
-    assert (expected_batch_dir == batch_dir)
-
-    obj_dir = os.path.join(batch_dir, os.path.basename(loc))
-    obj_aux_dir = os.path.join(loc, "_aux", os.path.basename(loc) + "-batch", os.path.basename(loc))
-
-    assert os.path.exists(obj_dir)
-    assert os.path.exists(obj_aux_dir)
-
-    # Check that all files are where they are expected to be
-    assert os.path.exists(os.path.join(obj_dir, "image", "test.gif"))
-    assert os.path.exists(os.path.join(obj_dir, "image", "test2.gif"))
-    cleanup_batch_dirs(batch_dir, os.path.join(loc, "_aux"), os.path.join(loc, "project.conf"))
-
-
-def test_translate_etd_data_structure_audio():
-    '''Formats the directory and verifies that all files ended up where they should be'''
-    loc = "/home/appuser/tests/data/audio_cm"
-    expected_batch_dir = os.path.join(loc, os.path.basename(loc) + "-batch")
-
-    etd_translate_svc = ETDTranslateDataStructureService()
-    batch_dir = etd_translate_svc.translate_data_structure(loc)
-    assert (expected_batch_dir == batch_dir)
-
-    obj_dir = os.path.join(batch_dir, os.path.basename(loc))
-    obj_aux_dir = os.path.join(loc, "_aux", os.path.basename(loc) + "-batch", os.path.basename(loc))
-
-    assert os.path.exists(obj_dir)
-    assert os.path.exists(obj_aux_dir)
-
-    # Check that all files are where they are expected to be
-    assert os.path.exists(os.path.join(obj_dir, "audio", "test.mp3"))
-    cleanup_batch_dirs(batch_dir, os.path.join(loc, "_aux"), os.path.join(loc, "project.conf"))
-
-
-def test_translate_etd_data_structure_opaque():
-    '''Formats the directory and verifies that all files ended up where they should be'''
-    loc = "/home/appuser/tests/data/opaque_etd_cm"
-    expected_batch_dir = os.path.join(loc, os.path.basename(loc) + "-batch")
-
-    etd_translate_svc = ETDTranslateDataStructureService()
-    batch_dir = etd_translate_svc.translate_data_structure(loc)
-    assert (expected_batch_dir == batch_dir)
-
-    obj_dir = os.path.join(batch_dir, os.path.basename(loc))
-    obj_aux_dir = os.path.join(loc, "_aux", os.path.basename(loc) + "-batch", os.path.basename(loc))
-
-    assert os.path.exists(obj_dir)
-    assert os.path.exists(obj_aux_dir)
-
-    # Check that all files are where they are expected to be
-    assert os.path.exists(os.path.join(obj_dir, "content", "test-zip.txt.gz"))
-    cleanup_batch_dirs(batch_dir, os.path.join(loc, "_aux"), os.path.join(loc, "project.conf"))
-
-
-def test_translate_etd_data_structure_multiple_cm():
-    '''Formats the directory and verifies that all files ended up where they should be'''
-    loc = "/home/appuser/tests/data/multiple_cm"
-    expected_batch_dir = os.path.join(loc, os.path.basename(loc) + "-batch")
-
-    etd_translate_svc = ETDTranslateDataStructureService()
-    batch_dir = etd_translate_svc.translate_data_structure(loc)
-    assert (expected_batch_dir == batch_dir)
-
-    obj_dir = os.path.join(batch_dir, os.path.basename(loc))
-    obj_aux_dir = os.path.join(loc, "_aux", os.path.basename(loc) + "-batch", os.path.basename(loc))
-
-    assert os.path.exists(obj_dir)
-    assert os.path.exists(obj_aux_dir)
-
-    # Check that all files are where they are expected to be
-    assert os.path.exists(os.path.join(obj_dir, "document", "test.pdf"))
-    assert os.path.exists(os.path.join(obj_dir, "text", "test.csv"))
-    assert os.path.exists(os.path.join(obj_dir, "image", "test.gif"))
-    assert os.path.exists(os.path.join(obj_dir, "image", "test2.gif"))
-    assert os.path.exists(os.path.join(obj_dir, "audio", "test.mp3"))
-    assert os.path.exists(os.path.join(obj_dir, "content", "test-zip.txt.gz"))
-    cleanup_batch_dirs(batch_dir, os.path.join(loc, "_aux"), os.path.join(loc, "project.conf"))
-
 
 def cleanup_batch_dirs(batch_path, aux_dir, project_conf):
     '''Removes the newly created batch folders'''

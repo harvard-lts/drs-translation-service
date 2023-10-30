@@ -7,7 +7,6 @@ def validate_json_schema(json_data):
     schemasdir = os.path.join(app_path, "schemas")
     
     logger.debug("Schemas dir: {}".format(schemasdir))
-    print("Schemas dir: {}".format(schemasdir))
     
     if json_data is None:
         raise Exception("Missing JSON data in validate_json_schema")

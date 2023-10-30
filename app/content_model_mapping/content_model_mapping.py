@@ -15,6 +15,18 @@ class ContentModelMapping(ABC):
     @abstractmethod
     def handle_directory_mapping(self, package_path, object_dir, aux_object_dir):
         pass
+
+    @abstractmethod
+    def get_file_directory_name(self):
+        '''The main directory name for the content (image, text, etc)'''
+        pass
+
+    def handle_single_file_directory_mapping(self, filename_path, target_filename, package_path, object_dir, aux_object_dir):
+        pass
+
+    def _handle_project_conf_and_object_xml(self, package_path, aux_object_dir, project_conf_template, object_xml_template):
+        self._copy_project_conf(package_path, project_conf_template)
+        self._copy_object_xml_and_rename_object(aux_object_dir, object_xml_template)
                                 
     def _move_files(self, root_dir, source, dest_dir):
         '''This method actually copies the files from source to destination rather than
@@ -49,6 +61,3 @@ class ContentModelMapping(ABC):
         # Write the object.xml file out in the aux directory
         with open(object_xml, 'w') as file:
             file.write(filedata)
-    
-    
-    

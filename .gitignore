@@ -21,4 +21,6 @@ batch_builder_client/*
 
 *.code-workspace
 
+.pdfbox.cache
+
 

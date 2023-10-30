@@ -12,6 +12,7 @@
         </metadataCategory>
         <directory name="audio">
             <metadataCategory name="fileMetadata">
+                <property name="isFirstGenerationInDrs" value="yes"/>
                 <property name="usageClass" value="LOWUSE"/>
                 <property name="fileAccessFlag" value="N"/>
             </metadataCategory>

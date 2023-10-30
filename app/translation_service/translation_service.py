@@ -36,7 +36,7 @@ class TranslationService(ABC):
         
         batch_builder_service = self._get_batch_builder_service()
         
-        translate_service.translate_data_structure(package_dir)
+        translate_service.translate_data_structure(package_dir, supplemental_deposit_data)
         # Run BB
         batch_builder_service.process_batch(package_dir, batch_name, supplemental_deposit_data)
         

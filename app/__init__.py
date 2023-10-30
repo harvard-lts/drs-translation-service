@@ -178,7 +178,7 @@ def reprocess_batch(batch_path):
         notifier.send_error_notification(str(e), body)
         return msg, 500
     drs_config_path = os.path.join(batch_path, "drsConfig.txt")
-    admin_metadata = translation_service.get_admin_metadata(drs_config_path)
+    admin_metadata = translation_service.get_admin_metadata(batch_path, drs_config_path)
 
     # If errors were caught while trying to parse the drsConfig file
     # then move exit

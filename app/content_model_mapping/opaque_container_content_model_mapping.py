@@ -37,3 +37,6 @@ class OpaqueContainerContentModelMapping(ContentModelMapping):
         self._copy_project_conf(package_path, project_conf)
         object_xml_template = os.getenv("OPAQUE_CONTAINER_OBJECT_XML_TEMPLATE")
         self._copy_object_xml_and_rename_object(aux_object_dir, object_xml_template)
+
+    def get_file_directory_name(self):
+        return "container"

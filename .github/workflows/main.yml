@@ -13,11 +13,11 @@ jobs:
       # Checks-out repository under $GITHUB_WORKSPACE
       - uses: actions/checkout@v2
       
-      # Set up Python 3.11.5 environment
-      - name: Set up Python 3.11.5
-        uses: actions/setup-python@v1
+      # Set up Python 3.11.6 environment
+      - name: Set up Python 3.11.6
+        uses: actions/setup-python@v3
         with:
-          python-version: "3.11.5"
+          python-version: "3.11.6"
 
       # Install dependencies
       - name: Install dependencies

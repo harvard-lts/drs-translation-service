@@ -1,14 +1,17 @@
 import pytest, sys, os.path, shutil
 sys.path.append('app')
 from batch_builder_service.dataverse_batch_builder_service import DataverseBatchBuilderService 
-from batch_builder_service.epadd_batch_builder_service import EpaddBatchBuilderService 
+from batch_builder_service.epadd_batch_builder_service import EpaddBatchBuilderService
+from batch_builder_service.etd_batch_builder_service import ETDBatchBuilderService 
 
 dvn_project_path = "/home/appuser/tests/data/samplepreparedprojects/doi-translation-service-test"
 epadd_project_path = "/home/appuser/tests/data/samplepreparedprojects/epadd-test"
+etd_project_path = "/home/appuser/tests/data/samplepreparedprojects/etd-test"
 epadd_with_mods_project_path = "/home/appuser/tests/data/samplepreparedprojects/epadd-test-with-mods"
 bb_script_name = os.getenv("BB_SCRIPT_NAME")
 dvn_batch_name ="doi-translation-service-test-batch" 
 epadd_batch_name = "epadd-test-batch"
+etd_batch_name = "etd-test-batch"
 epadd_with_mods_batch_name = "epadd-test-with-mods-batch"
 
 def test_build_basic_command():
@@ -194,7 +197,53 @@ def test_epadd_with_mods_run_batch_builder_with_overrides():
      expected_descriptor_file = os.path.join(epadd_with_mods_project_path, epadd_with_mods_batch_name, os.path.basename(epadd_with_mods_project_path), "descriptor.xml")
      assert os.path.exists(expected_descriptor_file)     
      cleanup_created_files(expected_batch_file, expected_descriptor_file)     
+
+def test_etd_run_batch_builder():
+     file_info = {"file_info": {"Harvard_IR_License_-_LAA_for_ETDs_(2020).pdf": {
+                                                    "modified_file_name": "Harvard_IR_License_-_LAA_for_ETDs__2020_.pdf",
+                                                    "file_role": "LICENSE",
+                                                    "object_role": "LICENSE",
+                                                    "object_osn": "ETD_LICENSE_dce_2022_PQ_29161227",
+                                                    "file_osn": "ETD_LICENSE_dce_2022_PQ_29161227_1"
+                                               },
+                                               "ES 100 Final Thesis PDF - Liam Nuttall.pdf": {
+                                                    "modified_file_name": "ES_100_Final_Thesis_PDF_-_Liam_Nuttall.pdf",
+                                                    "file_role": "ARCHIVAL_MASTER",
+                                                    "object_role": "THESIS",
+                                                    "object_osn": "ETD_THESIS_dce_2022_PQ_29161227",
+                                                    "file_osn": "ETD_THESIS_dce_2022_PQ_29161227_1"
+                                               },
+                                               "mets.xml": {
+                                                    "modified_file_name": "mets.xml",
+                                                    "file_role": "DOCUMENTATION",
+                                                    "object_role": "DOCUMENTATION",
+                                                    "object_osn": "ETD_DOCUMENTATION_dce_2022_PQ_29161227",
+                                                    "file_osn": "ETD_DOCUMENTATION_dce_2022_PQ_29161227_1"
+                                               }
+                                 }}
+     supplemental_data = {"alma_id": "Alma1234",
+              "pq_id": "1234",
+              "dash_id": "dash1234",
+              "ownerCode": "HUL.TEST",
+              "urnAuthorityPath": "HUL.TEST",
+              "billingCode": "HUL.TEST.BILL_0001",
+              "urnAuthorityPath": "HUL.TEST",
+              "file_info": file_info}
      
+     etd_bb_service = ETDBatchBuilderService()
+     command = etd_bb_service.process_batch(etd_project_path, etd_batch_name, supplemental_data) 
+     print(command) 
+     expected_batch_file = os.path.join(etd_project_path, etd_batch_name, "batch.xml")
+     assert os.path.exists(expected_batch_file)
+     expected_thesis_descriptor_file = os.path.join(etd_project_path, etd_batch_name, "ETD_THESIS_dce_2022_PQ_29161227", "descriptor.xml")
+     expected_license_descriptor_file = os.path.join(etd_project_path, etd_batch_name, "ETD_LICENSE_dce_2022_PQ_29161227", "descriptor.xml")
+     expected_doc_descriptor_file = os.path.join(etd_project_path, etd_batch_name, "ETD_DOCUMENTATION_dce_2022_PQ_29161227", "descriptor.xml")
+     assert os.path.exists(expected_thesis_descriptor_file)  
+     assert os.path.exists(expected_license_descriptor_file)  
+     assert os.path.exists(expected_doc_descriptor_file)  
+     cleanup_created_files(expected_batch_file, expected_thesis_descriptor_file) 
+     os.remove(expected_license_descriptor_file)
+     os.remove(expected_doc_descriptor_file)
     
 def cleanup_created_files(batch_path, descriptor_path):
     '''Removes the newly created batch and descriptor files'''

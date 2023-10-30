@@ -1,6 +1,7 @@
 from translation_service.translation_service import TranslationService
 from translate_data_structure.etd_translate_data_structure_service import ETDTranslateDataStructureService
 from batch_builder_service.etd_batch_builder_service import ETDBatchBuilderService
+from translation_service.translation_exceptions import TranslationException
 
 
 class ETDTranslationService(TranslationService):
@@ -12,16 +13,9 @@ class ETDTranslationService(TranslationService):
     def _get_translate_data_structure_service(self):
         return ETDTranslateDataStructureService()
 
-    # add an instance of the ETDBatchBuilderService
-    # to the class
-    # def _get_batch_builder_service(self):
-    #   return ETDDBatchBuilderService()
-
-    def get_admin_metadata(self, drs_config_path):
+    def get_admin_metadata(self, batch_path, drs_config_path):
         '''Returns the admin metadata'''
-        admin_metadata = {"dropbox_name": self.DROPBOX_NAME}
-
-        return admin_metadata
+        raise TranslationException("Cannot reprocess ETDs.  This will have to be manually built and sent to the DRS: {}".format(batch_path))
     
     # add an instance of the EpaddBatchBuilderService
     # to the class

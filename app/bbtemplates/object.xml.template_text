@@ -12,6 +12,7 @@
         </metadataCategory>
         <directory name="text">
             <metadataCategory name="fileMetadata">
+                <property name="isFirstGenerationInDrs" value="yes"/>
                 <property name="usageClass" value="LOWUSE"/>
                 <property name="fileAccessFlag" value="N"/>
             </metadataCategory>
