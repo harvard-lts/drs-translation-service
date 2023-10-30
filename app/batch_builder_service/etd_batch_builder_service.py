@@ -1,6 +1,5 @@
 from batch_builder_service.batch_builder_service import BatchBuilderService
 from translation_service.translation_exceptions import TranslationException
-import batch_builder_service.etd_data.schools as schools
 import os
 
 
@@ -24,8 +23,10 @@ class ETDBatchBuilderService(BatchBuilderService):
         dirs = os.listdir(os.path.join(project_path, batch_name))
         object_prop_overrides = ""
         dir_prop_overrides = ""
+        # Stores the thesis object name to do last
+        # to allow for addition of the relationships
         thesis = None
-        # To store the relationship values
+        # To store the relationship values so they can be added to the thesis value
         self.relationships = []
         for object_name in dirs:
             if object_name.startswith("ETD_"):
@@ -44,7 +45,7 @@ class ETDBatchBuilderService(BatchBuilderService):
                     dir_prop_overrides += file_prop_overrids
         
         if thesis is None:
-            raise Exception
+            raise TranslationException("No thesis found in {}".format(project_path), None)
         
         thesis_overrides = self.__build_objprop_override_command(role, thesis, supplemental_deposit_metadata, self.relationships)
         if thesis_overrides is not None:
@@ -59,18 +60,12 @@ class ETDBatchBuilderService(BatchBuilderService):
     
     def __build_objprop_override_command(self, object_role, object_name, supplemental_deposit_metadata, relationships = None):
         '''Builds the etd specific objprop overrides'''
-        overrides = ""  
         delimiter = "" 
         command = ""
-        if "school_dropbox_name" in supplemental_deposit_metadata:
-            school_data = schools.school_info.get(supplemental_deposit_metadata["school_dropbox_name"])
-            if school_data is None:
-                raise TranslationException("Could not find school data for {}".format(supplemental_deposit_metadata["school_dropbox_name"]), None)
-            overrides += "ownerCode={}".format(school_data["owner_code"].rstrip())
-            delimiter = ","
-            overrides += "{}billingCode={}".format(delimiter,school_data["billing_code"].rstrip())
-            overrides += "{}urnAuthorityPath={}".format(delimiter,school_data["urn_authority_path"].rstrip())
-
+        overrides = "ownerCode={}".format(supplemental_deposit_metadata["ownerCode"].rstrip())
+        delimiter = ","
+        overrides += "{}billingCode={}".format(delimiter,supplemental_deposit_metadata["billingCode"].rstrip())
+        overrides += "{}urnAuthorityPath={}".format(delimiter,supplemental_deposit_metadata["urnAuthorityPath"].rstrip())
         overrides += "{}role={}".format(delimiter,object_role)
 
         # Relationsihps
@@ -85,18 +80,19 @@ class ETDBatchBuilderService(BatchBuilderService):
     
     def _build_dirprop_override_command(self, object_path, role):
         '''Builds the -dirprop command'''
-        overrides = "isFirstGenerationInDrs=yes"
         dirs = os.listdir(object_path)
         for dir in dirs:
             if os.path.isdir(os.path.join(object_path, dir)):
                 filerole = FILE_ROLE_ARCHIVAL_MASTER
                 if role == ROLE_DOCUMENTATION or role == ROLE_LICENSE:
                     filerole = role
-                overrides += ",filerole={};".format(filerole)
+                overrides = "filerole={};".format(filerole)
                 return "{}::{}::{}".format(os.path.basename(object_path), dir, overrides)
         return ""
     
     def __determine_role(self, object_name):
+        '''The OSN will have been formatted before the DAIS pipeline so
+        the role will be extracted from the OSN name. '''
         if ROLE_THESIS in object_name and ROLE_SUPPLEMENT not in object_name:
             return ROLE_THESIS
         elif ROLE_SUPPLEMENT in object_name:

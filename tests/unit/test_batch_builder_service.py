@@ -199,9 +199,36 @@ def test_epadd_with_mods_run_batch_builder_with_overrides():
      cleanup_created_files(expected_batch_file, expected_descriptor_file)     
 
 def test_etd_run_batch_builder():
-     supplemental_data = {"school_dropbox_name": "dce",
-              "alma_id": "Alma1234",
-              "pq_id": "1234"}
+     file_info = {"file_info": {"Harvard_IR_License_-_LAA_for_ETDs_(2020).pdf": {
+                                                    "modified_file_name": "Harvard_IR_License_-_LAA_for_ETDs__2020_.pdf",
+                                                    "file_role": "LICENSE",
+                                                    "object_role": "LICENSE",
+                                                    "object_osn": "ETD_LICENSE_dce_2022_PQ_29161227",
+                                                    "file_osn": "ETD_LICENSE_dce_2022_PQ_29161227_1"
+                                               },
+                                               "ES 100 Final Thesis PDF - Liam Nuttall.pdf": {
+                                                    "modified_file_name": "ES_100_Final_Thesis_PDF_-_Liam_Nuttall.pdf",
+                                                    "file_role": "ARCHIVAL_MASTER",
+                                                    "object_role": "THESIS",
+                                                    "object_osn": "ETD_THESIS_dce_2022_PQ_29161227",
+                                                    "file_osn": "ETD_THESIS_dce_2022_PQ_29161227_1"
+                                               },
+                                               "mets.xml": {
+                                                    "modified_file_name": "mets.xml",
+                                                    "file_role": "DOCUMENTATION",
+                                                    "object_role": "DOCUMENTATION",
+                                                    "object_osn": "ETD_DOCUMENTATION_dce_2022_PQ_29161227",
+                                                    "file_osn": "ETD_DOCUMENTATION_dce_2022_PQ_29161227_1"
+                                               }
+                                 }}
+     supplemental_data = {"alma_id": "Alma1234",
+              "pq_id": "1234",
+              "dash_id": "dash1234",
+              "ownerCode": "HUL.TEST",
+              "urnAuthorityPath": "HUL.TEST",
+              "billingCode": "HUL.TEST.BILL_0001",
+              "urnAuthorityPath": "HUL.TEST",
+              "file_info": file_info}
      
      etd_bb_service = ETDBatchBuilderService()
      command = etd_bb_service.process_batch(etd_project_path, etd_batch_name, supplemental_data) 
