@@ -2,12 +2,10 @@ from translate_data_structure.translate_data_structure_service import TranslateD
 from content_model_mapping.content_model_mapping_builder import ContentModelMappingBuilder
 from translation_service.translation_exceptions import TranslationException
 from translate_data_structure.mapping_file_builder import MappingFileBuilder
-import glob
 import os
 import os.path
 import zipfile
 import logging
-import re
 
 
 logger = logging.getLogger('dts')

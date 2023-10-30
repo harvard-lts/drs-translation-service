@@ -229,18 +229,6 @@ def test_translate_etd_submission_2():
                                         "object_mapping.txt"))
     cleanup_batch_dirs(batch_dir, os.path.join(loc, "_aux"), os.path.join(loc, "project.conf"))
 
-# def test_format_etd_osn():
-#     etd_translate_svc = ETDTranslateDataStructureService()
-#     thesis = etd_translate_svc.format_etd_osn("dce", "TurkeyandtheEU-EuropeanSoftPowerandHowItHasImpactedTurkey.pdf", 
-#                                               "/home/appuser/tests/data/etd-submission-2/mets.xml")
-#     expected_thesis = "ETD_THESIS_dce_2011_PQ_1496780"
-#     assert expected_thesis == thesis
-    
-#     mets = etd_translate_svc.format_etd_osn("dce", "mets.xml", 
-#                                               "/home/appuser/tests/data/etd-submission-2/mets.xml")
-#     expected_mets = "ETD_DOCUMENTATION_dce_2011_PQ_1496780"
-#     assert expected_mets == mets
-
 def cleanup_batch_dirs(batch_path, aux_dir, project_conf):
     '''Removes the newly created batch folders'''
     try:

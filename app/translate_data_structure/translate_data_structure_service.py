@@ -1,6 +1,6 @@
 import os
 import os.path
-from abc import abstractmethod, ABC
+from abc import ABC
 
 class TranslateDataStructureService(ABC):
            
