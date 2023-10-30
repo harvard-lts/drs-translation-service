@@ -13,7 +13,7 @@ def test_mapping_file():
                                 {"dash_id": "DASH1234", "alma_id": "Alma1234", "pq_id": "PQ-1234"}, 
                                 dest_dir)
 
-    expected_string = "document/somedoc.pdf,TEST_OSN_1,,,,DASH|DASH1234|Dash|Alma|Alma1234|Alma|Local|PQ-1234|ProQuestID|,"
+    expected_string = "document/somedoc.pdf,TEST_OSN_1,,,,DASH|DASH1234|Dash||Alma|Alma1234|Alma||Local|PQ-1234|ProQuestID|,"
     full_dest_dir = os.path.join(dest_dir, "mapping.txt")
     assert os.path.exists(full_dest_dir)
     f = open(full_dest_dir, "r")
