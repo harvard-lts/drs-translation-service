@@ -47,7 +47,7 @@ class ETDBatchBuilderService(BatchBuilderService):
         if thesis is None:
             raise TranslationException("No thesis found in {}".format(project_path), None)
         
-        thesis_overrides = self.__build_objprop_override_command(role, thesis, supplemental_deposit_metadata, self.relationships)
+        thesis_overrides = self.__build_objprop_override_command(ROLE_THESIS, thesis, supplemental_deposit_metadata, self.relationships)
         if thesis_overrides is not None:
                 object_prop_overrides += thesis_overrides
 
