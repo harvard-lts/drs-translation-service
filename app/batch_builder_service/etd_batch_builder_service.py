@@ -68,6 +68,9 @@ class ETDBatchBuilderService(BatchBuilderService):
         overrides += "{}urnAuthorityPath={}".format(delimiter,supplemental_deposit_metadata["urnAuthorityPath"].rstrip())
         overrides += "{}role={}".format(delimiter,object_role)
 
+        if "embargo_date" in supplemental_deposit_metadata:
+            overrides += "{}embargoBasis=license,embargoGrantStart={}".format(delimiter, supplemental_deposit_metadata["embargo_date"])
+
         # Relationsihps
         if relationships is not None:
             for rel in relationships:
