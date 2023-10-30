@@ -38,12 +38,15 @@ class MappingFile:
         dash_string = self.__create_dash_string()
         alma_string = self.__create_alma_string()
         pq_string = self.__create_pq_string()
+        delimiter = ""
         if dash_string is not None:
             hml_string = dash_string
+            delimiter = "|"
         if alma_string is not None:
-            hml_string += alma_string
+            hml_string += delimiter + alma_string
+            delimiter = "|"
         if pq_string is not None:
-            hml_string += pq_string
+            hml_string += delimiter + pq_string
         return hml_string
 
     def __create_dash_string(self):
