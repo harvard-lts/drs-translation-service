@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Objectconfig cm="document">
+    <directory name="ETD_THESIS_gsd_2021-05_PQ_28542548">
+        <metadataCategory name="objectMetadata">
+            <property name="billingCode" value="HUL.TEST.BILL.0001"/>
+            <property name="accessFlag" value="N"/>
+            <property name="ownerCode" value="HUL.TEST"/>
+        </metadataCategory>
+        <metadataCategory name="nrsMetadata">
+            <property name="resourceNamePattern" value="{n}"/>
+            <property name="urnAuthorityPath" value="HUL.GUEST"/>
+        </metadataCategory>
+        <directory name="document">
+            <metadataCategory name="fileMetadata">
+                <property name="isFirstGenerationInDrs" value="yes"/>
+                <property name="usageClass" value="LOWUSE"/>
+            </metadataCategory>
+        </directory>
+    </directory>
+</Objectconfig>

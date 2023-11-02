@@ -222,6 +222,240 @@ def test_translate_etd_submission_2():
                                         "object_mapping.txt"))
     cleanup_batch_dirs(batch_dir, os.path.join(loc, "_aux"), os.path.join(loc, "project.conf"))
 
+def test_translate_etd_submission_images():
+    '''Formats the directory and verifies that all files ended up where they should be'''
+    loc = "/home/appuser/tests/data/etd-submission-image"
+    expected_batch_dir = os.path.join(loc, os.path.basename(loc) + "-batch")
+
+    supplemental_deposit_data = {"alma_id": "99156631569803941",
+              "pq_id": "28542548",
+              "dash_id": "dash1234",
+              "ownerCode": "HUL.TEST",
+              "urnAuthorityPath": "HUL.TEST",
+              "billingCode": "HUL.TEST.BILL_0001",
+              "urnAuthorityPath": "HUL.TEST",
+              "file_info": {"20210524_Thesis Archival Submission_JB Signed.pdf": {
+                                "modified_file_name": "20210524_Thesis_Archival_Submission_JB_Signed.pdf",
+                                "file_role": "ARCHIVAL_MASTER",
+                                "object_role": "THESIS",
+                                "object_osn": "ETD_THESIS_gsd_2021-05_PQ_28542548",
+                                "file_osn": "ETD_THESIS_gsd_2021-05_PQ_28542548_1"
+                            },
+                            "mets.xml": {
+                                "modified_file_name": "mets.xml",
+                                "file_role": "DOCUMENTATION",
+                                "object_role": "DOCUMENTATION",
+                                "object_osn": "ETD_DOCUMENTATION_gsd_2021-05_PQ_28542548",
+                                "file_osn": "ETD_DOCUMENTATION_gsd_2021-05_PQ_28542548_1"
+                            },
+                            "setup_2E592954-F85C-11EA-ABB1-E61AE629DA94.pdf": {
+                                "modified_file_name": "setup_2E592954-F85C-11EA-ABB1-E61AE629DA94_.pdf",
+                                "file_role": "LICENSE",
+                                "object_role": "LICENSE",
+                                "object_osn": "ETD_LICENSE_gsd_2021-05_PQ_28542548",
+                                "file_osn": "ETD_LICENSE_gsd_2021-05_PQ_28542548_1"
+                            },
+                            "GIF_01_SlabShift.gif": {
+                                "modified_file_name": "GIF_01_SlabShift.gif",
+                                "file_role": "ARCHIVAL_MASTER",
+                                "object_role": "THESIS_SUPPLEMENT",
+                                "object_osn": "ETD_SUPPLEMENT_gsd_2021-05_PQ_28542548_1",
+                                "file_osn": "ETD_SUPPLEMENT_gsd_2021-05_PQ_28542548_1_1"
+                            },
+                            "GIF_02_Facade1NE.gif": {
+                                "modified_file_name": "GIF_02_Facade1NE.gif",
+                                "file_role": "ARCHIVAL_MASTER",
+                                "object_role": "THESIS_SUPPLEMENT",
+                                "object_osn": "ETD_SUPPLEMENT_gsd_2021-05_PQ_28542548_2",
+                                "file_osn": "ETD_SUPPLEMENT_gsd_2021-05_PQ_28542548_2_1"
+                            },
+                            "GIF_03_Facade2SW.gif": {
+                                "modified_file_name": "GIF_03_Facade2SW.gif",
+                                "file_role": "ARCHIVAL_MASTER",
+                                "object_role": "THESIS_SUPPLEMENT",
+                                "object_osn": "ETD_SUPPLEMENT_gsd_2021-05_PQ_28542548_3",
+                                "file_osn": "ETD_SUPPLEMENT_gsd_2021-05_PQ_28542548_3_1"
+                            },
+                            "GIF_04_Room_1.Gar.gif": {
+                                "modified_file_name": "GIF_04_Room_1.Gar.gif",
+                                "file_role": "ARCHIVAL_MASTER",
+                                "object_role": "THESIS_SUPPLEMENT",
+                                "object_osn": "ETD_SUPPLEMENT_gsd_2021-05_PQ_28542548_4",
+                                "file_osn": "ETD_SUPPLEMENT_gsd_2021-05_PQ_28542548_4_1"
+                            },
+                            "GIF_05_Room_2.TwoLiv.gif": {
+                                "modified_file_name": "GIF_05_Room_2.TwoLiv.gif",
+                                "file_role": "ARCHIVAL_MASTER",
+                                "object_role": "THESIS_SUPPLEMENT",
+                                "object_osn": "ETD_SUPPLEMENT_gsd_2021-05_PQ_28542548_5",
+                                "file_osn": "ETD_SUPPLEMENT_gsd_2021-05_PQ_28542548_5_1"
+                            }
+                        }}
+    etd_translate_svc = ETDTranslateDataStructureService()
+    batch_dir = etd_translate_svc.translate_data_structure(loc, supplemental_deposit_data)
+    assert (expected_batch_dir == batch_dir)
+    assert os.path.exists(os.path.join(batch_dir, 
+                                       "ETD_THESIS_gsd_2021-05_PQ_28542548", 
+                                       "document", "20210524_Thesis_Archival_Submission_JB_Signed.pdf"))
+    assert os.path.exists(os.path.join(batch_dir, 
+                                       "ETD_DOCUMENTATION_gsd_2021-05_PQ_28542548", 
+                                       "text", "mets.xml"))
+    assert os.path.exists(os.path.join(loc, "_aux", os.path.basename(batch_dir),
+                                       "ETD_THESIS_gsd_2021-05_PQ_28542548", 
+                                        "mapping.txt"))
+    assert os.path.exists(os.path.join(loc, "_aux", os.path.basename(batch_dir),
+                                       "ETD_DOCUMENTATION_gsd_2021-05_PQ_28542548", 
+                                        "mapping.txt"))
+    assert os.path.exists(os.path.join(batch_dir, 
+                                       "ETD_LICENSE_gsd_2021-05_PQ_28542548", 
+                                       "document", "setup_2E592954-F85C-11EA-ABB1-E61AE629DA94_.pdf"))
+    assert os.path.exists(os.path.join(loc, "_aux", os.path.basename(batch_dir),
+                                       "ETD_LICENSE_gsd_2021-05_PQ_28542548", 
+                                        "mapping.txt"))
+    assert os.path.exists(os.path.join(batch_dir, 
+                                       "ETD_SUPPLEMENT_gsd_2021-05_PQ_28542548_1", 
+                                       "image", "GIF_01_SlabShift.gif"))
+    assert os.path.exists(os.path.join(loc, "_aux", os.path.basename(batch_dir),
+                                       "ETD_SUPPLEMENT_gsd_2021-05_PQ_28542548_1", 
+                                        "mapping.txt"))
+    assert os.path.exists(os.path.join(batch_dir, 
+                                       "ETD_SUPPLEMENT_gsd_2021-05_PQ_28542548_2", 
+                                       "image", "GIF_02_Facade1NE.gif"))
+    assert os.path.exists(os.path.join(loc, "_aux", os.path.basename(batch_dir),
+                                       "ETD_SUPPLEMENT_gsd_2021-05_PQ_28542548_2", 
+                                        "mapping.txt"))
+    assert os.path.exists(os.path.join(batch_dir, 
+                                       "ETD_SUPPLEMENT_gsd_2021-05_PQ_28542548_3", 
+                                       "image", "GIF_03_Facade2SW.gif"))
+    assert os.path.exists(os.path.join(loc, "_aux", os.path.basename(batch_dir),
+                                       "ETD_SUPPLEMENT_gsd_2021-05_PQ_28542548_3", 
+                                        "mapping.txt"))
+    assert os.path.exists(os.path.join(batch_dir, 
+                                       "ETD_SUPPLEMENT_gsd_2021-05_PQ_28542548_4", 
+                                       "image", "GIF_04_Room_1.Gar.gif"))
+    assert os.path.exists(os.path.join(loc, "_aux", os.path.basename(batch_dir),
+                                       "ETD_SUPPLEMENT_gsd_2021-05_PQ_28542548_4", 
+                                        "mapping.txt"))
+    assert os.path.exists(os.path.join(batch_dir, 
+                                       "ETD_SUPPLEMENT_gsd_2021-05_PQ_28542548_5", 
+                                       "image", "GIF_05_Room_2.TwoLiv.gif"))
+    assert os.path.exists(os.path.join(loc, "_aux", os.path.basename(batch_dir),
+                                       "ETD_SUPPLEMENT_gsd_2021-05_PQ_28542548_5", 
+                                        "mapping.txt"))
+    
+    cleanup_batch_dirs(batch_dir, os.path.join(loc, "_aux"), os.path.join(loc, "project.conf"))
+    shutil.rmtree(os.path.join(loc, "extracted"))
+    
+def test_translate_etd_submission_opaque_image():
+    '''Formats the directory and verifies that all files ended up where they should be'''
+    loc = "/home/appuser/tests/data/etd-submission-opaque-image"
+    expected_batch_dir = os.path.join(loc, os.path.basename(loc) + "-batch")
+
+    supplemental_deposit_data = {"alma_id": "99156631569803941",
+              "pq_id": "28963877",
+              "dash_id": "dash1234",
+              "ownerCode": "HUL.TEST",
+              "urnAuthorityPath": "HUL.TEST",
+              "billingCode": "HUL.TEST.BILL_0001",
+              "urnAuthorityPath": "HUL.TEST",
+              "file_info": {"Alfred_S_MArchI_F21 Thesis.pdf": {
+                                "modified_file_name": "Alfred_S_MArchI_F21_Thesis.pdf",
+                                "file_role": "ARCHIVAL_MASTER",
+                                "object_role": "THESIS",
+                                "object_osn": "ETD_THESIS_gsd_2022-05_PQ_28963877",
+                                "file_osn": "ETD_THESIS_gsd_2022-05_PQ_28963877_1"
+                            },
+                            "mets.xml": {
+                                "modified_file_name": "mets.xml",
+                                "file_role": "DOCUMENTATION",
+                                "object_role": "DOCUMENTATION",
+                                "object_osn": "ETD_DOCUMENTATION_gsd_2022-05_PQ_28963877",
+                                "file_osn": "ETD_DOCUMENTATION_gsd_2022-05_PQ_28963877_1"
+                            },
+                            "setup_2E592954-F85C-11EA-ABB1-E61AE629DA94.pdf": {
+                                "modified_file_name": "setup_2E592954-F85C-11EA-ABB1-E61AE629DA94.pdf",
+                                "file_role": "LICENSE",
+                                "object_role": "LICENSE",
+                                "object_osn": "ETD_LICENSE_gsd_2022-05_PQ_28963877",
+                                "file_osn": "ETD_LICENSE_gsd_2022-05_PQ_28963877_1"
+                            },
+                            "Plan Gifs.zip": {
+                                "modified_file_name": "Plan_Gifs.zip",
+                                "file_role": "ARCHIVAL_MASTER",
+                                "object_role": "THESIS_SUPPLEMENT",
+                                "object_osn": "ETD_SUPPLEMENT_gsd_2022-05_PQ_28963877_1",
+                                "file_osn": "ETD_SUPPLEMENT_gsd_2022-05_PQ_28963877_1_1"
+                            },
+                            "Notation Gifs.zip": {
+                                "modified_file_name": "Notation_Gifs.zip",
+                                "file_role": "ARCHIVAL_MASTER",
+                                "object_role": "THESIS_SUPPLEMENT",
+                                "object_osn": "ETD_SUPPLEMENT_gsd_2022-05_PQ_28963877_2",
+                                "file_osn": "ETD_SUPPLEMENT_gsd_2022-05_PQ_28963877_2_1"
+                            },
+                            "Dance Gifs.zip": {
+                                "modified_file_name": "Dance_Gifs.zip",
+                                "file_role": "ARCHIVAL_MASTER",
+                                "object_role": "THESIS_SUPPLEMENT",
+                                "object_osn": "ETD_SUPPLEMENT_gsd_2022-05_PQ_28963877_3",
+                                "file_osn": "ETD_SUPPLEMENT_gsd_2022-05_PQ_28963877_3_1"
+                            },
+                            "Alfred_S_Model gif.gif": {
+                                "modified_file_name": "Alfred_S_Model_gif.gif",
+                                "file_role": "ARCHIVAL_MASTER",
+                                "object_role": "THESIS_SUPPLEMENT",
+                                "object_osn": "ETD_SUPPLEMENT_gsd_2022-05_PQ_28963877_4",
+                                "file_osn": "ETD_SUPPLEMENT_gsd_2022-05_PQ_28963877_4_1"
+                            }
+                        }}
+    etd_translate_svc = ETDTranslateDataStructureService()
+    batch_dir = etd_translate_svc.translate_data_structure(loc, supplemental_deposit_data)
+    assert (expected_batch_dir == batch_dir)
+    assert os.path.exists(os.path.join(batch_dir, 
+                                       "ETD_THESIS_gsd_2022-05_PQ_28963877", 
+                                       "document", "Alfred_S_MArchI_F21_Thesis.pdf"))
+    assert os.path.exists(os.path.join(batch_dir, 
+                                       "ETD_DOCUMENTATION_gsd_2022-05_PQ_28963877", 
+                                       "text", "mets.xml"))
+    assert os.path.exists(os.path.join(loc, "_aux", os.path.basename(batch_dir),
+                                       "ETD_THESIS_gsd_2022-05_PQ_28963877", 
+                                        "mapping.txt"))
+    assert os.path.exists(os.path.join(loc, "_aux", os.path.basename(batch_dir),
+                                       "ETD_DOCUMENTATION_gsd_2022-05_PQ_28963877", 
+                                        "mapping.txt"))
+    assert os.path.exists(os.path.join(batch_dir, 
+                                       "ETD_LICENSE_gsd_2022-05_PQ_28963877", 
+                                       "document", "setup_2E592954-F85C-11EA-ABB1-E61AE629DA94.pdf"))
+    assert os.path.exists(os.path.join(loc, "_aux", os.path.basename(batch_dir),
+                                       "ETD_LICENSE_gsd_2022-05_PQ_28963877", 
+                                        "mapping.txt"))
+    assert os.path.exists(os.path.join(batch_dir, 
+                                       "ETD_SUPPLEMENT_gsd_2022-05_PQ_28963877_1", 
+                                       "content", "Plan_Gifs.zip"))
+    assert os.path.exists(os.path.join(loc, "_aux", os.path.basename(batch_dir),
+                                       "ETD_SUPPLEMENT_gsd_2022-05_PQ_28963877_1", 
+                                        "mapping.txt"))
+    assert os.path.exists(os.path.join(batch_dir, 
+                                       "ETD_SUPPLEMENT_gsd_2022-05_PQ_28963877_2", 
+                                       "content", "Notation_Gifs.zip"))
+    assert os.path.exists(os.path.join(loc, "_aux", os.path.basename(batch_dir),
+                                       "ETD_SUPPLEMENT_gsd_2022-05_PQ_28963877_2", 
+                                        "mapping.txt"))
+    assert os.path.exists(os.path.join(batch_dir, 
+                                       "ETD_SUPPLEMENT_gsd_2022-05_PQ_28963877_3", 
+                                       "content", "Dance_Gifs.zip"))
+    assert os.path.exists(os.path.join(loc, "_aux", os.path.basename(batch_dir),
+                                       "ETD_SUPPLEMENT_gsd_2022-05_PQ_28963877_3", 
+                                        "mapping.txt"))
+    assert os.path.exists(os.path.join(batch_dir, 
+                                       "ETD_SUPPLEMENT_gsd_2022-05_PQ_28963877_4", 
+                                       "image", "Alfred_S_Model_gif.gif"))
+    assert os.path.exists(os.path.join(loc, "_aux", os.path.basename(batch_dir),
+                                       "ETD_SUPPLEMENT_gsd_2022-05_PQ_28963877_4", 
+                                        "mapping.txt"))
+    cleanup_batch_dirs(batch_dir, os.path.join(loc, "_aux"), os.path.join(loc, "project.conf"))
+    shutil.rmtree(os.path.join(loc, "extracted"))
+
 def cleanup_batch_dirs(batch_path, aux_dir, project_conf):
     '''Removes the newly created batch folders'''
     try:
