@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Objectconfig cm="still image">
-    <directory name="ETD_SUPPLEMENT_gsd_2022-05_PQ_28963877_5">
+    <directory name="ETD_SUPPLEMENT_gsd_2022-05_PQ_28963877_4">
         <metadataCategory name="objectMetadata">
             <property name="billingCode" value="HUL.TEST.BILL.0001"/>
             <property name="ownerCode" value="HUL.TEST"/>
