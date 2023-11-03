@@ -96,7 +96,7 @@ class ETDBatchBuilderService(BatchBuilderService):
     
     def __determine_role(self, object_name):
         '''The OSN will have been formatted before the DAIS pipeline so
-        the role will be extracted from the OSN name. '''
+        the role will be extracted from the OSN name.'''
         if ROLE_THESIS in object_name and SUPPLEMENT not in object_name:
             return ROLE_THESIS
         elif SUPPLEMENT in object_name:
