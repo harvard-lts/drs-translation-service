@@ -432,7 +432,127 @@ def test_etd_run_batch_builder_opaque_image():
      os.remove(expected_gif_descriptor_file_1)  
      os.remove(expected_gif_descriptor_file_2)  
      os.remove(expected_gif_descriptor_file_3)  
+     os.remove(expected_gif_descriptor_file_4)
+
+def test_etd_run_batch_builder_audio():
+     osn_unique_appender = "gsd_2023-05_PQ_28542548"
+     file_info = {"file_info": {"MLA Thesis_Auger_Catherine_May2023.pdf": {
+                                "modified_file_name": "MLA_Thesis_Auger_Catherine_May2023.pdf",
+                                "file_role": "ARCHIVAL_MASTER",
+                                "object_role": "THESIS",
+                                "object_osn": "ETD_THESIS_" + osn_unique_appender,
+                                "file_osn": "ETD_THESIS_" + osn_unique_appender + "_1"
+                            },
+                            "mets.xml": {
+                                "modified_file_name": "mets.xml",
+                                "file_role": "DOCUMENTATION",
+                                "object_role": "DOCUMENTATION",
+                                "object_osn": "ETD_DOCUMENTATION_" + osn_unique_appender,
+                                "file_osn": "ETD_DOCUMENTATION_" + osn_unique_appender+"_1"
+                            },
+                            "setup_2E592954-F85C-11EA-ABB1-E61AE629DA94.pdf": {
+                                "modified_file_name": "setup_2E592954-F85C-11EA-ABB1-E61AE629DA94.pdf",
+                                "file_role": "LICENSE",
+                                "object_role": "LICENSE",
+                                "object_osn": "ETD_LICENSE_" + osn_unique_appender,
+                                "file_osn": "ETD_LICENSE_" + osn_unique_appender+"_1"
+                            },
+                            "Gamelan_Islam.mp3": {
+                                "modified_file_name": "Gamelan_Islam.mp3",
+                                "file_role": "ARCHIVAL_MASTER",
+                                "object_role": "THESIS_SUPPLEMENT",
+                                "object_osn": "ETD_SUPPLEMENT_" + osn_unique_appender+"_1",
+                                "file_osn": "ETD_SUPPLEMENT_" + osn_unique_appender+"_1_1"
+                            },
+                            "Harry Styles.mp3": {
+                                "modified_file_name": "Harry_Styles.mp3",
+                                "file_role": "ARCHIVAL_MASTER",
+                                "object_role": "THESIS_SUPPLEMENT",
+                                "object_osn": "ETD_SUPPLEMENT_" + osn_unique_appender+"_2",
+                                "file_osn": "ETD_SUPPLEMENT_" + osn_unique_appender+"_2_1"
+                            },
+                            "Jalan Raya Ubud.mp3": {
+                                "modified_file_name": "Jalan_Raya_Ubud.mp3",
+                                "file_role": "ARCHIVAL_MASTER",
+                                "object_role": "THESIS_SUPPLEMENT",
+                                "object_osn": "ETD_SUPPLEMENT_" + osn_unique_appender+"_3",
+                                "file_osn": "ETD_SUPPLEMENT_" + osn_unique_appender+"_3_1"
+                            },
+                            "Kuningan.mp3": {
+                                "modified_file_name": "Kuningan.mp3",
+                                "file_role": "ARCHIVAL_MASTER",
+                                "object_role": "THESIS_SUPPLEMENT",
+                                "object_osn": "ETD_SUPPLEMENT_" + osn_unique_appender+"_4",
+                                "file_osn": "ETD_SUPPLEMENT_" + osn_unique_appender+"_4_1"
+                            },
+                            "Monkey Forest.mp3": {
+                                "modified_file_name": "Monkey_Forest.mp3",
+                                "file_role": "ARCHIVAL_MASTER",
+                                "object_role": "THESIS_SUPPLEMENT",
+                                "object_osn": "ETD_SUPPLEMENT_" + osn_unique_appender+"_5",
+                                "file_osn": "ETD_SUPPLEMENT_" + osn_unique_appender+"_5_1"
+                            },
+                            "Pasar Goris.mp3": {
+                                "modified_file_name": "Pasar_Goris.mp3",
+                                "file_role": "ARCHIVAL_MASTER",
+                                "object_role": "THESIS_SUPPLEMENT",
+                                "object_osn": "ETD_SUPPLEMENT_" + osn_unique_appender+"_6",
+                                "file_osn": "ETD_SUPPLEMENT_" + osn_unique_appender+"_6_1"
+                            },
+                            "The Pipe.mp3": {
+                                "modified_file_name": "The_Pipe.mp3",
+                                "file_role": "ARCHIVAL_MASTER",
+                                "object_role": "THESIS_SUPPLEMENT",
+                                "object_osn": "ETD_SUPPLEMENT__" + osn_unique_appender + "_7",
+                                "file_osn": "ETD_SUPPLEMENT__" + osn_unique_appender + "_7_1"
+                            }
+                        }}
+     supplemental_data = {"alma_id": "99156631569803941",
+              "pq_id": "1234",
+              "dash_id": "dash1234",
+              "ownerCode": "HUL.TEST",
+              "urnAuthorityPath": "HUL.TEST",
+              "billingCode": "HUL.TEST.BILL_0001",
+              "urnAuthorityPath": "HUL.TEST",
+              "file_info": file_info}
+     
+     etd_batch_name = "etd-audio-batch"
+     etd_project_path = "/home/appuser/tests/data/samplepreparedprojects/etd-audio"
+     etd_bb_service = ETDBatchBuilderService()
+     command = etd_bb_service.process_batch(etd_project_path, etd_batch_name, supplemental_data) 
+     print(command) 
+     expected_batch_file = os.path.join(etd_project_path, etd_batch_name, "batch.xml")
+     assert os.path.exists(expected_batch_file)
+     expected_thesis_descriptor_file = os.path.join(etd_project_path, etd_batch_name, "ETD_THESIS_" + osn_unique_appender, "descriptor.xml")
+     expected_license_descriptor_file = os.path.join(etd_project_path, etd_batch_name, "ETD_LICENSE_" + osn_unique_appender, "descriptor.xml")
+     expected_doc_descriptor_file = os.path.join(etd_project_path, etd_batch_name, "ETD_DOCUMENTATION_" + osn_unique_appender, "descriptor.xml")
+     expected_gif_descriptor_file_1 = os.path.join(etd_project_path, etd_batch_name, "ETD_SUPPLEMENT_" + osn_unique_appender+"_1", "descriptor.xml")
+     expected_gif_descriptor_file_2 = os.path.join(etd_project_path, etd_batch_name, "ETD_SUPPLEMENT_" + osn_unique_appender+"_2", "descriptor.xml")
+     expected_gif_descriptor_file_3 = os.path.join(etd_project_path, etd_batch_name, "ETD_SUPPLEMENT_" + osn_unique_appender+"_3", "descriptor.xml")
+     expected_gif_descriptor_file_4 = os.path.join(etd_project_path, etd_batch_name, "ETD_SUPPLEMENT_" + osn_unique_appender+"_4", "descriptor.xml")
+     expected_gif_descriptor_file_5 = os.path.join(etd_project_path, etd_batch_name, "ETD_SUPPLEMENT_" + osn_unique_appender+"_5", "descriptor.xml")
+     expected_gif_descriptor_file_6 = os.path.join(etd_project_path, etd_batch_name, "ETD_SUPPLEMENT_" + osn_unique_appender+"_6", "descriptor.xml")
+     expected_gif_descriptor_file_7 = os.path.join(etd_project_path, etd_batch_name, "ETD_SUPPLEMENT_" + osn_unique_appender+"_7", "descriptor.xml")
+     assert os.path.exists(expected_thesis_descriptor_file)  
+     assert os.path.exists(expected_license_descriptor_file)  
+     assert os.path.exists(expected_doc_descriptor_file)  
+     assert os.path.exists(expected_gif_descriptor_file_1)  
+     assert os.path.exists(expected_gif_descriptor_file_2)  
+     assert os.path.exists(expected_gif_descriptor_file_3)  
+     assert os.path.exists(expected_gif_descriptor_file_4)  
+     assert os.path.exists(expected_gif_descriptor_file_5)  
+     assert os.path.exists(expected_gif_descriptor_file_6)  
+     assert os.path.exists(expected_gif_descriptor_file_7)  
+     cleanup_created_files(expected_batch_file, expected_thesis_descriptor_file) 
+     os.remove(expected_license_descriptor_file)
+     os.remove(expected_doc_descriptor_file)
+     os.remove(expected_gif_descriptor_file_1)  
+     os.remove(expected_gif_descriptor_file_2)  
+     os.remove(expected_gif_descriptor_file_3)  
      os.remove(expected_gif_descriptor_file_4)  
+     os.remove(expected_gif_descriptor_file_5)  
+     os.remove(expected_gif_descriptor_file_6)  
+     os.remove(expected_gif_descriptor_file_7)  
      
 def test_etd_run_batch_builder():
      file_info = {"file_info": {"Harvard_IR_License_-_LAA_for_ETDs_(2020).pdf": {

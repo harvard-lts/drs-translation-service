@@ -1,0 +1,388 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<mets xmlns="http://www.loc.gov/METS/" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ID="etd-mets-1" OBJID="etd-submission-992107" TYPE="DSpace ITEM" PROFILE="http://www.dspace.org/schema/aip/mets_aip_1_0.xsd" xsi:schemaLocation="http://www.loc.gov/METS/ http://www.loc.gov/standards/mets/mets.xsd">
+  <metsHdr CREATEDATE="2023-05-17T15:06:12-04:00">
+    <agent ROLE="CREATOR" TYPE="OTHER">
+      <name>ETD Administrator, ProQuest</name>
+    </agent>
+  </metsHdr>
+  <dmdSec ID="etdadmin-mets-dmd-1" GROUPID="etdadmin-mets-dmd-1">
+    <mdWrap LABEL="DIM Metadata" MDTYPE="OTHER" OTHERMDTYPE="DIM">
+      <xmlData xmlns:dim="http://www.dspace.org/xmlns/dspace/dim">
+        <dim:dim>
+          <dim:field mdschema="dc" element="contributor" qualifier="author" authority="">Auger, Catherine</dim:field>
+          <dim:field mdschema="dc" element="identifier" qualifier="other">30494273</dim:field>
+          <dim:field mdschema="dc" element="title">Kreat.Kreat...Taktak-Toktok: Between the Gaps of Conservation</dim:field>
+          <dim:field mdschema="dc" element="description" qualifier="abstract">We often hear the question, what is conservation?, but rarely do we ask, when is conservation? This subtle shift redefines conservation as a series of experiences through space and time. It moves it away from the typical natural reserve scale of 1:50 000 towards more grounded ones looking at crafts through ever-changing relationships between the living and built environment. In her book Friction (2004, 175), Anna L. Tsing defines gaps as “conceptual spaces and real places into which powerful demarcations do not travel well.”
+
+This thesis looks between the gaps of conservation through the materiality of unbuilding and building practices in Bali, a complex island of Indonesia.
+
+Through the story of streets in Ubud and the edge of the forest, the work reflects on the transition from global to local material realities in public spaces for Anak Bali, people from Bali. In other words, I am asking when is conservation for Bali in relation to its inhabitants, humans and their fellow-beings.
+</dim:field>
+          <dim:field mdschema="dc" element="subject">Bali</dim:field>
+          <dim:field mdschema="dc" element="subject">Conservation</dim:field>
+          <dim:field mdschema="dc" element="subject">Fieldwork</dim:field>
+          <dim:field mdschema="dc" element="subject">Indonesia</dim:field>
+          <dim:field mdschema="dc" element="subject">Noise</dim:field>
+          <dim:field mdschema="dc" element="subject">Public Space</dim:field>
+          <dim:field mdschema="dc" element="subject">Landscape architecture</dim:field>
+          <dim:field mdschema="dc" element="contributor" qualifier="advisor">Choi, Danielle</dim:field>
+          <dim:field mdschema="thesis" element="degree" qualifier="date">2023</dim:field>
+          <dim:field mdschema="dc" element="date" qualifier="created">2023</dim:field>
+          <dim:field mdschema="dc" element="date" qualifier="issued">2023-05-17</dim:field>
+          <dim:field mdschema="dc" element="format" qualifier="mimetype">application/pdf</dim:field>
+          <dim:field mdschema="dc" element="language" qualifier="iso">en</dim:field>
+          <dim:field mdschema="dc" element="type" qualifier="material">text</dim:field>
+          <dim:field mdschema="dc" element="type">Thesis or Dissertation</dim:field>
+          <dim:field mdschema="dc" element="description" qualifier="provenance">Submission originally under a zero month embargo, it is available immediately.</dim:field>
+          <dim:field mdschema="dc" element="description" qualifier="provenance">The student, 2540571, accepted the attached license on 2023-05-17 at 10:17.</dim:field>
+          <dim:field mdschema="dc" element="description" qualifier="provenance">The student, Auger, Catherine, submitted this Dissertation for approval on 2023-05-17 at 10:29.</dim:field>
+          <dim:field mdschema="dc" element="description" qualifier="provenance">2023-05-17</dim:field>
+          <dim:field mdschema="dc" element="description" qualifier="provenance">DSpace AIP METS Submission Ingestion Package generated from ETD Administrator submission #992107 on 2023-05-17 at 15:06:12</dim:field>
+          <dim:field mdschema="dc" element="date" qualifier="submitted">2023-05</dim:field>
+          <dim:field mdschema="thesis" element="degree" qualifier="grantor">Harvard Graduate School of Design</dim:field>
+          <dim:field mdschema="thesis" element="degree" qualifier="level">Masters</dim:field>
+          <dim:field mdschema="thesis" element="degree" qualifier="name">MLA</dim:field>
+          <dim:field mdschema="thesis" element="degree" qualifier="department">Department of Landscape Architecture</dim:field>
+          <dim:field mdschema="dash" element="depositing" qualifier="author" authority="">Auger, Catherine</dim:field>
+          <dim:field mdschema="dash" element="author" qualifier="email" authority="">catherine.auger2@mail.mcgill.ca</dim:field>
+          <dim:field mdschema="dash" element="license">LAA</dim:field>
+        </dim:dim>
+      </xmlData>
+    </mdWrap>
+  </dmdSec>
+  <amdSec ID="amd_whole_item">
+    <rightsMD ID="rightsMD_whole_item">
+      <mdWrap MDTYPE="OTHER" OTHERMDTYPE="METSRIGHTS">
+        <xmlData xmlns:rights="http://cosimo.stanford.edu/sdr/metsrights/" xsi:schemaLocation="http://cosimo.stanford.edu/sdr/metsrights/ http://www.loc.gov/standards/rights/METSRights.xsd">
+          <rights:RightsDeclarationMD RIGHTSCATEGORY="LICENSED">
+            <rights:Context in-effect="true" CONTEXTCLASS="GENERAL PUBLIC">
+              <rights:Permissions DISCOVER="true" DISPLAY="true" MODIFY="false" DELETE="false"/>
+            </rights:Context>
+          </rights:RightsDeclarationMD>
+        </xmlData>
+      </mdWrap>
+    </rightsMD>
+    <sourceMD ID="sourceMD_whole_item">
+      <mdWrap MDTYPE="OTHER" OTHERMDTYPE="AIP-TECHMD">
+        <xmlData xmlns:dim="http://www.dspace.org/xmlns/dspace/dim">
+          <dim:dim dspaceType="ITEM">
+            <dim:field mdschema="dc" element="creator">disspub@proquest.com</dim:field>
+          </dim:dim>
+        </xmlData>
+      </mdWrap>
+    </sourceMD>
+  </amdSec>
+  <amdSec ID="amd_primary">
+    <rightsMD ID="rightsMD_primary">
+      <mdWrap MDTYPE="OTHER" OTHERMDTYPE="METSRIGHTS">
+        <xmlData xmlns:rights="http://cosimo.stanford.edu/sdr/metsrights/" xsi:schemaLocation="http://cosimo.stanford.edu/sdr/metsrights/ http://www.loc.gov/standards/rights/METSRights.xsd">
+          <rights:RightsDeclarationMD RIGHTSCATEGORY="LICENSED">
+            <rights:Context in-effect="true" CONTEXTCLASS="MANAGED GRP">
+              <rights:UserName USERTYPE="GROUP">Staff</rights:UserName>
+              <rights:Permissions DISCOVER="true" DISPLAY="true" MODIFY="false" DELETE="false"/>
+            </rights:Context>
+            <rights:Context in-effect="true" CONTEXTCLASS="GENERAL PUBLIC">
+              <rights:Permissions DISCOVER="true" DISPLAY="true" MODIFY="false" DELETE="false"/>
+            </rights:Context>
+          </rights:RightsDeclarationMD>
+        </xmlData>
+      </mdWrap>
+    </rightsMD>
+    <sourceMD ID="sourceMD_primary">
+      <mdWrap MDTYPE="OTHER" OTHERMDTYPE="AIP-TECHMD">
+        <xmlData xmlns:dim="http://www.dspace.org/xmlns/dspace/dim">
+          <dim:dim dspaceType="BITSTREAM">
+            <dim:field mdschema="dc" element="title">MLA Thesis_Auger_Catherine_May2023.pdf</dim:field>
+            <dim:field mdschema="dc" element="format" qualifier="mimetype">application/pdf</dim:field>
+            <dim:field mdschema="dc" element="format" qualifier="supportlevel">KNOWN</dim:field>
+            <dim:field mdschema="dc" element="format" qualifier="internal">false</dim:field>
+          </dim:dim>
+        </xmlData>
+      </mdWrap>
+    </sourceMD>
+  </amdSec>
+  <amdSec ID="amd_supplemental_1">
+    <rightsMD ID="rightsMD_supplemental_1">
+      <mdWrap MDTYPE="OTHER" OTHERMDTYPE="METSRIGHTS">
+        <xmlData xmlns:rights="http://cosimo.stanford.edu/sdr/metsrights/" xsi:schemaLocation="http://cosimo.stanford.edu/sdr/metsrights/ http://www.loc.gov/standards/rights/METSRights.xsd">
+          <rights:RightsDeclarationMD RIGHTSCATEGORY="LICENSED">
+            <rights:Context in-effect="true" CONTEXTCLASS="MANAGED GRP">
+              <rights:UserName USERTYPE="GROUP">Staff</rights:UserName>
+              <rights:Permissions DISCOVER="true" DISPLAY="true" MODIFY="false" DELETE="false"/>
+            </rights:Context>
+            <rights:Context in-effect="true" CONTEXTCLASS="GENERAL PUBLIC">
+              <rights:Permissions DISCOVER="true" DISPLAY="true" MODIFY="false" DELETE="false"/>
+            </rights:Context>
+          </rights:RightsDeclarationMD>
+        </xmlData>
+      </mdWrap>
+    </rightsMD>
+    <sourceMD ID="sourceMD_supplemental_1">
+      <mdWrap MDTYPE="OTHER" OTHERMDTYPE="AIP-TECHMD">
+        <xmlData xmlns:dim="http://www.dspace.org/xmlns/dspace/dim">
+          <dim:dim dspaceType="BITSTREAM">
+            <dim:field mdschema="dc" element="title">Gamelan_Islam.mp3</dim:field>
+            <dim:field mdschema="dc" element="format" qualifier="mimetype">audio/mpeg</dim:field>
+            <dim:field mdschema="dc" element="format" qualifier="supportlevel">KNOWN</dim:field>
+            <dim:field mdschema="dc" element="format" qualifier="internal">false</dim:field>
+          </dim:dim>
+        </xmlData>
+      </mdWrap>
+    </sourceMD>
+  </amdSec>
+  <amdSec ID="amd_supplemental_2">
+    <rightsMD ID="rightsMD_supplemental_2">
+      <mdWrap MDTYPE="OTHER" OTHERMDTYPE="METSRIGHTS">
+        <xmlData xmlns:rights="http://cosimo.stanford.edu/sdr/metsrights/" xsi:schemaLocation="http://cosimo.stanford.edu/sdr/metsrights/ http://www.loc.gov/standards/rights/METSRights.xsd">
+          <rights:RightsDeclarationMD RIGHTSCATEGORY="LICENSED">
+            <rights:Context in-effect="true" CONTEXTCLASS="MANAGED GRP">
+              <rights:UserName USERTYPE="GROUP">Staff</rights:UserName>
+              <rights:Permissions DISCOVER="true" DISPLAY="true" MODIFY="false" DELETE="false"/>
+            </rights:Context>
+            <rights:Context in-effect="true" CONTEXTCLASS="GENERAL PUBLIC">
+              <rights:Permissions DISCOVER="true" DISPLAY="true" MODIFY="false" DELETE="false"/>
+            </rights:Context>
+          </rights:RightsDeclarationMD>
+        </xmlData>
+      </mdWrap>
+    </rightsMD>
+    <sourceMD ID="sourceMD_supplemental_2">
+      <mdWrap MDTYPE="OTHER" OTHERMDTYPE="AIP-TECHMD">
+        <xmlData xmlns:dim="http://www.dspace.org/xmlns/dspace/dim">
+          <dim:dim dspaceType="BITSTREAM">
+            <dim:field mdschema="dc" element="title">Jalan Raya Ubud.mp3</dim:field>
+            <dim:field mdschema="dc" element="format" qualifier="mimetype">audio/mpeg</dim:field>
+            <dim:field mdschema="dc" element="format" qualifier="supportlevel">KNOWN</dim:field>
+            <dim:field mdschema="dc" element="format" qualifier="internal">false</dim:field>
+          </dim:dim>
+        </xmlData>
+      </mdWrap>
+    </sourceMD>
+  </amdSec>
+  <amdSec ID="amd_supplemental_3">
+    <rightsMD ID="rightsMD_supplemental_3">
+      <mdWrap MDTYPE="OTHER" OTHERMDTYPE="METSRIGHTS">
+        <xmlData xmlns:rights="http://cosimo.stanford.edu/sdr/metsrights/" xsi:schemaLocation="http://cosimo.stanford.edu/sdr/metsrights/ http://www.loc.gov/standards/rights/METSRights.xsd">
+          <rights:RightsDeclarationMD RIGHTSCATEGORY="LICENSED">
+            <rights:Context in-effect="true" CONTEXTCLASS="MANAGED GRP">
+              <rights:UserName USERTYPE="GROUP">Staff</rights:UserName>
+              <rights:Permissions DISCOVER="true" DISPLAY="true" MODIFY="false" DELETE="false"/>
+            </rights:Context>
+            <rights:Context in-effect="true" CONTEXTCLASS="GENERAL PUBLIC">
+              <rights:Permissions DISCOVER="true" DISPLAY="true" MODIFY="false" DELETE="false"/>
+            </rights:Context>
+          </rights:RightsDeclarationMD>
+        </xmlData>
+      </mdWrap>
+    </rightsMD>
+    <sourceMD ID="sourceMD_supplemental_3">
+      <mdWrap MDTYPE="OTHER" OTHERMDTYPE="AIP-TECHMD">
+        <xmlData xmlns:dim="http://www.dspace.org/xmlns/dspace/dim">
+          <dim:dim dspaceType="BITSTREAM">
+            <dim:field mdschema="dc" element="title">The Pipe.mp3</dim:field>
+            <dim:field mdschema="dc" element="format" qualifier="mimetype">audio/mpeg</dim:field>
+            <dim:field mdschema="dc" element="format" qualifier="supportlevel">KNOWN</dim:field>
+            <dim:field mdschema="dc" element="format" qualifier="internal">false</dim:field>
+          </dim:dim>
+        </xmlData>
+      </mdWrap>
+    </sourceMD>
+  </amdSec>
+  <amdSec ID="amd_supplemental_4">
+    <rightsMD ID="rightsMD_supplemental_4">
+      <mdWrap MDTYPE="OTHER" OTHERMDTYPE="METSRIGHTS">
+        <xmlData xmlns:rights="http://cosimo.stanford.edu/sdr/metsrights/" xsi:schemaLocation="http://cosimo.stanford.edu/sdr/metsrights/ http://www.loc.gov/standards/rights/METSRights.xsd">
+          <rights:RightsDeclarationMD RIGHTSCATEGORY="LICENSED">
+            <rights:Context in-effect="true" CONTEXTCLASS="MANAGED GRP">
+              <rights:UserName USERTYPE="GROUP">Staff</rights:UserName>
+              <rights:Permissions DISCOVER="true" DISPLAY="true" MODIFY="false" DELETE="false"/>
+            </rights:Context>
+            <rights:Context in-effect="true" CONTEXTCLASS="GENERAL PUBLIC">
+              <rights:Permissions DISCOVER="true" DISPLAY="true" MODIFY="false" DELETE="false"/>
+            </rights:Context>
+          </rights:RightsDeclarationMD>
+        </xmlData>
+      </mdWrap>
+    </rightsMD>
+    <sourceMD ID="sourceMD_supplemental_4">
+      <mdWrap MDTYPE="OTHER" OTHERMDTYPE="AIP-TECHMD">
+        <xmlData xmlns:dim="http://www.dspace.org/xmlns/dspace/dim">
+          <dim:dim dspaceType="BITSTREAM">
+            <dim:field mdschema="dc" element="title">Harry Styles.mp3</dim:field>
+            <dim:field mdschema="dc" element="format" qualifier="mimetype">audio/mpeg</dim:field>
+            <dim:field mdschema="dc" element="format" qualifier="supportlevel">KNOWN</dim:field>
+            <dim:field mdschema="dc" element="format" qualifier="internal">false</dim:field>
+          </dim:dim>
+        </xmlData>
+      </mdWrap>
+    </sourceMD>
+  </amdSec>
+  <amdSec ID="amd_supplemental_5">
+    <rightsMD ID="rightsMD_supplemental_5">
+      <mdWrap MDTYPE="OTHER" OTHERMDTYPE="METSRIGHTS">
+        <xmlData xmlns:rights="http://cosimo.stanford.edu/sdr/metsrights/" xsi:schemaLocation="http://cosimo.stanford.edu/sdr/metsrights/ http://www.loc.gov/standards/rights/METSRights.xsd">
+          <rights:RightsDeclarationMD RIGHTSCATEGORY="LICENSED">
+            <rights:Context in-effect="true" CONTEXTCLASS="MANAGED GRP">
+              <rights:UserName USERTYPE="GROUP">Staff</rights:UserName>
+              <rights:Permissions DISCOVER="true" DISPLAY="true" MODIFY="false" DELETE="false"/>
+            </rights:Context>
+            <rights:Context in-effect="true" CONTEXTCLASS="GENERAL PUBLIC">
+              <rights:Permissions DISCOVER="true" DISPLAY="true" MODIFY="false" DELETE="false"/>
+            </rights:Context>
+          </rights:RightsDeclarationMD>
+        </xmlData>
+      </mdWrap>
+    </rightsMD>
+    <sourceMD ID="sourceMD_supplemental_5">
+      <mdWrap MDTYPE="OTHER" OTHERMDTYPE="AIP-TECHMD">
+        <xmlData xmlns:dim="http://www.dspace.org/xmlns/dspace/dim">
+          <dim:dim dspaceType="BITSTREAM">
+            <dim:field mdschema="dc" element="title">Kuningan.mp3</dim:field>
+            <dim:field mdschema="dc" element="format" qualifier="mimetype">audio/mpeg</dim:field>
+            <dim:field mdschema="dc" element="format" qualifier="supportlevel">KNOWN</dim:field>
+            <dim:field mdschema="dc" element="format" qualifier="internal">false</dim:field>
+          </dim:dim>
+        </xmlData>
+      </mdWrap>
+    </sourceMD>
+  </amdSec>
+  <amdSec ID="amd_supplemental_6">
+    <rightsMD ID="rightsMD_supplemental_6">
+      <mdWrap MDTYPE="OTHER" OTHERMDTYPE="METSRIGHTS">
+        <xmlData xmlns:rights="http://cosimo.stanford.edu/sdr/metsrights/" xsi:schemaLocation="http://cosimo.stanford.edu/sdr/metsrights/ http://www.loc.gov/standards/rights/METSRights.xsd">
+          <rights:RightsDeclarationMD RIGHTSCATEGORY="LICENSED">
+            <rights:Context in-effect="true" CONTEXTCLASS="MANAGED GRP">
+              <rights:UserName USERTYPE="GROUP">Staff</rights:UserName>
+              <rights:Permissions DISCOVER="true" DISPLAY="true" MODIFY="false" DELETE="false"/>
+            </rights:Context>
+            <rights:Context in-effect="true" CONTEXTCLASS="GENERAL PUBLIC">
+              <rights:Permissions DISCOVER="true" DISPLAY="true" MODIFY="false" DELETE="false"/>
+            </rights:Context>
+          </rights:RightsDeclarationMD>
+        </xmlData>
+      </mdWrap>
+    </rightsMD>
+    <sourceMD ID="sourceMD_supplemental_6">
+      <mdWrap MDTYPE="OTHER" OTHERMDTYPE="AIP-TECHMD">
+        <xmlData xmlns:dim="http://www.dspace.org/xmlns/dspace/dim">
+          <dim:dim dspaceType="BITSTREAM">
+            <dim:field mdschema="dc" element="title">Monkey Forest.mp3</dim:field>
+            <dim:field mdschema="dc" element="format" qualifier="mimetype">audio/mpeg</dim:field>
+            <dim:field mdschema="dc" element="format" qualifier="supportlevel">KNOWN</dim:field>
+            <dim:field mdschema="dc" element="format" qualifier="internal">false</dim:field>
+          </dim:dim>
+        </xmlData>
+      </mdWrap>
+    </sourceMD>
+  </amdSec>
+  <amdSec ID="amd_supplemental_7">
+    <rightsMD ID="rightsMD_supplemental_7">
+      <mdWrap MDTYPE="OTHER" OTHERMDTYPE="METSRIGHTS">
+        <xmlData xmlns:rights="http://cosimo.stanford.edu/sdr/metsrights/" xsi:schemaLocation="http://cosimo.stanford.edu/sdr/metsrights/ http://www.loc.gov/standards/rights/METSRights.xsd">
+          <rights:RightsDeclarationMD RIGHTSCATEGORY="LICENSED">
+            <rights:Context in-effect="true" CONTEXTCLASS="MANAGED GRP">
+              <rights:UserName USERTYPE="GROUP">Staff</rights:UserName>
+              <rights:Permissions DISCOVER="true" DISPLAY="true" MODIFY="false" DELETE="false"/>
+            </rights:Context>
+            <rights:Context in-effect="true" CONTEXTCLASS="GENERAL PUBLIC">
+              <rights:Permissions DISCOVER="true" DISPLAY="true" MODIFY="false" DELETE="false"/>
+            </rights:Context>
+          </rights:RightsDeclarationMD>
+        </xmlData>
+      </mdWrap>
+    </rightsMD>
+    <sourceMD ID="sourceMD_supplemental_7">
+      <mdWrap MDTYPE="OTHER" OTHERMDTYPE="AIP-TECHMD">
+        <xmlData xmlns:dim="http://www.dspace.org/xmlns/dspace/dim">
+          <dim:dim dspaceType="BITSTREAM">
+            <dim:field mdschema="dc" element="title">Pasar Goris.mp3</dim:field>
+            <dim:field mdschema="dc" element="format" qualifier="mimetype">audio/mpeg</dim:field>
+            <dim:field mdschema="dc" element="format" qualifier="supportlevel">KNOWN</dim:field>
+            <dim:field mdschema="dc" element="format" qualifier="internal">false</dim:field>
+          </dim:dim>
+        </xmlData>
+      </mdWrap>
+    </sourceMD>
+  </amdSec>
+  <amdSec ID="amd_license_2262029">
+    <rightsMD ID="rightsMD_license_2262029">
+      <mdWrap MDTYPE="OTHER" OTHERMDTYPE="METSRIGHTS">
+        <xmlData xmlns:rights="http://cosimo.stanford.edu/sdr/metsrights/" xsi:schemaLocation="http://cosimo.stanford.edu/sdr/metsrights/ http://www.loc.gov/standards/rights/METSRights.xsd">
+          <rights:RightsDeclarationMD RIGHTSCATEGORY="LICENSED"/>
+        </xmlData>
+      </mdWrap>
+    </rightsMD>
+    <sourceMD ID="sourceMD_license_2262029">
+      <mdWrap MDTYPE="OTHER" OTHERMDTYPE="AIP-TECHMD">
+        <xmlData xmlns:dim="http://www.dspace.org/xmlns/dspace/dim">
+          <dim:dim dspaceType="BITSTREAM">
+            <dim:field mdschema="dc" element="title">setup_2E592954-F85C-11EA-ABB1-E61AE629DA94.pdf</dim:field>
+            <dim:field mdschema="dc" element="format" qualifier="mimetype">application/pdf</dim:field>
+          </dim:dim>
+        </xmlData>
+      </mdWrap>
+    </sourceMD>
+  </amdSec>
+  <fileSec>
+    <fileGrp ID="etdadmin-mets-fgrp-1" USE="CONTENT">
+      <file GROUPID="etdadmin-mets-file-group" ID="etdadmin-mets-file-2351065" MIMETYPE="application/pdf" ADMID="amd_primary" SEQ="1">
+        <FLocat LOCTYPE="URL" xlink:href="MLA Thesis_Auger_Catherine_May2023.pdf"/>
+      </file>
+      <file GROUPID="etdadmin-mets-file-group" ID="etdadmin-mets-file-2351068" MIMETYPE="audio/mpeg" ADMID="amd_supplemental_1" SEQ="1">
+        <FLocat LOCTYPE="URL" xlink:href="Gamelan_Islam.mp3"/>
+      </file>
+      <file GROUPID="etdadmin-mets-file-group" ID="etdadmin-mets-file-2351069" MIMETYPE="audio/mpeg" ADMID="amd_supplemental_2" SEQ="2">
+        <FLocat LOCTYPE="URL" xlink:href="Jalan Raya Ubud.mp3"/>
+      </file>
+      <file GROUPID="etdadmin-mets-file-group" ID="etdadmin-mets-file-2351070" MIMETYPE="audio/mpeg" ADMID="amd_supplemental_3" SEQ="3">
+        <FLocat LOCTYPE="URL" xlink:href="The Pipe.mp3"/>
+      </file>
+      <file GROUPID="etdadmin-mets-file-group" ID="etdadmin-mets-file-2351709" MIMETYPE="audio/mpeg" ADMID="amd_supplemental_4" SEQ="4">
+        <FLocat LOCTYPE="URL" xlink:href="Harry Styles.mp3"/>
+      </file>
+      <file GROUPID="etdadmin-mets-file-group" ID="etdadmin-mets-file-2351710" MIMETYPE="audio/mpeg" ADMID="amd_supplemental_5" SEQ="5">
+        <FLocat LOCTYPE="URL" xlink:href="Kuningan.mp3"/>
+      </file>
+      <file GROUPID="etdadmin-mets-file-group" ID="etdadmin-mets-file-2351711" MIMETYPE="audio/mpeg" ADMID="amd_supplemental_6" SEQ="6">
+        <FLocat LOCTYPE="URL" xlink:href="Monkey Forest.mp3"/>
+      </file>
+      <file GROUPID="etdadmin-mets-file-group" ID="etdadmin-mets-file-2351712" MIMETYPE="audio/mpeg" ADMID="amd_supplemental_7" SEQ="7">
+        <FLocat LOCTYPE="URL" xlink:href="Pasar Goris.mp3"/>
+      </file>
+    </fileGrp>
+    <fileGrp ID="etdadmin-mets-fgrp-2" USE="LICENSE">
+      <file GROUPID="etdadmin-mets-file-group" ID="etdadmin-mets-file-2262029" MIMETYPE="application/pdf" ADMID="amd_license_2262029">
+        <FLocat LOCTYPE="URL" xlink:href="setup_2E592954-F85C-11EA-ABB1-E61AE629DA94.pdf"/>
+      </file>
+    </fileGrp>
+  </fileSec>
+  <structMap ID="etdadmin-mets-struct-1" LABEL="structure" TYPE="LOGICAL">
+    <div ID="etdadmin-mets-div-1" DMDID="etdadmin-mets-dmd-1" TYPE="DSpace Item">
+      <fptr FILEID="etdadmin-mets-file-2351065"/>
+      <div ID="etdadmin-mets-div-2351065" TYPE="DSpace Content Bitstream">
+        <fptr FILEID="etdadmin-mets-file-2351065"/>
+      </div>
+      <div ID="etdadmin-mets-div-2351068" TYPE="DSpace Content Bitstream">
+        <fptr FILEID="etdadmin-mets-file-2351068"/>
+      </div>
+      <div ID="etdadmin-mets-div-2351069" TYPE="DSpace Content Bitstream">
+        <fptr FILEID="etdadmin-mets-file-2351069"/>
+      </div>
+      <div ID="etdadmin-mets-div-2351070" TYPE="DSpace Content Bitstream">
+        <fptr FILEID="etdadmin-mets-file-2351070"/>
+      </div>
+      <div ID="etdadmin-mets-div-2351709" TYPE="DSpace Content Bitstream">
+        <fptr FILEID="etdadmin-mets-file-2351709"/>
+      </div>
+      <div ID="etdadmin-mets-div-2351710" TYPE="DSpace Content Bitstream">
+        <fptr FILEID="etdadmin-mets-file-2351710"/>
+      </div>
+      <div ID="etdadmin-mets-div-2351711" TYPE="DSpace Content Bitstream">
+        <fptr FILEID="etdadmin-mets-file-2351711"/>
+      </div>
+      <div ID="etdadmin-mets-div-2351712" TYPE="DSpace Content Bitstream">
+        <fptr FILEID="etdadmin-mets-file-2351712"/>
+      </div>
+    </div>
+  </structMap>
+</mets>

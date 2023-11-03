@@ -456,6 +456,156 @@ def test_translate_etd_submission_opaque_image():
     cleanup_batch_dirs(batch_dir, os.path.join(loc, "_aux"), os.path.join(loc, "project.conf"))
     shutil.rmtree(os.path.join(loc, "extracted"))
 
+def test_translate_etd_submission_audio():
+    '''Formats the directory and verifies that all files ended up where they should be'''
+    loc = "/home/appuser/tests/data/etd-submission-audio"
+    expected_batch_dir = os.path.join(loc, os.path.basename(loc) + "-batch")
+    osn_unique_appender = "gsd_2023-05_PQ_28542548"
+    supplemental_deposit_data = {"alma_id": "99156631569803941",
+              "pq_id": "28542548",
+              "dash_id": "dash1234",
+              "ownerCode": "HUL.TEST",
+              "urnAuthorityPath": "HUL.TEST",
+              "billingCode": "HUL.TEST.BILL_0001",
+              "urnAuthorityPath": "HUL.TEST",
+              "file_info": {"MLA Thesis_Auger_Catherine_May2023.pdf": {
+                                "modified_file_name": "MLA_Thesis_Auger_Catherine_May2023.pdf",
+                                "file_role": "ARCHIVAL_MASTER",
+                                "object_role": "THESIS",
+                                "object_osn": "ETD_THESIS_" + osn_unique_appender,
+                                "file_osn": "ETD_THESIS_" + osn_unique_appender + "_1"
+                            },
+                            "mets.xml": {
+                                "modified_file_name": "mets.xml",
+                                "file_role": "DOCUMENTATION",
+                                "object_role": "DOCUMENTATION",
+                                "object_osn": "ETD_DOCUMENTATION_" + osn_unique_appender,
+                                "file_osn": "ETD_DOCUMENTATION_" + osn_unique_appender + "_1"
+                            },
+                            "setup_2E592954-F85C-11EA-ABB1-E61AE629DA94.pdf": {
+                                "modified_file_name": "setup_2E592954-F85C-11EA-ABB1-E61AE629DA94.pdf",
+                                "file_role": "LICENSE",
+                                "object_role": "LICENSE",
+                                "object_osn": "ETD_LICENSE_" + osn_unique_appender,
+                                "file_osn": "ETD_LICENSE_" + osn_unique_appender + "_1"
+                            },
+                            "Gamelan_Islam.mp3": {
+                                "modified_file_name": "Gamelan_Islam.mp3",
+                                "file_role": "ARCHIVAL_MASTER",
+                                "object_role": "THESIS_SUPPLEMENT",
+                                "object_osn": "ETD_SUPPLEMENT_" + osn_unique_appender + "_1",
+                                "file_osn": "ETD_SUPPLEMENT_" + osn_unique_appender + "_1_1"
+                            },
+                            "Harry Styles.mp3": {
+                                "modified_file_name": "Harry_Styles.mp3",
+                                "file_role": "ARCHIVAL_MASTER",
+                                "object_role": "THESIS_SUPPLEMENT",
+                                "object_osn": "ETD_SUPPLEMENT_" + osn_unique_appender + "_2",
+                                "file_osn": "ETD_SUPPLEMENT_" + osn_unique_appender + "_2_1"
+                            },
+                            "Jalan Raya Ubud.mp3": {
+                                "modified_file_name": "Jalan_Raya_Ubud.mp3",
+                                "file_role": "ARCHIVAL_MASTER",
+                                "object_role": "THESIS_SUPPLEMENT",
+                                "object_osn": "ETD_SUPPLEMENT_" + osn_unique_appender + "_3",
+                                "file_osn": "ETD_SUPPLEMENT_" + osn_unique_appender + "_3_1"
+                            },
+                            "Kuningan.mp3": {
+                                "modified_file_name": "Kuningan.mp3",
+                                "file_role": "ARCHIVAL_MASTER",
+                                "object_role": "THESIS_SUPPLEMENT",
+                                "object_osn": "ETD_SUPPLEMENT_" + osn_unique_appender + "_4",
+                                "file_osn": "ETD_SUPPLEMENT_" + osn_unique_appender + "_4_1"
+                            },
+                            "Monkey Forest.mp3": {
+                                "modified_file_name": "Monkey_Forest.mp3",
+                                "file_role": "ARCHIVAL_MASTER",
+                                "object_role": "THESIS_SUPPLEMENT",
+                                "object_osn": "ETD_SUPPLEMENT_" + osn_unique_appender + "_5",
+                                "file_osn": "ETD_SUPPLEMENT_" + osn_unique_appender + "_5_1"
+                            },
+                            "Pasar Goris.mp3": {
+                                "modified_file_name": "Pasar_Goris.mp3",
+                                "file_role": "ARCHIVAL_MASTER",
+                                "object_role": "THESIS_SUPPLEMENT",
+                                "object_osn": "ETD_SUPPLEMENT_" + osn_unique_appender + "_6",
+                                "file_osn": "ETD_SUPPLEMENT_" + osn_unique_appender + "_6_1"
+                            },
+                            "The Pipe.mp3": {
+                                "modified_file_name": "The_Pipe.mp3",
+                                "file_role": "ARCHIVAL_MASTER",
+                                "object_role": "THESIS_SUPPLEMENT",
+                                "object_osn": "ETD_SUPPLEMENT_" + osn_unique_appender + "_7",
+                                "file_osn": "ETD_SUPPLEMENT_" + osn_unique_appender + "_7_1"
+                            }
+                        }}
+    etd_translate_svc = ETDTranslateDataStructureService()
+    batch_dir = etd_translate_svc.translate_data_structure(loc, supplemental_deposit_data)
+    assert (expected_batch_dir == batch_dir)
+    thesis_loc = os.path.join(batch_dir, 
+                            "ETD_THESIS_" + osn_unique_appender, 
+                            "document", "MLA_Thesis_Auger_Catherine_May2023.pdf")
+    assert os.path.exists(thesis_loc)
+    assert os.path.exists(os.path.join(batch_dir, 
+                                       "ETD_DOCUMENTATION_" + osn_unique_appender, 
+                                       "text", "mets.xml"))
+    assert os.path.exists(os.path.join(loc, "_aux", os.path.basename(batch_dir),
+                                       "ETD_THESIS_" + osn_unique_appender, 
+                                        "mapping.txt"))
+    assert os.path.exists(os.path.join(loc, "_aux", os.path.basename(batch_dir),
+                                       "ETD_DOCUMENTATION_" + osn_unique_appender, 
+                                        "mapping.txt"))
+    assert os.path.exists(os.path.join(batch_dir, 
+                                       "ETD_LICENSE_" + osn_unique_appender, 
+                                       "document", "setup_2E592954-F85C-11EA-ABB1-E61AE629DA94.pdf"))
+    assert os.path.exists(os.path.join(loc, "_aux", os.path.basename(batch_dir),
+                                       "ETD_LICENSE_" + osn_unique_appender, 
+                                        "mapping.txt"))
+    assert os.path.exists(os.path.join(batch_dir, 
+                                       "ETD_SUPPLEMENT_" + osn_unique_appender + "_1", 
+                                       "audio", "Gamelan_Islam.mp3"))
+    assert os.path.exists(os.path.join(loc, "_aux", os.path.basename(batch_dir),
+                                       "ETD_SUPPLEMENT_" + osn_unique_appender + "_1", 
+                                        "mapping.txt"))
+    assert os.path.exists(os.path.join(batch_dir, 
+                                       "ETD_SUPPLEMENT_" + osn_unique_appender + "_2", 
+                                       "audio", "Harry_Styles.mp3"))
+    assert os.path.exists(os.path.join(loc, "_aux", os.path.basename(batch_dir),
+                                       "ETD_SUPPLEMENT_" + osn_unique_appender + "_2", 
+                                        "mapping.txt"))
+    assert os.path.exists(os.path.join(batch_dir, 
+                                       "ETD_SUPPLEMENT_" + osn_unique_appender + "_3", 
+                                       "audio", "Jalan_Raya_Ubud.mp3"))
+    assert os.path.exists(os.path.join(loc, "_aux", os.path.basename(batch_dir),
+                                       "ETD_SUPPLEMENT_" + osn_unique_appender + "_3", 
+                                        "mapping.txt"))
+    assert os.path.exists(os.path.join(batch_dir, 
+                                       "ETD_SUPPLEMENT_" + osn_unique_appender + "_4", 
+                                       "audio", "Kuningan.mp3"))
+    assert os.path.exists(os.path.join(loc, "_aux", os.path.basename(batch_dir),
+                                       "ETD_SUPPLEMENT_" + osn_unique_appender + "_4", 
+                                        "mapping.txt"))
+    assert os.path.exists(os.path.join(batch_dir, 
+                                       "ETD_SUPPLEMENT_" + osn_unique_appender + "_5", 
+                                       "audio", "Monkey_Forest.mp3"))
+    assert os.path.exists(os.path.join(loc, "_aux", os.path.basename(batch_dir),
+                                       "ETD_SUPPLEMENT_" + osn_unique_appender + "_5", 
+                                        "mapping.txt"))
+    assert os.path.exists(os.path.join(batch_dir, 
+                                       "ETD_SUPPLEMENT_" + osn_unique_appender + "_6", 
+                                       "audio", "Pasar_Goris.mp3"))
+    assert os.path.exists(os.path.join(loc, "_aux", os.path.basename(batch_dir),
+                                       "ETD_SUPPLEMENT_" + osn_unique_appender + "_6", 
+                                        "mapping.txt"))
+    assert os.path.exists(os.path.join(batch_dir, 
+                                       "ETD_SUPPLEMENT_" + osn_unique_appender + "_7", 
+                                       "audio", "The_Pipe.mp3"))
+    assert os.path.exists(os.path.join(loc, "_aux", os.path.basename(batch_dir),
+                                       "ETD_SUPPLEMENT_" + osn_unique_appender + "_7", 
+                                        "mapping.txt"))
+    cleanup_batch_dirs(batch_dir, os.path.join(loc, "_aux"), os.path.join(loc, "project.conf"))
+    shutil.rmtree(os.path.join(loc, "extracted"))
+
 def cleanup_batch_dirs(batch_path, aux_dir, project_conf):
     '''Removes the newly created batch folders'''
     try:
