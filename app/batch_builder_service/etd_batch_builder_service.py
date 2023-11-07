@@ -4,6 +4,7 @@ import os
 
 
 ROLE_THESIS = "THESIS"
+SUPPLEMENT = "SUPPLEMENT"
 ROLE_SUPPLEMENT = "THESIS_SUPPLEMENT"
 ROLE_LICENSE = "LICENSE"
 ROLE_DOCUMENTATION = "DOCUMENTATION"
@@ -95,10 +96,10 @@ class ETDBatchBuilderService(BatchBuilderService):
     
     def __determine_role(self, object_name):
         '''The OSN will have been formatted before the DAIS pipeline so
-        the role will be extracted from the OSN name. '''
-        if ROLE_THESIS in object_name and ROLE_SUPPLEMENT not in object_name:
+        the role will be extracted from the OSN name.'''
+        if ROLE_THESIS in object_name and SUPPLEMENT not in object_name:
             return ROLE_THESIS
-        elif ROLE_SUPPLEMENT in object_name:
+        elif SUPPLEMENT in object_name:
             return ROLE_SUPPLEMENT
         elif ROLE_LICENSE in object_name:
             return ROLE_LICENSE

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Objectconfig cm="audio">
+    <directory name="ETD_SUPPLEMENT_gsd_2023-05_PQ_28542548_5">
+        <metadataCategory name="objectMetadata">
+            <property name="accessFlag" value="N"/>
+            <property name="billingCode" value="HUL.TEST.BILL.0001"/>
+            <property name="ownerCode" value="HUL.TEST"/>
+        </metadataCategory>
+        <metadataCategory name="nrsMetadata">
+            <property name="resourceNamePattern" value="{n}"/>
+            <property name="urnAuthorityPath" value="HUL.GUEST"/>
+        </metadataCategory>
+        <directory name="audio">
+            <metadataCategory name="fileMetadata">
+                <property name="isFirstGenerationInDrs" value="yes"/>
+                <property name="usageClass" value="LOWUSE"/>
+                <property name="fileAccessFlag" value="N"/>
+            </metadataCategory>
+        </directory>
+    </directory>
+</Objectconfig>

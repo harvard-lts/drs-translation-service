@@ -1,0 +1,498 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<mets xmlns="http://www.loc.gov/METS/" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ID="etd-mets-1" OBJID="etd-submission-825070" TYPE="DSpace ITEM" PROFILE="http://www.dspace.org/schema/aip/mets_aip_1_0.xsd" xsi:schemaLocation="http://www.loc.gov/METS/ http://www.loc.gov/standards/mets/mets.xsd">
+  <metsHdr CREATEDATE="2021-06-09T12:09:03-04:00">
+    <agent ROLE="CREATOR" TYPE="OTHER">
+      <name>ETD Administrator, ProQuest</name>
+    </agent>
+  </metsHdr>
+  <dmdSec ID="etdadmin-mets-dmd-1" GROUPID="etdadmin-mets-dmd-1">
+    <mdWrap LABEL="DIM Metadata" MDTYPE="OTHER" OTHERMDTYPE="DIM">
+      <xmlData xmlns:dim="http://www.dspace.org/xmlns/dspace/dim">
+        <dim:dim>
+          <dim:field mdschema="dc" element="contributor" qualifier="author" authority="">Fei, Zhixing</dim:field>
+          <dim:field mdschema="dc" element="identifier" qualifier="other">28542548</dim:field>
+          <dim:field mdschema="dc" element="title">The Molding House</dim:field>
+          <dim:field mdschema="dc" element="description" qualifier="abstract">Moldings have been an architectural element since the prehistory.
+
+The Greeks were the first to recognize, in their temples, the unique value possessed by moldings, which, occupying an intermediate position between the ornamental sculptures and the simple architectural lines of the main structure, gave a richly decorative effect to the latter without interfering with the beauty of the former. Then the Romans simplified the Greeks’ shapes, enriched the moldings vocabulary, and built plenty of precedents for classical architecture studies.
+
+Fifteen hundred years later, Palladio and other Renaissance architects theorized, categorized, and documented the classical moldings, educating anyone who yearns for Classicism the principles to reproduce it. Yet now, 500 years after the Palladios, with abundant knowledge about moldings and intelligent machines at our fingertips, architects still apply moldings in the same manner as the ancestors did centuries back. 
+
+Too often, we see mass-produced lumber trims contouring the frame of double-pane windows and antique-looking cymatium garnishing the entrance of a glass-and-steel high-rise. The juxtaposition of conventional usage of moldings and modern technology has almost become a mockery of the 21st-century architects: Is there no other way to honor the moldings without copying and pasting the past?
+
+This thesis explores an unprecedented way to adopt classical moldings in a contemporary house in Newport, RI. Situated among many extravagant mansions built in the Classical style, the Molding House showcases a post-modern deconstructivist technique to honor moldings in a fashion unlike any of its neighbors.</dim:field>
+          <dim:field mdschema="dc" element="subject">Classical Architecture</dim:field>
+          <dim:field mdschema="dc" element="subject">House</dim:field>
+          <dim:field mdschema="dc" element="subject">Molding</dim:field>
+          <dim:field mdschema="dc" element="subject">Moulding</dim:field>
+          <dim:field mdschema="dc" element="subject">Newport, RI</dim:field>
+          <dim:field mdschema="dc" element="subject">Residence</dim:field>
+          <dim:field mdschema="dc" element="subject">Architecture</dim:field>
+          <dim:field mdschema="dc" element="subject">Design</dim:field>
+          <dim:field mdschema="dc" element="subject">Classical studies</dim:field>
+          <dim:field mdschema="dc" element="contributor" qualifier="advisor">Bonner, Jennifer</dim:field>
+          <dim:field mdschema="thesis" element="degree" qualifier="date">2021</dim:field>
+          <dim:field mdschema="dc" element="date" qualifier="created">2021</dim:field>
+          <dim:field mdschema="dc" element="date" qualifier="issued">2021-05-24</dim:field>
+          <dim:field mdschema="dc" element="format" qualifier="mimetype">application/pdf</dim:field>
+          <dim:field mdschema="dc" element="language" qualifier="iso">en</dim:field>
+          <dim:field mdschema="dc" element="type" qualifier="material">text</dim:field>
+          <dim:field mdschema="dc" element="type">Thesis or Dissertation</dim:field>
+          <dim:field mdschema="dc" element="description" qualifier="provenance">Submission originally under a zero month embargo, it is available immediately.</dim:field>
+          <dim:field mdschema="dc" element="description" qualifier="provenance">The student, 2392221, accepted the attached license on 2021-05-22 at 22:18.</dim:field>
+          <dim:field mdschema="dc" element="description" qualifier="provenance">The student, Fei, Zhixing, submitted this Dissertation for approval on 2021-05-24 at 12:45.</dim:field>
+          <dim:field mdschema="dc" element="description" qualifier="provenance">2021-05-24</dim:field>
+          <dim:field mdschema="dc" element="description" qualifier="provenance">DSpace AIP METS Submission Ingestion Package generated from ETD Administrator submission #825070 on 2021-06-09 at 12:09:03</dim:field>
+          <dim:field mdschema="dc" element="date" qualifier="submitted">2021-05</dim:field>
+          <dim:field mdschema="thesis" element="degree" qualifier="grantor">Harvard Graduate School of Design</dim:field>
+          <dim:field mdschema="thesis" element="degree" qualifier="level">Masters</dim:field>
+          <dim:field mdschema="thesis" element="degree" qualifier="name">M Arch</dim:field>
+          <dim:field mdschema="thesis" element="degree" qualifier="department">Department of Architecture</dim:field>
+          <dim:field mdschema="dash" element="depositing" qualifier="author" authority="">Fei, Zhixing</dim:field>
+          <dim:field mdschema="dash" element="author" qualifier="email" authority="">zhixing.fei@gmail.com</dim:field>
+          <dim:field mdschema="dash" element="license">LAA</dim:field>
+        </dim:dim>
+      </xmlData>
+    </mdWrap>
+  </dmdSec>
+  <amdSec ID="amd_whole_item">
+    <rightsMD ID="rightsMD_whole_item">
+      <mdWrap MDTYPE="OTHER" OTHERMDTYPE="METSRIGHTS">
+        <xmlData xmlns:rights="http://cosimo.stanford.edu/sdr/metsrights/" xsi:schemaLocation="http://cosimo.stanford.edu/sdr/metsrights/ http://www.loc.gov/standards/rights/METSRights.xsd">
+          <rights:RightsDeclarationMD RIGHTSCATEGORY="LICENSED">
+            <rights:Context in-effect="true" CONTEXTCLASS="GENERAL PUBLIC">
+              <rights:Permissions DISCOVER="true" DISPLAY="true" MODIFY="false" DELETE="false"/>
+            </rights:Context>
+          </rights:RightsDeclarationMD>
+        </xmlData>
+      </mdWrap>
+    </rightsMD>
+    <sourceMD ID="sourceMD_whole_item">
+      <mdWrap MDTYPE="OTHER" OTHERMDTYPE="AIP-TECHMD">
+        <xmlData xmlns:dim="http://www.dspace.org/xmlns/dspace/dim">
+          <dim:dim dspaceType="ITEM">
+            <dim:field mdschema="dc" element="creator">disspub@proquest.com</dim:field>
+          </dim:dim>
+        </xmlData>
+      </mdWrap>
+    </sourceMD>
+  </amdSec>
+  <amdSec ID="amd_primary">
+    <rightsMD ID="rightsMD_primary">
+      <mdWrap MDTYPE="OTHER" OTHERMDTYPE="METSRIGHTS">
+        <xmlData xmlns:rights="http://cosimo.stanford.edu/sdr/metsrights/" xsi:schemaLocation="http://cosimo.stanford.edu/sdr/metsrights/ http://www.loc.gov/standards/rights/METSRights.xsd">
+          <rights:RightsDeclarationMD RIGHTSCATEGORY="LICENSED">
+            <rights:Context in-effect="true" CONTEXTCLASS="MANAGED GRP">
+              <rights:UserName USERTYPE="GROUP">Staff</rights:UserName>
+              <rights:Permissions DISCOVER="true" DISPLAY="true" MODIFY="false" DELETE="false"/>
+            </rights:Context>
+            <rights:Context in-effect="true" CONTEXTCLASS="GENERAL PUBLIC">
+              <rights:Permissions DISCOVER="true" DISPLAY="true" MODIFY="false" DELETE="false"/>
+            </rights:Context>
+          </rights:RightsDeclarationMD>
+        </xmlData>
+      </mdWrap>
+    </rightsMD>
+    <sourceMD ID="sourceMD_primary">
+      <mdWrap MDTYPE="OTHER" OTHERMDTYPE="AIP-TECHMD">
+        <xmlData xmlns:dim="http://www.dspace.org/xmlns/dspace/dim">
+          <dim:dim dspaceType="BITSTREAM">
+            <dim:field mdschema="dc" element="title">20210524_Thesis Archival Submission_JB Signed.pdf</dim:field>
+            <dim:field mdschema="dc" element="format" qualifier="mimetype">application/pdf</dim:field>
+            <dim:field mdschema="dc" element="format" qualifier="supportlevel">KNOWN</dim:field>
+            <dim:field mdschema="dc" element="format" qualifier="internal">false</dim:field>
+          </dim:dim>
+        </xmlData>
+      </mdWrap>
+    </sourceMD>
+  </amdSec>
+  <amdSec ID="amd_supplemental_1">
+    <rightsMD ID="rightsMD_supplemental_1">
+      <mdWrap MDTYPE="OTHER" OTHERMDTYPE="METSRIGHTS">
+        <xmlData xmlns:rights="http://cosimo.stanford.edu/sdr/metsrights/" xsi:schemaLocation="http://cosimo.stanford.edu/sdr/metsrights/ http://www.loc.gov/standards/rights/METSRights.xsd">
+          <rights:RightsDeclarationMD RIGHTSCATEGORY="LICENSED">
+            <rights:Context in-effect="true" CONTEXTCLASS="MANAGED GRP">
+              <rights:UserName USERTYPE="GROUP">Staff</rights:UserName>
+              <rights:Permissions DISCOVER="true" DISPLAY="true" MODIFY="false" DELETE="false"/>
+            </rights:Context>
+            <rights:Context in-effect="true" CONTEXTCLASS="GENERAL PUBLIC">
+              <rights:Permissions DISCOVER="true" DISPLAY="true" MODIFY="false" DELETE="false"/>
+            </rights:Context>
+          </rights:RightsDeclarationMD>
+        </xmlData>
+      </mdWrap>
+    </rightsMD>
+    <sourceMD ID="sourceMD_supplemental_1">
+      <mdWrap MDTYPE="OTHER" OTHERMDTYPE="AIP-TECHMD">
+        <xmlData xmlns:dim="http://www.dspace.org/xmlns/dspace/dim">
+          <dim:dim dspaceType="BITSTREAM">
+            <dim:field mdschema="dc" element="title">GIF_01_SlabShift.gif</dim:field>
+            <dim:field mdschema="dc" element="format" qualifier="mimetype">image/gif</dim:field>
+            <dim:field mdschema="dc" element="format" qualifier="supportlevel">KNOWN</dim:field>
+            <dim:field mdschema="dc" element="format" qualifier="internal">false</dim:field>
+          </dim:dim>
+        </xmlData>
+      </mdWrap>
+    </sourceMD>
+  </amdSec>
+  <amdSec ID="amd_supplemental_2">
+    <rightsMD ID="rightsMD_supplemental_2">
+      <mdWrap MDTYPE="OTHER" OTHERMDTYPE="METSRIGHTS">
+        <xmlData xmlns:rights="http://cosimo.stanford.edu/sdr/metsrights/" xsi:schemaLocation="http://cosimo.stanford.edu/sdr/metsrights/ http://www.loc.gov/standards/rights/METSRights.xsd">
+          <rights:RightsDeclarationMD RIGHTSCATEGORY="LICENSED">
+            <rights:Context in-effect="true" CONTEXTCLASS="MANAGED GRP">
+              <rights:UserName USERTYPE="GROUP">Staff</rights:UserName>
+              <rights:Permissions DISCOVER="true" DISPLAY="true" MODIFY="false" DELETE="false"/>
+            </rights:Context>
+            <rights:Context in-effect="true" CONTEXTCLASS="GENERAL PUBLIC">
+              <rights:Permissions DISCOVER="true" DISPLAY="true" MODIFY="false" DELETE="false"/>
+            </rights:Context>
+          </rights:RightsDeclarationMD>
+        </xmlData>
+      </mdWrap>
+    </rightsMD>
+    <sourceMD ID="sourceMD_supplemental_2">
+      <mdWrap MDTYPE="OTHER" OTHERMDTYPE="AIP-TECHMD">
+        <xmlData xmlns:dim="http://www.dspace.org/xmlns/dspace/dim">
+          <dim:dim dspaceType="BITSTREAM">
+            <dim:field mdschema="dc" element="title">GIF_02_Facade1NE.gif</dim:field>
+            <dim:field mdschema="dc" element="format" qualifier="mimetype">image/gif</dim:field>
+            <dim:field mdschema="dc" element="format" qualifier="supportlevel">KNOWN</dim:field>
+            <dim:field mdschema="dc" element="format" qualifier="internal">false</dim:field>
+          </dim:dim>
+        </xmlData>
+      </mdWrap>
+    </sourceMD>
+  </amdSec>
+  <amdSec ID="amd_supplemental_3">
+    <rightsMD ID="rightsMD_supplemental_3">
+      <mdWrap MDTYPE="OTHER" OTHERMDTYPE="METSRIGHTS">
+        <xmlData xmlns:rights="http://cosimo.stanford.edu/sdr/metsrights/" xsi:schemaLocation="http://cosimo.stanford.edu/sdr/metsrights/ http://www.loc.gov/standards/rights/METSRights.xsd">
+          <rights:RightsDeclarationMD RIGHTSCATEGORY="LICENSED">
+            <rights:Context in-effect="true" CONTEXTCLASS="MANAGED GRP">
+              <rights:UserName USERTYPE="GROUP">Staff</rights:UserName>
+              <rights:Permissions DISCOVER="true" DISPLAY="true" MODIFY="false" DELETE="false"/>
+            </rights:Context>
+            <rights:Context in-effect="true" CONTEXTCLASS="GENERAL PUBLIC">
+              <rights:Permissions DISCOVER="true" DISPLAY="true" MODIFY="false" DELETE="false"/>
+            </rights:Context>
+          </rights:RightsDeclarationMD>
+        </xmlData>
+      </mdWrap>
+    </rightsMD>
+    <sourceMD ID="sourceMD_supplemental_3">
+      <mdWrap MDTYPE="OTHER" OTHERMDTYPE="AIP-TECHMD">
+        <xmlData xmlns:dim="http://www.dspace.org/xmlns/dspace/dim">
+          <dim:dim dspaceType="BITSTREAM">
+            <dim:field mdschema="dc" element="title">GIF_03_Facade2SW.gif</dim:field>
+            <dim:field mdschema="dc" element="format" qualifier="mimetype">image/gif</dim:field>
+            <dim:field mdschema="dc" element="format" qualifier="supportlevel">KNOWN</dim:field>
+            <dim:field mdschema="dc" element="format" qualifier="internal">false</dim:field>
+          </dim:dim>
+        </xmlData>
+      </mdWrap>
+    </sourceMD>
+  </amdSec>
+  <amdSec ID="amd_supplemental_4">
+    <rightsMD ID="rightsMD_supplemental_4">
+      <mdWrap MDTYPE="OTHER" OTHERMDTYPE="METSRIGHTS">
+        <xmlData xmlns:rights="http://cosimo.stanford.edu/sdr/metsrights/" xsi:schemaLocation="http://cosimo.stanford.edu/sdr/metsrights/ http://www.loc.gov/standards/rights/METSRights.xsd">
+          <rights:RightsDeclarationMD RIGHTSCATEGORY="LICENSED">
+            <rights:Context in-effect="true" CONTEXTCLASS="MANAGED GRP">
+              <rights:UserName USERTYPE="GROUP">Staff</rights:UserName>
+              <rights:Permissions DISCOVER="true" DISPLAY="true" MODIFY="false" DELETE="false"/>
+            </rights:Context>
+            <rights:Context in-effect="true" CONTEXTCLASS="GENERAL PUBLIC">
+              <rights:Permissions DISCOVER="true" DISPLAY="true" MODIFY="false" DELETE="false"/>
+            </rights:Context>
+          </rights:RightsDeclarationMD>
+        </xmlData>
+      </mdWrap>
+    </rightsMD>
+    <sourceMD ID="sourceMD_supplemental_4">
+      <mdWrap MDTYPE="OTHER" OTHERMDTYPE="AIP-TECHMD">
+        <xmlData xmlns:dim="http://www.dspace.org/xmlns/dspace/dim">
+          <dim:dim dspaceType="BITSTREAM">
+            <dim:field mdschema="dc" element="title">GIF_04_Room_1.Gar.gif</dim:field>
+            <dim:field mdschema="dc" element="format" qualifier="mimetype">image/gif</dim:field>
+            <dim:field mdschema="dc" element="format" qualifier="supportlevel">KNOWN</dim:field>
+            <dim:field mdschema="dc" element="format" qualifier="internal">false</dim:field>
+          </dim:dim>
+        </xmlData>
+      </mdWrap>
+    </sourceMD>
+  </amdSec>
+  <amdSec ID="amd_supplemental_5">
+    <rightsMD ID="rightsMD_supplemental_5">
+      <mdWrap MDTYPE="OTHER" OTHERMDTYPE="METSRIGHTS">
+        <xmlData xmlns:rights="http://cosimo.stanford.edu/sdr/metsrights/" xsi:schemaLocation="http://cosimo.stanford.edu/sdr/metsrights/ http://www.loc.gov/standards/rights/METSRights.xsd">
+          <rights:RightsDeclarationMD RIGHTSCATEGORY="LICENSED">
+            <rights:Context in-effect="true" CONTEXTCLASS="MANAGED GRP">
+              <rights:UserName USERTYPE="GROUP">Staff</rights:UserName>
+              <rights:Permissions DISCOVER="true" DISPLAY="true" MODIFY="false" DELETE="false"/>
+            </rights:Context>
+            <rights:Context in-effect="true" CONTEXTCLASS="GENERAL PUBLIC">
+              <rights:Permissions DISCOVER="true" DISPLAY="true" MODIFY="false" DELETE="false"/>
+            </rights:Context>
+          </rights:RightsDeclarationMD>
+        </xmlData>
+      </mdWrap>
+    </rightsMD>
+    <sourceMD ID="sourceMD_supplemental_5">
+      <mdWrap MDTYPE="OTHER" OTHERMDTYPE="AIP-TECHMD">
+        <xmlData xmlns:dim="http://www.dspace.org/xmlns/dspace/dim">
+          <dim:dim dspaceType="BITSTREAM">
+            <dim:field mdschema="dc" element="title">GIF_05_Room_2.TwoLiv.gif</dim:field>
+            <dim:field mdschema="dc" element="format" qualifier="mimetype">image/gif</dim:field>
+            <dim:field mdschema="dc" element="format" qualifier="supportlevel">KNOWN</dim:field>
+            <dim:field mdschema="dc" element="format" qualifier="internal">false</dim:field>
+          </dim:dim>
+        </xmlData>
+      </mdWrap>
+    </sourceMD>
+  </amdSec>
+  <amdSec ID="amd_supplemental_6">
+    <rightsMD ID="rightsMD_supplemental_6">
+      <mdWrap MDTYPE="OTHER" OTHERMDTYPE="METSRIGHTS">
+        <xmlData xmlns:rights="http://cosimo.stanford.edu/sdr/metsrights/" xsi:schemaLocation="http://cosimo.stanford.edu/sdr/metsrights/ http://www.loc.gov/standards/rights/METSRights.xsd">
+          <rights:RightsDeclarationMD RIGHTSCATEGORY="LICENSED">
+            <rights:Context in-effect="true" CONTEXTCLASS="MANAGED GRP">
+              <rights:UserName USERTYPE="GROUP">Staff</rights:UserName>
+              <rights:Permissions DISCOVER="true" DISPLAY="true" MODIFY="false" DELETE="false"/>
+            </rights:Context>
+            <rights:Context in-effect="true" CONTEXTCLASS="GENERAL PUBLIC">
+              <rights:Permissions DISCOVER="true" DISPLAY="true" MODIFY="false" DELETE="false"/>
+            </rights:Context>
+          </rights:RightsDeclarationMD>
+        </xmlData>
+      </mdWrap>
+    </rightsMD>
+    <sourceMD ID="sourceMD_supplemental_6">
+      <mdWrap MDTYPE="OTHER" OTHERMDTYPE="AIP-TECHMD">
+        <xmlData xmlns:dim="http://www.dspace.org/xmlns/dspace/dim">
+          <dim:dim dspaceType="BITSTREAM">
+            <dim:field mdschema="dc" element="title">GIF_06_Room_3.Gym&amp;Lau.gif</dim:field>
+            <dim:field mdschema="dc" element="format" qualifier="mimetype">image/gif</dim:field>
+            <dim:field mdschema="dc" element="format" qualifier="supportlevel">KNOWN</dim:field>
+            <dim:field mdschema="dc" element="format" qualifier="internal">false</dim:field>
+          </dim:dim>
+        </xmlData>
+      </mdWrap>
+    </sourceMD>
+  </amdSec>
+  <amdSec ID="amd_supplemental_7">
+    <rightsMD ID="rightsMD_supplemental_7">
+      <mdWrap MDTYPE="OTHER" OTHERMDTYPE="METSRIGHTS">
+        <xmlData xmlns:rights="http://cosimo.stanford.edu/sdr/metsrights/" xsi:schemaLocation="http://cosimo.stanford.edu/sdr/metsrights/ http://www.loc.gov/standards/rights/METSRights.xsd">
+          <rights:RightsDeclarationMD RIGHTSCATEGORY="LICENSED">
+            <rights:Context in-effect="true" CONTEXTCLASS="MANAGED GRP">
+              <rights:UserName USERTYPE="GROUP">Staff</rights:UserName>
+              <rights:Permissions DISCOVER="true" DISPLAY="true" MODIFY="false" DELETE="false"/>
+            </rights:Context>
+            <rights:Context in-effect="true" CONTEXTCLASS="GENERAL PUBLIC">
+              <rights:Permissions DISCOVER="true" DISPLAY="true" MODIFY="false" DELETE="false"/>
+            </rights:Context>
+          </rights:RightsDeclarationMD>
+        </xmlData>
+      </mdWrap>
+    </rightsMD>
+    <sourceMD ID="sourceMD_supplemental_7">
+      <mdWrap MDTYPE="OTHER" OTHERMDTYPE="AIP-TECHMD">
+        <xmlData xmlns:dim="http://www.dspace.org/xmlns/dspace/dim">
+          <dim:dim dspaceType="BITSTREAM">
+            <dim:field mdschema="dc" element="title">GIF_07_Room_4.Lib&amp;Sto.gif</dim:field>
+            <dim:field mdschema="dc" element="format" qualifier="mimetype">image/gif</dim:field>
+            <dim:field mdschema="dc" element="format" qualifier="supportlevel">KNOWN</dim:field>
+            <dim:field mdschema="dc" element="format" qualifier="internal">false</dim:field>
+          </dim:dim>
+        </xmlData>
+      </mdWrap>
+    </sourceMD>
+  </amdSec>
+  <amdSec ID="amd_supplemental_8">
+    <rightsMD ID="rightsMD_supplemental_8">
+      <mdWrap MDTYPE="OTHER" OTHERMDTYPE="METSRIGHTS">
+        <xmlData xmlns:rights="http://cosimo.stanford.edu/sdr/metsrights/" xsi:schemaLocation="http://cosimo.stanford.edu/sdr/metsrights/ http://www.loc.gov/standards/rights/METSRights.xsd">
+          <rights:RightsDeclarationMD RIGHTSCATEGORY="LICENSED">
+            <rights:Context in-effect="true" CONTEXTCLASS="MANAGED GRP">
+              <rights:UserName USERTYPE="GROUP">Staff</rights:UserName>
+              <rights:Permissions DISCOVER="true" DISPLAY="true" MODIFY="false" DELETE="false"/>
+            </rights:Context>
+            <rights:Context in-effect="true" CONTEXTCLASS="GENERAL PUBLIC">
+              <rights:Permissions DISCOVER="true" DISPLAY="true" MODIFY="false" DELETE="false"/>
+            </rights:Context>
+          </rights:RightsDeclarationMD>
+        </xmlData>
+      </mdWrap>
+    </rightsMD>
+    <sourceMD ID="sourceMD_supplemental_8">
+      <mdWrap MDTYPE="OTHER" OTHERMDTYPE="AIP-TECHMD">
+        <xmlData xmlns:dim="http://www.dspace.org/xmlns/dspace/dim">
+          <dim:dim dspaceType="BITSTREAM">
+            <dim:field mdschema="dc" element="title">GIF_08_Room_5.KitDinRes.gif</dim:field>
+            <dim:field mdschema="dc" element="format" qualifier="mimetype">image/gif</dim:field>
+            <dim:field mdschema="dc" element="format" qualifier="supportlevel">KNOWN</dim:field>
+            <dim:field mdschema="dc" element="format" qualifier="internal">false</dim:field>
+          </dim:dim>
+        </xmlData>
+      </mdWrap>
+    </sourceMD>
+  </amdSec>
+  <amdSec ID="amd_supplemental_9">
+    <rightsMD ID="rightsMD_supplemental_9">
+      <mdWrap MDTYPE="OTHER" OTHERMDTYPE="METSRIGHTS">
+        <xmlData xmlns:rights="http://cosimo.stanford.edu/sdr/metsrights/" xsi:schemaLocation="http://cosimo.stanford.edu/sdr/metsrights/ http://www.loc.gov/standards/rights/METSRights.xsd">
+          <rights:RightsDeclarationMD RIGHTSCATEGORY="LICENSED">
+            <rights:Context in-effect="true" CONTEXTCLASS="MANAGED GRP">
+              <rights:UserName USERTYPE="GROUP">Staff</rights:UserName>
+              <rights:Permissions DISCOVER="true" DISPLAY="true" MODIFY="false" DELETE="false"/>
+            </rights:Context>
+            <rights:Context in-effect="true" CONTEXTCLASS="GENERAL PUBLIC">
+              <rights:Permissions DISCOVER="true" DISPLAY="true" MODIFY="false" DELETE="false"/>
+            </rights:Context>
+          </rights:RightsDeclarationMD>
+        </xmlData>
+      </mdWrap>
+    </rightsMD>
+    <sourceMD ID="sourceMD_supplemental_9">
+      <mdWrap MDTYPE="OTHER" OTHERMDTYPE="AIP-TECHMD">
+        <xmlData xmlns:dim="http://www.dspace.org/xmlns/dspace/dim">
+          <dim:dim dspaceType="BITSTREAM">
+            <dim:field mdschema="dc" element="title">GIF_09_Room_6.BedClus1.gif</dim:field>
+            <dim:field mdschema="dc" element="format" qualifier="mimetype">image/gif</dim:field>
+            <dim:field mdschema="dc" element="format" qualifier="supportlevel">KNOWN</dim:field>
+            <dim:field mdschema="dc" element="format" qualifier="internal">false</dim:field>
+          </dim:dim>
+        </xmlData>
+      </mdWrap>
+    </sourceMD>
+  </amdSec>
+  <amdSec ID="amd_supplemental_10">
+    <rightsMD ID="rightsMD_supplemental_10">
+      <mdWrap MDTYPE="OTHER" OTHERMDTYPE="METSRIGHTS">
+        <xmlData xmlns:rights="http://cosimo.stanford.edu/sdr/metsrights/" xsi:schemaLocation="http://cosimo.stanford.edu/sdr/metsrights/ http://www.loc.gov/standards/rights/METSRights.xsd">
+          <rights:RightsDeclarationMD RIGHTSCATEGORY="LICENSED">
+            <rights:Context in-effect="true" CONTEXTCLASS="MANAGED GRP">
+              <rights:UserName USERTYPE="GROUP">Staff</rights:UserName>
+              <rights:Permissions DISCOVER="true" DISPLAY="true" MODIFY="false" DELETE="false"/>
+            </rights:Context>
+            <rights:Context in-effect="true" CONTEXTCLASS="GENERAL PUBLIC">
+              <rights:Permissions DISCOVER="true" DISPLAY="true" MODIFY="false" DELETE="false"/>
+            </rights:Context>
+          </rights:RightsDeclarationMD>
+        </xmlData>
+      </mdWrap>
+    </rightsMD>
+    <sourceMD ID="sourceMD_supplemental_10">
+      <mdWrap MDTYPE="OTHER" OTHERMDTYPE="AIP-TECHMD">
+        <xmlData xmlns:dim="http://www.dspace.org/xmlns/dspace/dim">
+          <dim:dim dspaceType="BITSTREAM">
+            <dim:field mdschema="dc" element="title">GIF_10_Room_7.BedClus2.gif</dim:field>
+            <dim:field mdschema="dc" element="format" qualifier="mimetype">image/gif</dim:field>
+            <dim:field mdschema="dc" element="format" qualifier="supportlevel">KNOWN</dim:field>
+            <dim:field mdschema="dc" element="format" qualifier="internal">false</dim:field>
+          </dim:dim>
+        </xmlData>
+      </mdWrap>
+    </sourceMD>
+  </amdSec>
+  <amdSec ID="amd_license_1834189">
+    <rightsMD ID="rightsMD_license_1834189">
+      <mdWrap MDTYPE="OTHER" OTHERMDTYPE="METSRIGHTS">
+        <xmlData xmlns:rights="http://cosimo.stanford.edu/sdr/metsrights/" xsi:schemaLocation="http://cosimo.stanford.edu/sdr/metsrights/ http://www.loc.gov/standards/rights/METSRights.xsd">
+          <rights:RightsDeclarationMD RIGHTSCATEGORY="LICENSED"/>
+        </xmlData>
+      </mdWrap>
+    </rightsMD>
+    <sourceMD ID="sourceMD_license_1834189">
+      <mdWrap MDTYPE="OTHER" OTHERMDTYPE="AIP-TECHMD">
+        <xmlData xmlns:dim="http://www.dspace.org/xmlns/dspace/dim">
+          <dim:dim dspaceType="BITSTREAM">
+            <dim:field mdschema="dc" element="title">setup_2E592954-F85C-11EA-ABB1-E61AE629DA94.pdf</dim:field>
+            <dim:field mdschema="dc" element="format" qualifier="mimetype">application/pdf</dim:field>
+          </dim:dim>
+        </xmlData>
+      </mdWrap>
+    </sourceMD>
+  </amdSec>
+  <fileSec>
+    <fileGrp ID="etdadmin-mets-fgrp-1" USE="CONTENT">
+      <file GROUPID="etdadmin-mets-file-group" ID="etdadmin-mets-file-1920511" MIMETYPE="application/pdf" ADMID="amd_primary" SEQ="1">
+        <FLocat LOCTYPE="URL" xlink:href="20210524_Thesis Archival Submission_JB Signed.pdf"/>
+      </file>
+      <file GROUPID="etdadmin-mets-file-group" ID="etdadmin-mets-file-1919987" MIMETYPE="image/gif" ADMID="amd_supplemental_1" SEQ="1">
+        <FLocat LOCTYPE="URL" xlink:href="GIF_01_SlabShift.gif"/>
+      </file>
+      <file GROUPID="etdadmin-mets-file-group" ID="etdadmin-mets-file-1919988" MIMETYPE="image/gif" ADMID="amd_supplemental_2" SEQ="2">
+        <FLocat LOCTYPE="URL" xlink:href="GIF_02_Facade1NE.gif"/>
+      </file>
+      <file GROUPID="etdadmin-mets-file-group" ID="etdadmin-mets-file-1919989" MIMETYPE="image/gif" ADMID="amd_supplemental_3" SEQ="3">
+        <FLocat LOCTYPE="URL" xlink:href="GIF_03_Facade2SW.gif"/>
+      </file>
+      <file GROUPID="etdadmin-mets-file-group" ID="etdadmin-mets-file-1919990" MIMETYPE="image/gif" ADMID="amd_supplemental_4" SEQ="4">
+        <FLocat LOCTYPE="URL" xlink:href="GIF_04_Room_1.Gar.gif"/>
+      </file>
+      <file GROUPID="etdadmin-mets-file-group" ID="etdadmin-mets-file-1919991" MIMETYPE="image/gif" ADMID="amd_supplemental_5" SEQ="5">
+        <FLocat LOCTYPE="URL" xlink:href="GIF_05_Room_2.TwoLiv.gif"/>
+      </file>
+      <file GROUPID="etdadmin-mets-file-group" ID="etdadmin-mets-file-1919992" MIMETYPE="image/gif" ADMID="amd_supplemental_6" SEQ="6">
+        <FLocat LOCTYPE="URL" xlink:href="GIF_06_Room_3.Gym&amp;Lau.gif"/>
+      </file>
+      <file GROUPID="etdadmin-mets-file-group" ID="etdadmin-mets-file-1919993" MIMETYPE="image/gif" ADMID="amd_supplemental_7" SEQ="7">
+        <FLocat LOCTYPE="URL" xlink:href="GIF_07_Room_4.Lib&amp;Sto.gif"/>
+      </file>
+      <file GROUPID="etdadmin-mets-file-group" ID="etdadmin-mets-file-1919994" MIMETYPE="image/gif" ADMID="amd_supplemental_8" SEQ="8">
+        <FLocat LOCTYPE="URL" xlink:href="GIF_08_Room_5.KitDinRes.gif"/>
+      </file>
+      <file GROUPID="etdadmin-mets-file-group" ID="etdadmin-mets-file-1919995" MIMETYPE="image/gif" ADMID="amd_supplemental_9" SEQ="9">
+        <FLocat LOCTYPE="URL" xlink:href="GIF_09_Room_6.BedClus1.gif"/>
+      </file>
+      <file GROUPID="etdadmin-mets-file-group" ID="etdadmin-mets-file-1919996" MIMETYPE="image/gif" ADMID="amd_supplemental_10" SEQ="10">
+        <FLocat LOCTYPE="URL" xlink:href="GIF_10_Room_7.BedClus2.gif"/>
+      </file>
+    </fileGrp>
+    <fileGrp ID="etdadmin-mets-fgrp-2" USE="LICENSE">
+      <file GROUPID="etdadmin-mets-file-group" ID="etdadmin-mets-file-1834189" MIMETYPE="application/pdf" ADMID="amd_license_1834189">
+        <FLocat LOCTYPE="URL" xlink:href="setup_2E592954-F85C-11EA-ABB1-E61AE629DA94.pdf"/>
+      </file>
+    </fileGrp>
+  </fileSec>
+  <structMap ID="etdadmin-mets-struct-1" LABEL="structure" TYPE="LOGICAL">
+    <div ID="etdadmin-mets-div-1" DMDID="etdadmin-mets-dmd-1" TYPE="DSpace Item">
+      <fptr FILEID="etdadmin-mets-file-1920511"/>
+      <div ID="etdadmin-mets-div-1920511" TYPE="DSpace Content Bitstream">
+        <fptr FILEID="etdadmin-mets-file-1920511"/>
+      </div>
+      <div ID="etdadmin-mets-div-1919987" TYPE="DSpace Content Bitstream">
+        <fptr FILEID="etdadmin-mets-file-1919987"/>
+      </div>
+      <div ID="etdadmin-mets-div-1919988" TYPE="DSpace Content Bitstream">
+        <fptr FILEID="etdadmin-mets-file-1919988"/>
+      </div>
+      <div ID="etdadmin-mets-div-1919989" TYPE="DSpace Content Bitstream">
+        <fptr FILEID="etdadmin-mets-file-1919989"/>
+      </div>
+      <div ID="etdadmin-mets-div-1919990" TYPE="DSpace Content Bitstream">
+        <fptr FILEID="etdadmin-mets-file-1919990"/>
+      </div>
+      <div ID="etdadmin-mets-div-1919991" TYPE="DSpace Content Bitstream">
+        <fptr FILEID="etdadmin-mets-file-1919991"/>
+      </div>
+      <div ID="etdadmin-mets-div-1919992" TYPE="DSpace Content Bitstream">
+        <fptr FILEID="etdadmin-mets-file-1919992"/>
+      </div>
+      <div ID="etdadmin-mets-div-1919993" TYPE="DSpace Content Bitstream">
+        <fptr FILEID="etdadmin-mets-file-1919993"/>
+      </div>
+      <div ID="etdadmin-mets-div-1919994" TYPE="DSpace Content Bitstream">
+        <fptr FILEID="etdadmin-mets-file-1919994"/>
+      </div>
+      <div ID="etdadmin-mets-div-1919995" TYPE="DSpace Content Bitstream">
+        <fptr FILEID="etdadmin-mets-file-1919995"/>
+      </div>
+      <div ID="etdadmin-mets-div-1919996" TYPE="DSpace Content Bitstream">
+        <fptr FILEID="etdadmin-mets-file-1919996"/>
+      </div>
+    </div>
+  </structMap>
+</mets>
