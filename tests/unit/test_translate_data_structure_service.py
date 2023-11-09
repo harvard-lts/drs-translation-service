@@ -130,21 +130,18 @@ def test_translate_etd_submission_1():
               "urnAuthorityPath": "HUL.TEST",
               "file_info": {"Harvard_IR_License_-_LAA_for_ETDs_(2020).pdf": {
                                 "modified_file_name": "Harvard_IR_License_-_LAA_for_ETDs__2020_.pdf",
-                                "file_role": "LICENSE",
                                 "object_role": "LICENSE",
                                 "object_osn": "ETD_LICENSE_dce_2022_PQ_29161227",
                                 "file_osn": "ETD_LICENSE_dce_2022_PQ_29161227_1"
                             },
                             "ES 100 Final Thesis PDF - Liam Nuttall.pdf": {
                                 "modified_file_name": "ES_100_Final_Thesis_PDF_-_Liam_Nuttall.pdf",
-                                "file_role": "ARCHIVAL_MASTER",
                                 "object_role": "THESIS",
                                 "object_osn": "ETD_THESIS_dce_2022_PQ_29161227",
                                 "file_osn": "ETD_THESIS_dce_2022_PQ_29161227_1"
                             },
                             "mets.xml": {
                                 "modified_file_name": "mets.xml",
-                                "file_role": "DOCUMENTATION",
                                 "object_role": "DOCUMENTATION",
                                 "object_osn": "ETD_DOCUMENTATION_dce_2022_PQ_29161227",
                                 "file_osn": "ETD_DOCUMENTATION_dce_2022_PQ_29161227_1"
@@ -190,14 +187,12 @@ def test_translate_etd_submission_2():
               "urnAuthorityPath": "HUL.TEST",
               "file_info": {"TurkeyandtheEU-EuropeanSoftPowerandHowItHasImpactedTurkey.pdf": {
                                                     "modified_file_name": "TurkeyandtheEU-EuropeanSoftPowerandHowItHasImpactedTurkey.pdf",
-                                                    "file_role": "ARCHIVAL_MASTER",
                                                     "object_role": "THESIS",
                                                     "object_osn": "ETD_THESIS_dce_2011_PQ_1496780",
                                                     "file_osn": "ETD_THESIS_dce_2011_PQ_1496780_1"
                                                },
                                                "mets.xml": {
                                                     "modified_file_name": "mets.xml",
-                                                    "file_role": "DOCUMENTATION",
                                                     "object_role": "DOCUMENTATION",
                                                     "object_osn": "ETD_DOCUMENTATION_dce_2011_PQ_1496780",
                                                     "file_osn": "ETD_DOCUMENTATION_dce_2011_PQ_1496780_1"
@@ -236,56 +231,48 @@ def test_translate_etd_submission_images():
               "urnAuthorityPath": "HUL.TEST",
               "file_info": {"20210524_Thesis Archival Submission_JB Signed.pdf": {
                                 "modified_file_name": "20210524_Thesis_Archival_Submission_JB_Signed.pdf",
-                                "file_role": "ARCHIVAL_MASTER",
                                 "object_role": "THESIS",
                                 "object_osn": "ETD_THESIS_gsd_2021-05_PQ_28542548",
                                 "file_osn": "ETD_THESIS_gsd_2021-05_PQ_28542548_1"
                             },
                             "mets.xml": {
                                 "modified_file_name": "mets.xml",
-                                "file_role": "DOCUMENTATION",
                                 "object_role": "DOCUMENTATION",
                                 "object_osn": "ETD_DOCUMENTATION_gsd_2021-05_PQ_28542548",
                                 "file_osn": "ETD_DOCUMENTATION_gsd_2021-05_PQ_28542548_1"
                             },
                             "setup_2E592954-F85C-11EA-ABB1-E61AE629DA94.pdf": {
                                 "modified_file_name": "setup_2E592954-F85C-11EA-ABB1-E61AE629DA94_.pdf",
-                                "file_role": "LICENSE",
                                 "object_role": "LICENSE",
                                 "object_osn": "ETD_LICENSE_gsd_2021-05_PQ_28542548",
                                 "file_osn": "ETD_LICENSE_gsd_2021-05_PQ_28542548_1"
                             },
                             "GIF_01_SlabShift.gif": {
                                 "modified_file_name": "GIF_01_SlabShift.gif",
-                                "file_role": "ARCHIVAL_MASTER",
                                 "object_role": "THESIS_SUPPLEMENT",
                                 "object_osn": "ETD_SUPPLEMENT_gsd_2021-05_PQ_28542548_1",
                                 "file_osn": "ETD_SUPPLEMENT_gsd_2021-05_PQ_28542548_1_1"
                             },
                             "GIF_02_Facade1NE.gif": {
                                 "modified_file_name": "GIF_02_Facade1NE.gif",
-                                "file_role": "ARCHIVAL_MASTER",
                                 "object_role": "THESIS_SUPPLEMENT",
                                 "object_osn": "ETD_SUPPLEMENT_gsd_2021-05_PQ_28542548_2",
                                 "file_osn": "ETD_SUPPLEMENT_gsd_2021-05_PQ_28542548_2_1"
                             },
                             "GIF_03_Facade2SW.gif": {
                                 "modified_file_name": "GIF_03_Facade2SW.gif",
-                                "file_role": "ARCHIVAL_MASTER",
                                 "object_role": "THESIS_SUPPLEMENT",
                                 "object_osn": "ETD_SUPPLEMENT_gsd_2021-05_PQ_28542548_3",
                                 "file_osn": "ETD_SUPPLEMENT_gsd_2021-05_PQ_28542548_3_1"
                             },
                             "GIF_04_Room_1.Gar.gif": {
                                 "modified_file_name": "GIF_04_Room_1.Gar.gif",
-                                "file_role": "ARCHIVAL_MASTER",
                                 "object_role": "THESIS_SUPPLEMENT",
                                 "object_osn": "ETD_SUPPLEMENT_gsd_2021-05_PQ_28542548_4",
                                 "file_osn": "ETD_SUPPLEMENT_gsd_2021-05_PQ_28542548_4_1"
                             },
                             "GIF_05_Room_2.TwoLiv.gif": {
                                 "modified_file_name": "GIF_05_Room_2.TwoLiv.gif",
-                                "file_role": "ARCHIVAL_MASTER",
                                 "object_role": "THESIS_SUPPLEMENT",
                                 "object_osn": "ETD_SUPPLEMENT_gsd_2021-05_PQ_28542548_5",
                                 "file_osn": "ETD_SUPPLEMENT_gsd_2021-05_PQ_28542548_5_1"
@@ -360,49 +347,42 @@ def test_translate_etd_submission_opaque_image():
               "urnAuthorityPath": "HUL.TEST",
               "file_info": {"Alfred_S_MArchI_F21 Thesis.pdf": {
                                 "modified_file_name": "Alfred_S_MArchI_F21_Thesis.pdf",
-                                "file_role": "ARCHIVAL_MASTER",
                                 "object_role": "THESIS",
                                 "object_osn": "ETD_THESIS_gsd_2022-05_PQ_28963877",
                                 "file_osn": "ETD_THESIS_gsd_2022-05_PQ_28963877_1"
                             },
                             "mets.xml": {
                                 "modified_file_name": "mets.xml",
-                                "file_role": "DOCUMENTATION",
                                 "object_role": "DOCUMENTATION",
                                 "object_osn": "ETD_DOCUMENTATION_gsd_2022-05_PQ_28963877",
                                 "file_osn": "ETD_DOCUMENTATION_gsd_2022-05_PQ_28963877_1"
                             },
                             "setup_2E592954-F85C-11EA-ABB1-E61AE629DA94.pdf": {
                                 "modified_file_name": "setup_2E592954-F85C-11EA-ABB1-E61AE629DA94.pdf",
-                                "file_role": "LICENSE",
                                 "object_role": "LICENSE",
                                 "object_osn": "ETD_LICENSE_gsd_2022-05_PQ_28963877",
                                 "file_osn": "ETD_LICENSE_gsd_2022-05_PQ_28963877_1"
                             },
                             "Plan Gifs.zip": {
                                 "modified_file_name": "Plan_Gifs.zip",
-                                "file_role": "ARCHIVAL_MASTER",
                                 "object_role": "THESIS_SUPPLEMENT",
                                 "object_osn": "ETD_SUPPLEMENT_gsd_2022-05_PQ_28963877_1",
                                 "file_osn": "ETD_SUPPLEMENT_gsd_2022-05_PQ_28963877_1_1"
                             },
                             "Notation Gifs.zip": {
                                 "modified_file_name": "Notation_Gifs.zip",
-                                "file_role": "ARCHIVAL_MASTER",
                                 "object_role": "THESIS_SUPPLEMENT",
                                 "object_osn": "ETD_SUPPLEMENT_gsd_2022-05_PQ_28963877_2",
                                 "file_osn": "ETD_SUPPLEMENT_gsd_2022-05_PQ_28963877_2_1"
                             },
                             "Dance Gifs.zip": {
                                 "modified_file_name": "Dance_Gifs.zip",
-                                "file_role": "ARCHIVAL_MASTER",
                                 "object_role": "THESIS_SUPPLEMENT",
                                 "object_osn": "ETD_SUPPLEMENT_gsd_2022-05_PQ_28963877_3",
                                 "file_osn": "ETD_SUPPLEMENT_gsd_2022-05_PQ_28963877_3_1"
                             },
                             "Alfred_S_Model gif.gif": {
                                 "modified_file_name": "Alfred_S_Model_gif.gif",
-                                "file_role": "ARCHIVAL_MASTER",
                                 "object_role": "THESIS_SUPPLEMENT",
                                 "object_osn": "ETD_SUPPLEMENT_gsd_2022-05_PQ_28963877_4",
                                 "file_osn": "ETD_SUPPLEMENT_gsd_2022-05_PQ_28963877_4_1"
@@ -470,70 +450,60 @@ def test_translate_etd_submission_audio():
               "urnAuthorityPath": "HUL.TEST",
               "file_info": {"MLA Thesis_Auger_Catherine_May2023.pdf": {
                                 "modified_file_name": "MLA_Thesis_Auger_Catherine_May2023.pdf",
-                                "file_role": "ARCHIVAL_MASTER",
                                 "object_role": "THESIS",
                                 "object_osn": "ETD_THESIS_" + osn_unique_appender,
                                 "file_osn": "ETD_THESIS_" + osn_unique_appender + "_1"
                             },
                             "mets.xml": {
                                 "modified_file_name": "mets.xml",
-                                "file_role": "DOCUMENTATION",
                                 "object_role": "DOCUMENTATION",
                                 "object_osn": "ETD_DOCUMENTATION_" + osn_unique_appender,
                                 "file_osn": "ETD_DOCUMENTATION_" + osn_unique_appender + "_1"
                             },
                             "setup_2E592954-F85C-11EA-ABB1-E61AE629DA94.pdf": {
                                 "modified_file_name": "setup_2E592954-F85C-11EA-ABB1-E61AE629DA94.pdf",
-                                "file_role": "LICENSE",
                                 "object_role": "LICENSE",
                                 "object_osn": "ETD_LICENSE_" + osn_unique_appender,
                                 "file_osn": "ETD_LICENSE_" + osn_unique_appender + "_1"
                             },
                             "Gamelan_Islam.mp3": {
                                 "modified_file_name": "Gamelan_Islam.mp3",
-                                "file_role": "ARCHIVAL_MASTER",
                                 "object_role": "THESIS_SUPPLEMENT",
                                 "object_osn": "ETD_SUPPLEMENT_" + osn_unique_appender + "_1",
                                 "file_osn": "ETD_SUPPLEMENT_" + osn_unique_appender + "_1_1"
                             },
                             "Harry Styles.mp3": {
                                 "modified_file_name": "Harry_Styles.mp3",
-                                "file_role": "ARCHIVAL_MASTER",
                                 "object_role": "THESIS_SUPPLEMENT",
                                 "object_osn": "ETD_SUPPLEMENT_" + osn_unique_appender + "_2",
                                 "file_osn": "ETD_SUPPLEMENT_" + osn_unique_appender + "_2_1"
                             },
                             "Jalan Raya Ubud.mp3": {
                                 "modified_file_name": "Jalan_Raya_Ubud.mp3",
-                                "file_role": "ARCHIVAL_MASTER",
                                 "object_role": "THESIS_SUPPLEMENT",
                                 "object_osn": "ETD_SUPPLEMENT_" + osn_unique_appender + "_3",
                                 "file_osn": "ETD_SUPPLEMENT_" + osn_unique_appender + "_3_1"
                             },
                             "Kuningan.mp3": {
                                 "modified_file_name": "Kuningan.mp3",
-                                "file_role": "ARCHIVAL_MASTER",
                                 "object_role": "THESIS_SUPPLEMENT",
                                 "object_osn": "ETD_SUPPLEMENT_" + osn_unique_appender + "_4",
                                 "file_osn": "ETD_SUPPLEMENT_" + osn_unique_appender + "_4_1"
                             },
                             "Monkey Forest.mp3": {
                                 "modified_file_name": "Monkey_Forest.mp3",
-                                "file_role": "ARCHIVAL_MASTER",
                                 "object_role": "THESIS_SUPPLEMENT",
                                 "object_osn": "ETD_SUPPLEMENT_" + osn_unique_appender + "_5",
                                 "file_osn": "ETD_SUPPLEMENT_" + osn_unique_appender + "_5_1"
                             },
                             "Pasar Goris.mp3": {
                                 "modified_file_name": "Pasar_Goris.mp3",
-                                "file_role": "ARCHIVAL_MASTER",
                                 "object_role": "THESIS_SUPPLEMENT",
                                 "object_osn": "ETD_SUPPLEMENT_" + osn_unique_appender + "_6",
                                 "file_osn": "ETD_SUPPLEMENT_" + osn_unique_appender + "_6_1"
                             },
                             "The Pipe.mp3": {
                                 "modified_file_name": "The_Pipe.mp3",
-                                "file_role": "ARCHIVAL_MASTER",
                                 "object_role": "THESIS_SUPPLEMENT",
                                 "object_osn": "ETD_SUPPLEMENT_" + osn_unique_appender + "_7",
                                 "file_osn": "ETD_SUPPLEMENT_" + osn_unique_appender + "_7_1"
