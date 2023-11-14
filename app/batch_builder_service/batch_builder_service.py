@@ -41,6 +41,7 @@ class BatchBuilderService(ABC):
                 if "failureEmail" in supplemental_deposit_metadata and supplemental_deposit_metadata["failureEmail"]:
                     emailaddress = supplemental_deposit_metadata["failureEmail"]
                 raise BatchBuilderException("Failed to create batch, no descriptor found: " + command, emailaddress) 
+        return command
             
     def build_command(self, project_path, batch_name, supplemental_deposit_metadata):
         bb_script_name = os.getenv("BB_SCRIPT_NAME")
