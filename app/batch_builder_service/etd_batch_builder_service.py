@@ -85,6 +85,7 @@ class ETDBatchBuilderService(BatchBuilderService):
     def _build_dirprop_override_command(self, object_path, role):
         '''Builds the -dirprop command'''
         dirs = os.listdir(object_path)
+        overrides = ""
         for dir in dirs:
             dir_path = os.path.join(object_path, dir)
             if os.path.isdir(dir_path):
@@ -93,11 +94,13 @@ class ETDBatchBuilderService(BatchBuilderService):
                     filerole = role
                 self.logger.debug("File role: {} for {}".format(filerole,
                                                                 dir_path))
-                overrides = "filerole={};".format(filerole)
-                return "{}::{}::{}".format(os.path.basename(object_path),
-                                           dir, overrides)
-        return ""
-    
+                dir_override = "filerole={};".format(filerole)
+                overrides += "{}::{}::{}".format(
+                    os.path.basename(object_path),
+                                     dir, dir_override)
+        self.logger.debug("File Overrides: {}".format(overrides))
+        return overrides
+
     def __determine_role(self, object_name):
         '''The OSN will have been formatted before the DAIS pipeline so
         the role will be extracted from the OSN name.'''
