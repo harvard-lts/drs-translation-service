@@ -86,12 +86,16 @@ class ETDBatchBuilderService(BatchBuilderService):
         '''Builds the -dirprop command'''
         dirs = os.listdir(object_path)
         for dir in dirs:
-            if os.path.isdir(os.path.join(object_path, dir)):
+            dir_path = os.path.join(object_path, dir)
+            if os.path.isdir(dir_path):
                 filerole = FILE_ROLE_ARCHIVAL_MASTER
                 if role == ROLE_DOCUMENTATION or role == ROLE_LICENSE:
                     filerole = role
+                self.logger.debug("File role: {} for {}".format(filerole,
+                                                                dir_path))
                 overrides = "filerole={};".format(filerole)
-                return "{}::{}::{}".format(os.path.basename(object_path), dir, overrides)
+                return "{}::{}::{}".format(os.path.basename(object_path),
+                                           dir, overrides)
         return ""
     
     def __determine_role(self, object_name):
