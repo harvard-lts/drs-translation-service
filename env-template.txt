@@ -69,6 +69,7 @@ TEST_DROPBOX_NAME=XXX
 #Dropbox name for the application (use dev names for testing/local)
 EPADD_DROPBOX_NAME=XXX
 DVN_DROPBOX_NAME=XXX
+ETD_DROPBOX_NAME=XXX
 
 #Was the exported package unzipped by the transfer service?
 #Dataverse = true
@@ -92,3 +93,8 @@ DEFAULT_EMAIL_RECIPIENT=dts@hu.onmicrosoft.com
 #rabbit mq email notifier
 EMAIL_NOTIFIER_TASK_NAME=rabbitmq-email-notifier.tasks.notify_email_message
 EMAIL_NOTIFIER_QUEUE_NAME=email-notifier
+
+#ETD queues and tasks
+ETD_HOLDING_QUEUE_NAME=etd_ingested_into_drs
+ETD_HOLDING_TASK_NAME=etd-alma-drs-holding-service.tasks.add_holdings
+ETD_BROKER=XXX

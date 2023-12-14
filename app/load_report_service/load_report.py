@@ -7,6 +7,23 @@ from load_report_service.load_report_exception import LoadReportException
 Parses a load report and manipulates some of the contents
 '''
 class LoadReport:
+
+    class Object:
+        object_id = None
+        object_deliverable_uri = None
+        object_urn = None
+        depositor_name = None
+        object_owner_supplied_name = None
+        billing = None
+        owner = None
+        object_type = None
+        object_roles = None
+        file_id = None
+        file_urn = None
+        file_format = None
+        file_size = None
+        file_owner_supplied_name = None
+        file_original_path = None
     
     #Constants
     BATCH_NAME_LINE_PREFIX = "Batch name: ";
@@ -33,49 +50,64 @@ class LoadReport:
     """ Initiator function """
     def __init__(self, load_report_path):   
         self.load_report_path = load_report_path
-    
-    
-    #Parse the report and extract the OSN URN
-    # and file information.
-    # 
-    #There are 3 different sections in the loader report:
-    # 1. batch summary
-    # 2. file list
-    # 3. relationship list
-    # 
-    #This method relies on knowing which of the 3 sections it is in.
-    # 
-    def get_obj_urn(self):
+        self.objects = self.__parse_load_report(self.load_report_path)
 
-        file = None
-        
-        try: 
-            file = open(self.load_report_path, "r")
-        except FileNotFoundError:
-            raise LoadReportException("ERROR OPENING LOAD REPORT", 'Load Report Filepath does not exist: {}'.format(self.load_report_path), None)
+    def __parse_load_report(self, load_report_path):
+            """
+            Parses the load report file and returns a list of objects extracted from the file.
 
-        if file is not None:
+            Args:
+                load_report_path (str): The path to the load report file.
+
+            Returns:
+                list: A list of objects extracted from the load report file.
+
+            Raises:
+                LoadReportException: If there is an error opening or parsing the load report file.
+            """
             
-            lines = file.readlines()
-            in_file_section = False
-            
-            for line in lines:
-                if in_file_section:
-                    fields = line.rstrip('\n').split("\t")
-                    if len(fields) == 15 and fields[self.DRS_FILE_OWNER_SUPPLIED_NAME_INDEX] != 'null':
-                        #Update the database
-                        try:
-                            #All files will have the same object urn
-                            obj_urn = fields[self.DRS_OBJECT_URN_INDEX]
-                            return obj_urn
-                        except Exception as why:
-                            raise LoadReportException("Error in Load Report Parsing", "An unexpected error occurred while parsing the load report "+self.load_report_path + "\n" + str(why))
-                elif line.startswith(self.DRS_FILELIST_SECTION_LINE_PREFIX):
-                    in_file_section = True
+            try: 
+                file = open(load_report_path, "r")
+            except FileNotFoundError:
+                raise LoadReportException("ERROR OPENING LOAD REPORT", 'Load Report Filepath does not exist: {}'.format(self.load_report_path), None)
+
+            if file is not None:
                 
-            
-            file.close()
-        else:
-            raise LoadReportException("Error in Load Report Parsing", "Could not open load report: " + self.load_report_path) 
+                lines = file.readlines()
+                in_file_section = False
 
-        return None
+                objects = []
+                for line in lines:
+                    if in_file_section:
+                        object = self.Object()
+                        fields = line.rstrip('\n').split("\t")
+                        if len(fields) == 15 and fields[self.DRS_FILE_OWNER_SUPPLIED_NAME_INDEX] != 'null':
+                            try:
+                                object.object_id = fields[self.DRS_OBJECT_ID_INDEX]
+                                object.object_deliverable_uri = fields[self.DRS_OBJ_DELIVERABLE_URI_INDEX]
+                                object.object_urn = fields[self.DRS_OBJECT_URN_INDEX]
+                                object.depositor_name = fields[self.DRS_DEPOSITOR_NAME_INDEX]
+                                object.object_owner_supplied_name = fields[self.DRS_OBJECT_OWNER_SUPPLIED_NAME_INDEX]
+                                object.billing = fields[self.DRS_BILLING_INDEX]
+                                object.owner = fields[self.DRS_OWNER_INDEX]
+                                object.object_type = fields[self.DRS_OBJECT_TYPE_INDEX]
+                                object.object_roles = fields[self.DRS_OBJECT_ROLES_INDEX]
+                                object.file_id = fields[self.DRS_FILE_ID_INDEX]
+                                object.file_urn = fields[self.DRS_FILE_URN_INDEX]
+                                object.file_format = fields[self.DRS_FILE_FORMAT_INDEX]
+                                object.file_size = fields[self.DRS_FILE_SIZE_INDEX]
+                                object.file_owner_supplied_name = fields[self.DRS_FILE_OWNER_SUPPLIED_NAME_INDEX]
+                                object.file_original_path = fields[self.DRS_FILE_ORIGINAL_PATH_INDEX]
+                                objects.append(object)
+                            except Exception as why:
+                                raise LoadReportException("Error in Load Report Parsing", "An unexpected error occurred while parsing the load report "+self.load_report_path + "\n" + str(why))
+                    elif line.startswith(self.DRS_FILELIST_SECTION_LINE_PREFIX):
+                        in_file_section = True
+                file.close()
+            else:
+                raise LoadReportException("Error in Load Report Parsing", "Could not open load report: " + self.load_report_path) 
+
+            return objects
+
+    def get_objects(self):
+        return self.objects
