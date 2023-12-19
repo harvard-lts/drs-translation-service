@@ -27,9 +27,11 @@ ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 # Copy code into the image
 COPY --chown=appuser ./app /home/appuser/app
+COPY --chown=appuser ./app /home/appuser/scripts
 COPY --chown=appuser webapp.conf.example /home/appuser/webapp.conf.example
 COPY --chown=appuser gunicorn.conf.py /home/appuser/gunicorn.conf.py
 COPY --chown=appuser celeryconfig.py /home/appuser/celeryconfig.py
+COPY --chown=appuser celeryconfig.py /home/appuser/etdtestceleryconfig.py
 
 RUN rm -f /etc/nginx/sites-enabled/default && \
     rm -f /etc/service/nginx/down && \
