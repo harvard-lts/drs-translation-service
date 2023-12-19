@@ -12,6 +12,7 @@ app.config_from_object('celeryconfig')
 
 process_status_task = os.getenv('PROCESS_STATUS_TASK_NAME', 'dims.tasks.handle_process_status')
 
+
 class LoadReportService(ABC):
     
     @abstractmethod
@@ -46,7 +47,11 @@ class LoadReportService(ABC):
             raise LoadReportException("Could not fine load report {} in any of these dropboxes {}.".format(load_report_name, dropbox_names))
             
         # Parse the LRs (attempt even if none were brought from the dropbox)
-        obj_osn = self._parse_load_report(load_report_path)
+        objects = self._parse_load_report(load_report_path)
+        if len(objects) == 0:
+            raise LoadReportException("ERROR No objects found in load report", "No objects found in load report {}.".format(load_report_path))
+        
+        self._process_load_report(objects, batch_name, load_report_path)
         # TODO: Fix delete
         # Not deleting for now, the loadreport is written with appadmin permissions
         # and will have to be updated on the DRS side
@@ -57,31 +62,8 @@ class LoadReportService(ABC):
             if dropbox_name != "":
                 dropbox_name = os.path.join(dropbox_name, "incoming")
                 self._delete_batch_from_dropbox(os.path.join(base_dropbox_dir, dropbox_name, batch_name))
-            
-        if (obj_osn is None):
-            raise LoadReportException("ERROR Object OSN could not be found in load report, {}.".format(load_report_path))
         
-        nrs_prefix = os.getenv("NRS_PREFIX")    
-        urn = os.path.join(nrs_prefix, obj_osn)
-        # remove trailing "-batch"
-        package_id = batch_name[0:-6]
-        
-        application_name = self._get_application_name()
-        
-        msg_json = {
-            "package_id": package_id,
-            "application_name": application_name,
-            "batch_ingest_status": "success",
-            "drs_url": urn,
-            "admin_metadata": {
-                "original_queue": os.getenv("PROCESS_PUBLISH_QUEUE_NAME"),
-                "task_name": process_status_task,
-                "retry_count": 0
-            }
-        }
-        app.send_task(process_status_task, args=[msg_json], kwargs={},
-                  queue=os.getenv("PROCESS_PUBLISH_QUEUE_NAME"))
-        return urn
+        return objects
     
     def handle_failed_batch(self, batch_name, dry_run = False):
         #Send failed notification
@@ -104,6 +86,44 @@ class LoadReportService(ABC):
 
         return batch_name
         
+    def _process_load_report(self, objects, batch_name, load_report_path, dry_run = False):
+        """
+        Process the load report.
+
+        Args:
+            objects (list): List of objects.
+            batch_name (str): Name of the batch.
+            load_report_path (str): Path to the load report.
+
+        Raises:
+            LoadReportException: If object URN could not be found in the load report.
+        """
+        obj_urn = objects[0].object_urn
+        if (obj_urn is None):
+            raise LoadReportException("ERROR Object URN could not be found in load report, {}.".format(load_report_path))
+        
+        nrs_prefix = os.getenv("NRS_PREFIX")    
+        urn = os.path.join(nrs_prefix, obj_urn)
+        # remove trailing "-batch"
+        package_id = batch_name[0:-6]
+        
+        application_name = self._get_application_name()
+        
+        msg_json = {
+            "package_id": package_id,
+            "application_name": application_name,
+            "batch_ingest_status": "success",
+            "drs_url": urn,
+            "admin_metadata": {
+                "original_queue": os.getenv("PROCESS_PUBLISH_QUEUE_NAME"),
+                "task_name": process_status_task,
+                "retry_count": 0
+            }
+        }
+        if not dry_run:
+            app.send_task(process_status_task, args=[msg_json], kwargs={},
+                          queue=os.getenv("PROCESS_PUBLISH_QUEUE_NAME"))
+
     def _delete_load_report_from_dropbox(self, load_report_batch_path):
         '''
         Deletes the load report from the dropbox.
@@ -129,7 +149,10 @@ class LoadReportService(ABC):
         
     def _parse_load_report(self, local_load_report_path):
         '''
-        Reads and parses the values of the load report and returns the obj_urn. 
+        Reads and parses the values of the load report and returns the list of objects. 
         '''
         load_report = LoadReport(local_load_report_path)
-        return load_report.get_obj_urn()
+        objects = load_report.get_objects()
+        if len(objects) == 0:
+            raise LoadReportException("ERROR No objects found in load report", "No objects found in load report {}.".format(local_load_report_path))
+        return objects

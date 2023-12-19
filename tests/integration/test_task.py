@@ -3,10 +3,12 @@ import os
 import shutil
 import os.path
 import time
-from tasks.tasks import process_task
 
 app1 = Celery('tasks')
 app1.config_from_object('celeryconfig')
+
+app2 = Celery()
+app2.config_from_object('etdtestceleryconfig')
 
 base_dropbox_dir = os.getenv("BASE_DROPBOX_PATH")
 base_load_report_dir = os.getenv("BASE_LOADREPORT_PATH")
