@@ -7,7 +7,7 @@ base_load_report_dir = os.getenv("BASE_LOADREPORT_PATH")
 
 
 def test_valid_loadreport_call():
-    unit_test_helper.deposit_sample_load_report()
+    unit_test_helper.deposit_sample_dvn_load_report()
     response = requests.get("https://localhost:8443/loadreport?filename={}&dropbox={}&dryrun=True".format(unit_test_helper.sample_load_report, "dvndev"), verify=False)
     assert response.status_code == 200
     unit_test_helper.cleanup_sample_load_report()
