@@ -12,6 +12,7 @@ app.config_from_object('celeryconfig')
 
 process_status_task = os.getenv('PROCESS_STATUS_TASK_NAME', 'dims.tasks.handle_process_status')
 
+
 class LoadReportService(ABC):
     
     @abstractmethod
@@ -85,7 +86,7 @@ class LoadReportService(ABC):
 
         return batch_name
         
-    def _process_load_report(self, objects, batch_name, load_report_path):
+    def _process_load_report(self, objects, batch_name, load_report_path, dry_run = False):
         """
         Process the load report.
 
@@ -119,8 +120,9 @@ class LoadReportService(ABC):
                 "retry_count": 0
             }
         }
-        app.send_task(process_status_task, args=[msg_json], kwargs={},
-                  queue=os.getenv("PROCESS_PUBLISH_QUEUE_NAME"))
+        if not dry_run:
+            app.send_task(process_status_task, args=[msg_json], kwargs={},
+                          queue=os.getenv("PROCESS_PUBLISH_QUEUE_NAME"))
 
     def _delete_load_report_from_dropbox(self, load_report_batch_path):
         '''

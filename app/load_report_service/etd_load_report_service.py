@@ -2,11 +2,14 @@ from load_report_service.load_report_service import LoadReportService
 from load_report_service.load_report_exception import LoadReportException
 from celery import Celery
 import os
+import logging
 
-app = Celery()
-app.config_from_object('etdceleryconfig')
+app = Celery(os.getenv("ETD_BROKER"))
+app.config_from_object('etdtestceleryconfig')
 
 etd_holding_task = os.getenv('ETD_HOLDING_TASK_NAME', 'etd-alma-drs-holding-service.tasks.add_holdings')
+
+logger = logging.getLogger('dts')
 
 class ETDLoadReportService(LoadReportService):
     
@@ -15,7 +18,7 @@ class ETDLoadReportService(LoadReportService):
         
         return "ETD"
     
-    def _process_load_report(self, objects, batch_name, load_report_path):
+    def _process_load_report(self, objects, batch_name, load_report_path, dry_run = False):
         """
         Process the load report.
 
@@ -31,13 +34,12 @@ class ETDLoadReportService(LoadReportService):
         object_id = ""
         for object in objects:
 
-            obj_osn = objects.object_osn
+            obj_osn = object.object_owner_supplied_name
             if (obj_osn is None):
                 raise LoadReportException("ERROR Object OSN could not be found in load report, {}.".format(load_report_path))
             if (obj_osn.startswith("ETD_THESIS")):
-                pass
-                pqid = ""
-                object_id = objects.object_id
+                pqid = self.get_pqid_from_osn(obj_osn)
+                object_id = object.object_id
 
         # remove trailing "-batch"
         package_id = batch_name[0:-6]
@@ -55,6 +57,19 @@ class ETDLoadReportService(LoadReportService):
                 "retry_count": 0
             }
         }
-        app.send_task(etd_holding_task, args=[msg_json], kwargs={},
-                  queue=os.getenv("ETD_HOLDING_QUEUE_NAME"))
+        if not dry_run:
+            app.send_task(etd_holding_task, args=[msg_json], kwargs={},
+                          queue=os.getenv("ETD_HOLDING_QUEUE_NAME"))
+        
+    def get_pqid_from_osn(self, obj_osn):
+        # Format is ETD_THESIS_<school>_<degreedate>_PQ_<pqid>_<timestamp>
+        # Split by "PQ_"
+        osn_split = obj_osn.split("PQ_")
+        if (len(osn_split) != 2):
+            raise LoadReportException("ERROR Object OSN is not in expected format, {}.".format(obj_osn))
+        # Split by "_"
+        osn_split = osn_split[1].split("_")
+        if (len(osn_split) != 2):
+            raise LoadReportException("ERROR Object OSN is not in expected format, {}.".format(obj_osn))
+        return osn_split[0]
         

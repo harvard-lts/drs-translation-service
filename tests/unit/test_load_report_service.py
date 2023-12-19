@@ -3,6 +3,7 @@ sys.path.append('app')
 from load_report_service.dataverse_load_report_service import DataverseLoadReportService
 from load_report_service.etd_load_report_service import ETDLoadReportService
 from load_report_service.load_report_service_builder import LoadReportServiceBuilder
+from load_report_service.load_report_exception import LoadReportException
 import unit_test_helper
 
 nrs_prefix = os.getenv("NRS_PREFIX")
@@ -53,3 +54,14 @@ def test_builder_etd():
     service = builder.get_load_report_service(os.getenv("ETD_DROPBOX_NAME"))
     assert isinstance(service, ETDLoadReportService)
             
+def test_etd_parse_osn():
+    '''Tests that the obj osn is parsed properly'''
+    osn = "ETD_THESIS_gsd_2023-05_PQ_30522803_1702501179"
+    pqid = ETDLoadReportService().get_pqid_from_osn(osn)
+    assert pqid == "30522803"
+
+def test_etd_parse_osn_fail():
+    '''Tests that the obj osn raises an exception when not in the proper format'''
+    with pytest.raises(LoadReportException):
+        osn = "ETD_THESIS_gsd_2023-05_30522803_1702501179"
+        pqid = ETDLoadReportService().get_pqid_from_osn(osn)
