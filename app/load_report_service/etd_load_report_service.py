@@ -32,6 +32,7 @@ class ETDLoadReportService(LoadReportService):
         """
         pqid = ""
         object_id = ""
+        object_urn = ""
         for object in objects:
 
             obj_osn = object.object_owner_supplied_name
@@ -40,6 +41,7 @@ class ETDLoadReportService(LoadReportService):
             if (obj_osn.startswith("ETD_THESIS")):
                 pqid = self.get_pqid_from_osn(obj_osn)
                 object_id = object.object_id
+                object_urn = object.object_urn
 
         # remove trailing "-batch"
         package_id = batch_name[0:-6]
@@ -51,6 +53,7 @@ class ETDLoadReportService(LoadReportService):
             "application_name": application_name,
             "drs_object_id": object_id,
             "pqid": pqid,
+            "object_urn": object_urn,
             "admin_metadata": {
                 "original_queue": os.getenv("ETD_HOLDING_QUEUE_NAME"),
                 "task_name": etd_holding_task,
