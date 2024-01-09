@@ -48,8 +48,9 @@ def create_app():
             dryrun = True
         try:
             builder = LoadReportServiceBuilder()
-            load_report_service = builder.get_load_report_service(args['dropbox'])
-            load_report_service.handle_load_report(args['filename'], dryrun)
+            if builder is not None:
+                load_report_service = builder.get_load_report_service(args['dropbox'])
+                load_report_service.handle_load_report(args['filename'], dryrun)
         except LoadReportException as lre:
             msg = "Handling of load report failed: {}".format(str(lre))
             exception_msg = traceback.format_exc()
@@ -78,8 +79,9 @@ def create_app():
 
         try:
             builder = LoadReportServiceBuilder()
-            load_report_service = builder.get_load_report_service(args['dropbox'])
-            load_report_service.handle_failed_batch(args['batchName'], dryrun)
+            if builder is not None:
+                load_report_service = builder.get_load_report_service(args['dropbox'])
+                load_report_service.handle_failed_batch(args['batchName'], dryrun)
         except LoadReportException as lre:
             msg = "Handling of failed batch returned an error: {}".format(str(lre))
             exception_msg = traceback.format_exc()
