@@ -36,6 +36,7 @@ class ETDLoadReportService(LoadReportService):
         for object in objects:
 
             obj_osn = object.object_owner_supplied_name
+            logger.debug("Object OSN: {}".format(obj_osn))
             if (obj_osn is None):
                 raise LoadReportException("ERROR Object OSN could not be found in load report, {}.".format(load_report_path))
             if (obj_osn.startswith("ETD_THESIS")):
@@ -67,7 +68,7 @@ class ETDLoadReportService(LoadReportService):
     def get_pqid_from_osn(self, obj_osn):
         # Format is ETD_THESIS_<school>_<degreedate>_PQ_<pqid>_<timestamp>
         # Split by "PQ_"
-        logging.debug("Parsing OSN {}".format(obj_osn))
+        logger.debug("Parsing OSN {}".format(obj_osn))
         osn_split = obj_osn.split("PQ_")
         if (len(osn_split) != 2):
             logger.debug("OSN split: {}".format(osn_split))
