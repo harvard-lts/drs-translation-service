@@ -61,7 +61,11 @@ class ETDLoadReportService(LoadReportService):
                 "retry_count": 0
             }
         }
+        
         if not dry_run:
+            logger.debug("Sending task to queue: {} with message {}".
+                         format(os.getenv("ETD_HOLDING_QUEUE_NAME"),
+                                msg_json))
             app.send_task(etd_holding_task, args=[msg_json], kwargs={},
                           queue=os.getenv("ETD_HOLDING_QUEUE_NAME"))
         
