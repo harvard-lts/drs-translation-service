@@ -36,6 +36,7 @@ class ETDLoadReportService(LoadReportService):
         for object in objects:
 
             obj_osn = object.object_owner_supplied_name
+            logger.debug("Object OSN: {}".format(obj_osn))
             if (obj_osn is None):
                 raise LoadReportException("ERROR Object OSN could not be found in load report, {}.".format(load_report_path))
             if (obj_osn.startswith("ETD_THESIS")):
@@ -60,19 +61,26 @@ class ETDLoadReportService(LoadReportService):
                 "retry_count": 0
             }
         }
+        
         if not dry_run:
+            logger.debug("Sending task to queue: {} with message {}".
+                         format(os.getenv("ETD_HOLDING_QUEUE_NAME"),
+                                msg_json))
             app.send_task(etd_holding_task, args=[msg_json], kwargs={},
                           queue=os.getenv("ETD_HOLDING_QUEUE_NAME"))
         
     def get_pqid_from_osn(self, obj_osn):
-        # Format is ETD_THESIS_<school>_<degreedate>_PQ_<pqid>_<timestamp>
+        # Format is ETD_THESIS_<school>_<degreedate>_PQ_<pqid>_<optional timestamp>
         # Split by "PQ_"
+        logger.debug("Parsing OSN {}".format(obj_osn))
         osn_split = obj_osn.split("PQ_")
         if (len(osn_split) != 2):
+            logger.debug("OSN split: {}".format(osn_split))
             raise LoadReportException("ERROR Object OSN is not in expected format, {}.".format(obj_osn))
-        # Split by "_"
+        # Split by "_" to see if there is a timestamp
         osn_split = osn_split[1].split("_")
-        if (len(osn_split) != 2):
-            raise LoadReportException("ERROR Object OSN is not in expected format, {}.".format(obj_osn))
+        if (len(osn_split) > 2):
+            logger.debug("OSN split: {}".format(osn_split))
+            raise LoadReportException("ERROR Object OSN {} is not in expected format, {}.".format(osn_split, osn_split))
         return osn_split[0]
         
