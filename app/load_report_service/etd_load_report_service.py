@@ -66,16 +66,16 @@ class ETDLoadReportService(LoadReportService):
                           queue=os.getenv("ETD_HOLDING_QUEUE_NAME"))
         
     def get_pqid_from_osn(self, obj_osn):
-        # Format is ETD_THESIS_<school>_<degreedate>_PQ_<pqid>_<timestamp>
+        # Format is ETD_THESIS_<school>_<degreedate>_PQ_<pqid>_<optional timestamp>
         # Split by "PQ_"
         logger.debug("Parsing OSN {}".format(obj_osn))
         osn_split = obj_osn.split("PQ_")
         if (len(osn_split) != 2):
             logger.debug("OSN split: {}".format(osn_split))
             raise LoadReportException("ERROR Object OSN is not in expected format, {}.".format(obj_osn))
-        # Split by "_"
+        # Split by "_" to see if there is a timestamp
         osn_split = osn_split[1].split("_")
-        if (len(osn_split) != 2):
+        if (len(osn_split) > 2):
             logger.debug("OSN split: {}".format(osn_split))
             raise LoadReportException("ERROR Object OSN {} is not in expected format, {}.".format(osn_split, osn_split))
         return osn_split[0]
