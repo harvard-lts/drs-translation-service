@@ -67,6 +67,7 @@ class ETDLoadReportService(LoadReportService):
     def get_pqid_from_osn(self, obj_osn):
         # Format is ETD_THESIS_<school>_<degreedate>_PQ_<pqid>_<timestamp>
         # Split by "PQ_"
+        logging.debug("Parsing OSN {}".format(obj_osn))
         osn_split = obj_osn.split("PQ_")
         if (len(osn_split) != 2):
             logger.debug("OSN split: {}".format(osn_split))
