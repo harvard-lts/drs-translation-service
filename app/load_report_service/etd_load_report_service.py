@@ -69,10 +69,12 @@ class ETDLoadReportService(LoadReportService):
         # Split by "PQ_"
         osn_split = obj_osn.split("PQ_")
         if (len(osn_split) != 2):
+            logger.debug("OSN split: {}".format(osn_split))
             raise LoadReportException("ERROR Object OSN is not in expected format, {}.".format(obj_osn))
         # Split by "_"
         osn_split = osn_split[1].split("_")
         if (len(osn_split) != 2):
-            raise LoadReportException("ERROR Object OSN is not in expected format, {}.".format(obj_osn))
+            logger.debug("OSN split: {}".format(osn_split[1]))
+            raise LoadReportException("ERROR Object OSN {} is not in expected format, {}.".format(osn_split, osn_split[1]))
         return osn_split[0]
         
