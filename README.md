@@ -12,13 +12,17 @@
 ignoreinvalids=true
 mods_hollis_url=http\://idtest.lib.harvard.edu:9020/rest/mods/hollis/
 
-4. Start the container
+4. In batch_builder_client/BatchBuilder_version/fits/tools/mediainfo/linux, delete these two files:
+libmediainfo.so.0
+libzen.so.0
+
+5. Start the container
     
 ```
 docker-compose -f docker-compose-local.yml up -d --build --force-recreate
 ```
 
-5. Local Healthcheck: https://localhost:10581/healthcheck
+6. Local Healthcheck: https://localhost:10581/healthcheck
 
 ## Testing
 Note, testing uses its own queues so they will not interfere with the queues used by the actual program.
