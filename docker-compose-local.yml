@@ -18,9 +18,9 @@ services:
       # Conf
       - './conf:/home/appuser/conf'
       #BB
-      - './batch_builder_client/BatchBuilder-2.3.2:/home/batchbuilder'
+      - './batch_builder_client/BatchBuilder-2.4.1:/home/batchbuilder'
       #BB config
-      - './batch_builder_client/BatchBuilder-2.3.2/conf/bb.properties.dev:/home/batchbuilder/conf/bb.properties'
+      - './batch_builder_client/BatchBuilder-2.4.1/conf/bb.properties.dev:/home/batchbuilder/conf/bb.properties'
     env_file:
       - '.env'
     ports:
