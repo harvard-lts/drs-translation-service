@@ -7,8 +7,7 @@ app1.config_from_object('etdtestceleryconfig')
 arguments = {"feature_flags": {
             'dash_feature_flag': "off",
             'alma_feature_flag': "off",
-            'send_to_drs_feature_flag': "off",
-            'drs_holding_record_feature_flag': "off"},
+            'send_to_drs_feature_flag': "off"},
             "pqid": "30522803",
             "object_id": "123456789"}
 
